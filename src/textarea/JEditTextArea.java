@@ -1472,6 +1472,8 @@ public class JEditTextArea extends JComponent
 			inputHandler.keyReleased(evt);
 			break;
 		}
+                // now call the parent so it follows the actions.
+                super.processKeyEvent(evt);
 	}
 
 	// protected members
@@ -2000,8 +2002,12 @@ public class JEditTextArea extends JComponent
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:40  davidmartinez
- * Initial revision
+ * Revision 1.2  2003/01/09 17:12:43  davidmartinez
+ * Finished history support for interactive SQL. Added table editor node
+ * context (still in progress).
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:40  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:21  david
  * Initial Import

@@ -24,42 +24,43 @@ import java.util.Enumeration;
  */
 public class PluginFactory {
 
-	public static IDEPluginIF createPlugin( PluginDefinition def ) {
-		IDEPluginIF theResult = null;
-		Class theClass;
-		try {
-			theResult = (IDEPluginIF)def.pluginInstance.getClass().newInstance();
-		}
-		catch( java.lang.InstantiationException e ) {
-			theResult = null;
-			System.err.println("Warning: Couldn't create plugin "+def.pluginInstance.getPluginName()+":\n"+e);
-		}
-		catch( java.lang.IllegalAccessException e ) {
-			theResult = null;
-			System.err.println("Warning: Illegal Access Exception when trying to instantiate class "+def.pluginInstance.getClass().getName());
-		}
-		catch ( Exception exc ) {
-			exc.printStackTrace();
-			JOptionPane.showMessageDialog(null, "This panel is not working.\nIf you are so inclined, you're welcome to debug it.\n\nSee the stack dump in stderr.\nAlso consult the BUGS and TODO files in the SQLIDE distribution.", "Not Implemented Yet", JOptionPane.ERROR_MESSAGE);
+  public static IDEPluginIF createPlugin(PluginDefinition def) {
+    IDEPluginIF theResult = null;
+    Class theClass;
+    try {
+      theResult = (IDEPluginIF) def.pluginInstance.getClass().newInstance();
+    }
+    catch (java.lang.InstantiationException e) {
+      theResult = null;
+      System.err.println("Warning: Couldn't create plugin " + def.pluginInstance.getPluginName() + ":\n" + e);
+    }
+    catch (java.lang.IllegalAccessException e) {
+      theResult = null;
+      System.err.println("Warning: Illegal Access Exception when trying to instantiate class " + def.pluginInstance.getClass().getName());
+    }
+    catch (Exception exc) {
+      exc.printStackTrace();
+      JOptionPane.showMessageDialog(null,
+          "This panel is not working.\nIf you are so inclined, you're welcome to debug it.\n\nSee the stack dump in stderr.\nAlso consult the BUGS and TODO files in the SQLIDE distribution.",
+                                    "Not Implemented Yet", JOptionPane.ERROR_MESSAGE);
 
-		}
-		return(theResult);
-	}
+    }
+    return (theResult);
+  }
 
-	public static IDEPluginIF createPlugin(String politeName) {
-		IDEPluginIF theResult = null;
-		PluginDefinition def = PluginRegistry.getInstance().getPlugin(politeName);
-		if ( def != null ) { theResult = createPlugin(def); }
-		if ( theResult == null ) {
-			// HACK: Ugly hack so things work until I find out how to
-			// implement my own ClassLoader or fix the not finding
-			// panel problem.
-			theResult = (IDEPluginIF)new PluginInteractiveSQL();
-		}
-	return(theResult);
-	}
-
+  public static IDEPluginIF createPlugin(String politeName) {
+    IDEPluginIF theResult = null;
+    PluginDefinition def = PluginRegistry.getInstance().getPlugin(politeName);
+    if (def != null) {
+      theResult = createPlugin(def);
+    }
+//    if (theResult == null) {
+//      // HACK: Ugly hack so things work until I find out how to
+//      // implement my own ClassLoader or fix the not finding
+//      // panel problem.
+//      theResult = (IDEPluginIF)new PluginInteractiveSQL();
+//    }
+    return (theResult);
+  }
 
 }
-
-
