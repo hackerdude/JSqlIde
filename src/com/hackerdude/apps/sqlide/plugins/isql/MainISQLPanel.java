@@ -54,6 +54,7 @@ public class MainISQLPanel extends JPanel {
   private JCheckBox cbAsUpdate = new JCheckBox();
 
   private int historyBackCount = 0;
+  private JCheckBox cbUpdatable = new JCheckBox();
 
   public MainISQLPanel() {
     try {
@@ -80,12 +81,15 @@ public class MainISQLPanel extends JPanel {
     btnGo.setText("Go!");
     cbAsUpdate.setText("As Update");
     cbAsUpdate.setMnemonic('U');
-    this.add(pnlBottomPanel, BorderLayout.SOUTH);
+    cbUpdatable.setActionCommand("updatable");
+	cbUpdatable.setText("Updatable");
+	this.add(pnlBottomPanel, BorderLayout.SOUTH);
     this.add(pnlTopPanel, BorderLayout.NORTH);
     pnlTopPanel.add(lblCatalog, null);
     pnlTopPanel.add(cbCatalogs, null);
     pnlTopPanel.add(btnGo, null);
     pnlTopPanel.add(cbAsUpdate, null);
+	pnlTopPanel.add(cbUpdatable, null);
     this.add(pnlCenter, BorderLayout.CENTER);
     pnlCenter.add(jSplitPane1, BorderLayout.CENTER);
     jSplitPane1.add(sqlTextArea, JSplitPane.TOP);
@@ -105,8 +109,9 @@ public class MainISQLPanel extends JPanel {
       ideprocess.changeCatalog(db.toString());
     try {
       boolean asUpdate = cbAsUpdate.isSelected();
+	  boolean updatable = cbUpdatable.isSelected();
 
-      QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, false, false);
+      QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, updatable);
       sqlTextArea.setText(ideprocess.lastQuery);
 
       addToHistoryIfNeeded(queryText);
