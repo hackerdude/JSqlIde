@@ -1,11 +1,7 @@
 <H1>SQLIDE Known Bugs</H1>
 
-<H4>Table Editor</H4>
-
-<UL>
-	<LI>When clicking on a dropdown for datatypes, the current datatype is
-	never pre-selected.
-</UL>
+<P>This document describes the known bugs list at the time of release of
+jsqlide.
 
 <H4>Browser</H4>
 
@@ -13,21 +9,13 @@
 
 <H4>Interactive SQL</H4>
 
+<P>The resultset columns use the column width, but they don't have a
+maximum limit. As a result, fields with lengths of thousands can make
+the table very, very wide.
 
 <H4>Configuration</H4>
 
 <UL>
-	<LI>SQL Code font size text field doesn't have a base width. Also settings
-	for font don't really follow the configuration object.
-
-	<LI>In general, none of the configuration items have the labels attached
-	to their textfield.
-
-	<LI>Changing the look and feel does not update the components on the fly.
-	You have to restart the application.
-
-	<LI>When configuring a new server connection, you can get away with not
-	using a filename. You shouldn't.
 
 </UL>
 
