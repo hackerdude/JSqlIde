@@ -450,7 +450,8 @@ public class DatabaseProcess {
 				JOptionPane.showMessageDialog(null, exc.toString(), "Java Exception",
 								JOptionPane.ERROR_MESSAGE);
 		}
-		if ( conn == null ) { return(false); } else { return(true); };
+		boolean retValue = conn==null?false:true;
+		return retValue;
 	}
 
 	/**

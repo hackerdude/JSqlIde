@@ -9,37 +9,38 @@
 	<!-- Set some basic values locations -->
 	<property name="Name" value="jsqlide"/>
 	<property name="name" value="jsqlide"/>
-	<property name="version" value="0.0.16"/>
+	<property name="version" value="0.0.21"/>
 
 	<!-- Set some basic directory locations -->
 	<property name="jsqlide.home" value="."/>
 	<property name="src.dir" value="src"/>
 	<property name="src.etc.dir" value="${src.dir}/etc"/>
 	<property name="src.bin.dir" value="${src.dir}/bin"/>
-	<property name="src.lib.dir" value="${src.dir}/lib"/>
+	<property name="lib.dir" value="lib"/>
 	<property name="src.tests.dir" value="${src.dir}"/>
 	<property name="images.dir" value="com/hackerdude/images"/>
 	<property name="docs.dir" value="docs"/>
 	<property name="build.dir" value="build"/>
-	<property name="lib.dir" value="${build.dir}/lib"/>
 	<property name="bin.dir" value="${build.dir}/bin"/>
 	<property name="build.classes" value="${build.dir}/classes"/>
 	<property name="build.javadocs" value="${build.dir}/javadocs"/>
 	<property name="build.tests" value="${build.dir}/testcases"/>
 	<property name="jsqlide.dist.dir" value="dist"/>
 
-	<!-- Now prepare some classpaths we will use for the build -->
-	<path id="classpath"/>
-	<path id="xerces.path">
-		<pathelement path="${src.lib.dir}/xerces.jar"/>
+	<path id="jsqlide_classpath">
+	 <fileset dir="${lib.dir}">
+	  <include name="*.jar"/>
+	 </fileset>
+	 <pathelement path="${java.class.path}"/>
 	</path>
+
 	<path id="junit.path">
-		<pathelement path="${src.lib.dir}/junit.jar"/>
+		<pathelement path="${lib.dir}/junit.jar"/>
 	</path>
 
 	<property name="packages" value="com.hackerdude.*"/>
 	<property name="manifest" value="${src.etc.dir}/META-INF/MANIFEST.MF"/>
-	<property name="build.compiler" value="classic"/>
+	<property name="build.compiler" value="modern"/>
 	<property name="build.compiler.emacs" value="on"/>
 	<!-- =================================================================== -->
 	<!-- Define a global set of patterns that can be referenced by           -->
@@ -80,8 +81,7 @@
 	<target name="compile" depends="prepare,check_for_optional_packages">
 		<mkdir dir="${build.classes}"/>
 		<javac srcdir="${src.dir}" destdir="${build.classes}" debug="on" deprecation="off" optimize="on">
-			<classpath refid="classpath"/>
-			<classpath refid="xerces.path"/>
+			<classpath refid="jsqlide_classpath"/>
 			<!-- These excludes are from ant's own build. I'm keeping them here
 				 because some of them might come in handy. -->
 			<exclude name="**/Script.java" unless="bsf.present"/>
@@ -137,8 +137,25 @@
 	<!-- Creates the jar archive                                             -->
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile">
-		<mkdir dir="${lib.dir}"/>
-		<jar jarfile="${lib.dir}/${name}.jar" basedir="${build.classes}" includes="*/**" manifest="${manifest}"/>
+		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**">
+		    <fileset dir="${lib.dir}">
+			    <include name="*.jar"/>
+			</fileset>
+			<manifest>
+				<attribute name="Main-Class" value="com.hackerdude.devtools.db.sqlide.sqlide" />
+				<attribute name="Class-Path" value="/xerces.jar" />
+				<attribute name="Built-By" value="${user.name}"/>
+				<section name="common">
+					<attribute name="Specification-Title" value="Java SQL-IDE" />
+					<attribute name="Specification-Version" value="${version}" />
+					<attribute name="Specification-Vendor" value="Hackerdude" />
+					<attribute name="Implementation-Title" value="jsqlide" />
+					<attribute name="Implementation-Version" value="${version} ${TODAY}" />
+					<attribute name="Implementation-Vendor" value="Hackerdude.com" />
+				</section>
+			</manifest>
+		</jar>
+
 	</target>
 
 	<!-- =================================================================== -->
@@ -148,9 +165,6 @@
 		<mkdir dir="${bin.dir}"/>
 		<copy todir="${bin.dir}">
 			<fileset dir="${src.bin.dir}"/>
-		</copy>
-		<copy todir="${lib.dir}">
-			<fileset dir="${src.lib.dir}"/>
 		</copy>
 		<chmod perm="+x">
 			<fileset dir="${bin.dir}">
