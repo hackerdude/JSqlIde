@@ -28,10 +28,10 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 		ArrayList actionsList = new ArrayList();
 
 		if ( selectedNodes[0] instanceof ItemServerNode ) {
-			Action editServerAction = new ActionEditServer( (ItemServerNode)selectedNodes[0] );
-			actionsList.add(editServerAction);
 			Action newISqlWindow = new ActionISQLWindow((ItemServerNode)selectedNodes[0] );
 			actionsList.add(newISqlWindow);
+			Action editServerAction = new ActionEditServer( (ItemServerNode)selectedNodes[0] );
+			actionsList.add(editServerAction);
 		}
 		if ( selectedNodes[0] instanceof NodeIDEBase ) {
 			IDEVisualPluginIF rightComponent = SqlIdeApplication.getInstance().getRightPanel();
@@ -101,7 +101,7 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 	class ActionISQLWindow extends AbstractAction {
 		ItemServerNode itemServerNode;
 		public ActionISQLWindow(ItemServerNode itemServerNode) {
-			super("Interactive SQL for " + itemServerNode.toString(), ProgramIcons.getInstance().getGoIcon());
+			super("Interactive SQL for " + itemServerNode.toString(), ProgramIcons.getInstance().findIcon("images/Sheet.gif"));
 			this.itemServerNode = itemServerNode;
 		}
 
