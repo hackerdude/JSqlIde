@@ -73,10 +73,10 @@ public class BrowserModel implements Observer {
 	}
 
 	private void fillBrowser() {
-		serverCount   = ProgramConfig.getInstance().getDbConfigCount();
+		serverCount   = ProgramConfig.getInstance().getConnectionCount();
 		servers.clear();
 		for ( int i=0; i<serverCount; i++) {
-			DatabaseProcess db = new DatabaseProcess( ProgramConfig.getInstance().getDatabaseSpec(i) );
+			DatabaseProcess db = new DatabaseProcess( ProgramConfig.getInstance().getConnectionConfig(i) );
 			servers.add( db );
 		}
 	}
@@ -90,11 +90,10 @@ public class BrowserModel implements Observer {
 		DefaultMutableTreeNode theNode;
 		DatabaseProcess dbProcess;
 		for ( int i=0; i<serverCount; i++) {
-				server =  new ItemServerNode( ProgramConfig.getInstance().getDatabaseSpec(i) );
+				server =  new ItemServerNode( ProgramConfig.getInstance().getConnectionConfig(i) );
 				topNode.add(server);
 		}
 	}
-
 
 }
 

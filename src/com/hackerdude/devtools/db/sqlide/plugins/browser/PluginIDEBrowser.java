@@ -146,7 +146,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 		serverBrowser = new BrowserModel(top);
 		UIManager.put("Tree.expandedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
 		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
-		if (currentProcess == null) currentProcess = new DatabaseProcess(ProgramConfig.getInstance().getDatabaseSpec(0));
+		if (currentProcess == null) currentProcess = new DatabaseProcess(ProgramConfig.getInstance().getConnectionConfig(0));
 	}
 
 	public void freePlugin() {

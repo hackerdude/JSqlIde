@@ -105,7 +105,7 @@ public class DlgPanelServersPage extends JPanel {
 			}
 
 			public int getRowCount() {
-					return ProgramConfig.getInstance().getDbConfigCount();
+					return ProgramConfig.getInstance().getConnectionCount();
 			};
 
 			public int getColumnCount() { return(1); };
@@ -138,7 +138,7 @@ public class DlgPanelServersPage extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
 			ConnectionConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getDatabaseSpec(itemNo); }
+			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getConnectionConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -157,8 +157,8 @@ public class DlgPanelServersPage extends JPanel {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
 			ConnectionConfig spec = wiz.getDBSpec();
 			if ( wiz.result == wiz.OK || spec != null ) {
-					DatabaseSpecFactory.saveDatabaseSpec(spec);
-					ProgramConfig.getInstance().addDatabaseSpec(spec);
+					ConnectionConfigFactory.saveConnectionConfig(spec);
+					ProgramConfig.getInstance().addConnectionConfig(spec);
 					model.fireTableDataChanged();
 			} else { System.out.println("[DlgPanelServersPage] New Server Spec was null. Ignoring."); }
 		}
@@ -172,7 +172,7 @@ public class DlgPanelServersPage extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
 			ConnectionConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getDatabaseSpec(itemNo); }
+			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getConnectionConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no database selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -183,7 +183,7 @@ public class DlgPanelServersPage extends JPanel {
 				File f = new File(spec.getFileName());
 				if ( ! f.delete() ) JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);
 				else {
-						ProgramConfig.getInstance().removeDatabaseSpec(spec);
+						ProgramConfig.getInstance().removeConnectionConfig(spec);
 						model.fireTableDataChanged();
 				}
 			}

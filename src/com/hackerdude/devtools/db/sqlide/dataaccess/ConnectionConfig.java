@@ -54,7 +54,7 @@ public class ConnectionConfig {
 	public static final String DEFAULT_DBSPEC = "default";
 	public static final String DBSPEC_SUFFIX = ".db.xml";
 
-	public static final String DEFAULT_DBSPEC_FILENAME = ProgramConfig.getPropsPath()+DEFAULT_DBSPEC+DBSPEC_SUFFIX;
+	public static final String DEFAULT_DBSPEC_FILENAME = ProgramConfig.getUserProfilePath()+DEFAULT_DBSPEC+DBSPEC_SUFFIX;
 
 	protected Properties connProperties = new Properties();
 

@@ -32,7 +32,7 @@ public class NewServerWizard extends Wizard {
 		super("New Server Profile",
 			  "This wizard will guide you step by step on how to add a server profile "
 	 +"to your configuration.", modal );
-		databaseSpec = DatabaseSpecFactory.createDatabaseSpec();
+		databaseSpec = ConnectionConfigFactory.createConnectionConfig();
 		pageNewServer = new NewServerWizSelectServerType();
 		pageServerDetails = new ServerDetailsWizardPage();
 		pageSelectClassPath = new SelectClassPathWizardPage();

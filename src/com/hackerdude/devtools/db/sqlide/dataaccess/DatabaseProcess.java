@@ -97,7 +97,7 @@ public class DatabaseProcess {
 			System.err.println("[DatabaseProcess] Warning: DB Interface Class for "+databaseSpec.getPoliteName()+" not specified");
 		} else {
 			String fullyQualName = "com.hackerdude.devtools.db.sqlide.dbspecific."+serverCatalogName;
-			System.out.println("[DatabaseProcess] Loading class "+fullyQualName);
+//			System.out.println("[DatabaseProcess] Loading class "+fullyQualName);
 			try {
 				Class interfaceClass = Class.forName(fullyQualName);
 				dbInterface = (SQLIDEDBInterface)interfaceClass.newInstance();

@@ -98,7 +98,7 @@ public class ServerTypeRegistryCache {
 	}
 
 	public File getCacheFile() {
-		String cacheFileName = ProgramConfig.getPropsPath()+File.separator+cacheFile;
+		String cacheFileName = ProgramConfig.getUserProfilePath()+File.separator+cacheFile;
 		File cache = new File(cacheFileName);
 		return cache;
 	}
