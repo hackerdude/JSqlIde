@@ -295,15 +295,16 @@ public class DatabaseProcess {
 	 * @param Statisticsio Turn on I/O statistics?  (not implemented yet)
 	 * @param Statisticstime Turn on Time Statistics? (not implemented yet)
 	 * @param asUpdate Run as update?
+	 * @return QueryResults The results of executing this query.
 	 * @throws SQLException if a SQL error ocurrs
 	 */
-	public void runQuery(String queryString, boolean asUpdate, boolean Statisticsio, boolean Statisticstime) throws SQLException {
+	public QueryResults runQuery(String queryString, boolean asUpdate, boolean Statisticsio, boolean Statisticstime) throws SQLException {
 
 		lastResultTable = null;
 		if ( lastQueryResults != null ) { lastQueryResults.getResultSet().close(); lastQueryResults = null; }
 		if ( lastDatabaseCall != null ) { lastDatabaseCall.close(); lastDatabaseCall= null;}
 		if ( lastConnection != null ) { returnConnection(lastConnection); lastConnection = null; }
-		if ( !  doConnect() ) return;
+		if ( !  doConnect() ) return null;
 		lastQuery = queryString;
 		if ( lastConnection == null ) lastConnection = getPool().getConnection();
 		changeCatalog(lastConnection);
@@ -342,6 +343,7 @@ public class DatabaseProcess {
 					//lastResult.append("\nRows Affected: ").append(Integer.toString(updateCount));
 				}
 		}
+		return lastQueryResults;
 
 	}
 

@@ -18,7 +18,7 @@ public class CategoryCatalogsNode extends NodeIDECategory {
 
 	 public CategoryCatalogsNode(DatabaseProcess proc) {
 		super(getNodeName(proc), proc);
-	  };
+	  }
 
 	 public void readChildren() {
 

@@ -78,21 +78,21 @@ public class MainISQLPanel extends JPanel {
 	 */
 	public void executeCurrentQuery() {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		resultSetPanel.setStatusText( "Executing Query..." );
+		resultSetPanel.addStatusText( "Executing Query..." );
 		String queryText = sqlTextArea.getText();
 //		cbHistory.addItem(new SQLHistoryItem(queryText));
 		Object db = cbCatalogs.getSelectedItem();
 		if ( db != null ) ideprocess.changeCatalog( db.toString() );
 		try {
 			boolean asUpdate = cbAsUpdate.isSelected();
-			ideprocess.runQuery(queryText, asUpdate, false, false );
+			QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, false, false );
 			sqlTextArea.setText(ideprocess.lastQuery);
 			Font theFont = ProgramConfig.getInstance().getResultSetFont();
-			ResultSetColumnModel newColumnModel = new ResultSetColumnModel(ideprocess.getLastQueryResults(), theFont, this);
+			ResultSetColumnModel newColumnModel = new ResultSetColumnModel(queryResults, theFont, this);
 			setDefaultEditors(ideprocess.getTableModel(), newColumnModel);
 			TableModel tableModel = ideprocess.getTableModel();
 			resultSetPanel.setResultSetModel(newColumnModel,tableModel);
-			resultSetPanel.setStatusText( "Ran Query." );
+			resultSetPanel.addWarningText( "Ran Query." );
 		} catch ( SQLException exc ) {
 			JOptionPane.showMessageDialog(this, "SQL Exception: "+exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);
 		} finally {
