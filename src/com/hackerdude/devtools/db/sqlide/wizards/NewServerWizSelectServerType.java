@@ -262,7 +262,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 		saveFileChooser = new JFileChooser();
 		saveFileChooser.setDialogTitle("Save SQL File");
 		saveFileChooser.setFileFilter(getFileFilter());
-		saveFileChooser.setCurrentDirectory(new File(ProgramConfig.getInstance().getPropsPath()));
+		saveFileChooser.setCurrentDirectory(new File(ProgramConfig.getInstance().getUserProfilePath()));
 		saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 		int selected = saveFileChooser.showSaveDialog(this);

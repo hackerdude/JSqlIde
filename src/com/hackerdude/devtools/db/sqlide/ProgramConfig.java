@@ -67,7 +67,7 @@ public class ProgramConfig extends Observable {
 	protected String saveDirectory = System.getProperty("user.home")+File.separator+"sqlide";
 
 	protected ConnectionConfig defaultDatabaseSpec;
-	protected ArrayList databaseSpecs;
+	protected ArrayList connectionConfigList;
 
 	private static ProgramConfig instance;
 
@@ -164,12 +164,12 @@ public class ProgramConfig extends Observable {
 
 		// First, find out or create
 		Properties sys = System.getProperties();
-		File propsDir = new File(getPropsPath());
+		File propsDir = new File(getUserProfilePath());
 		propsDir.mkdirs();
 
 		userinterface = new Properties();
 		try {
-			String propsFile = getPropsPath()+propertiesFile;
+			String propsFile = getUserProfilePath()+propertiesFile;
 			FileInputStream fis = new FileInputStream(propsFile);
 			userinterface.load(fis);
 		} catch( FileNotFoundException exc) {
@@ -184,13 +184,13 @@ public class ProgramConfig extends Observable {
 		defaultdbPropsFile = userinterface.getProperty(ConnectionConfig.prop_db_defaultdb)+ConnectionConfig.prop_db_configsuffix;
 		iSQLbyDefault = userinterface.getProperty(prop_isqldefault).equals(new String("yes"));
 
-		readdbConfigs();
+		readConnectionConfigs();
 
 	}
 
 	/**
 	 * Sets the defaults
-	 * @param userInterface The Properties item we need to fill out.
+	 * @param userinterface The Properties item we need to fill out.
 	 */
 	public void setDefaults(Properties userinterface) {
 		userinterface.setProperty(prop_lookandfeel, "metal");
@@ -208,12 +208,12 @@ public class ProgramConfig extends Observable {
 
 	}
 
-	public void removeDatabaseSpec(ConnectionConfig spec) {
-		databaseSpecs.remove(spec);
+	public void removeConnectionConfig(ConnectionConfig spec) {
+		connectionConfigList.remove(spec);
 	}
 
-	public void addDatabaseSpec(ConnectionConfig spec) {
-		databaseSpecs.add(spec);
+	public void addConnectionConfig(ConnectionConfig spec) {
+		connectionConfigList.add(spec);
 		notifyObservers(spec);
 	}
 
@@ -222,7 +222,7 @@ public class ProgramConfig extends Observable {
 	 */
 	public void saveConfiguration() {
 		saveDefaults(userinterface);
-		savedbConfigs();
+		saveConnectionConfigs();
 	};
 
 	/**
@@ -230,12 +230,12 @@ public class ProgramConfig extends Observable {
 	 */
 	public void saveDefaults(Properties userinterface) {
 		try {
-			FileOutputStream fos = new FileOutputStream(getPropsPath()+propertiesFile);
+			FileOutputStream fos = new FileOutputStream(getUserProfilePath()+propertiesFile);
 			userinterface.store(fos, "User Interface");
 		} catch( FileNotFoundException exc) {
 			System.err.println("File not found while saving !?!?");
 		} catch( IOException exc) {
-			System.err.println("File I/O error writing config file");
+			System.err.println("File I/O error writing config file - "+exc.toString());
 
 		}
 	}
@@ -254,17 +254,11 @@ public class ProgramConfig extends Observable {
 	 * sqlIDE configuration.
 	 * @return A string with the path for the configuration files.
 	 */
-	public static String getPropsPath() {
+	public static String getUserProfilePath() {
 		String propsPath;
 		propsPath = System.getProperty("user.home")+File.separator+".sqlide"+File.separator;
 		return(propsPath);
 	}
-
-	// DBConfig (Vector) support.
-	/**
-	 * @return How many Database Configuration Profiles we have.
-	 */
-	public int getDbConfigCount() { return(databaseSpecs.size()); };
 
 	/**
 	 * Get the Database Configuration Name.
@@ -272,7 +266,7 @@ public class ProgramConfig extends Observable {
 	 * @return The "Polite Name" of the database configuration item
 	 */
 	public String getDbConfigName( int index ) {
-		return( ((ConnectionConfig)databaseSpecs.get(index)).getPoliteName());
+		return( ((ConnectionConfig)connectionConfigList.get(index)).getPoliteName());
 	}
 
 	/**
@@ -293,32 +287,33 @@ public class ProgramConfig extends Observable {
 	 * @param index The number of database spec we want to retrieve
 	 * @return A reference to the DatabaseSpec object with order in index.
 	 */
-	public ConnectionConfig getDatabaseSpec( int index ) { return((ConnectionConfig)databaseSpecs.get(index)); }
+	public ConnectionConfig getConnectionConfig( int index ) { return((ConnectionConfig)connectionConfigList.get(index)); }
 
 	/**
 	 * Returns the number of database specs.
 	 */
-	public int getDatabaseSpecCount() { return databaseSpecs.size(); }
+	public int getConnectionCount() { return connectionConfigList.size(); }
+
 
 	/**
 	 * Read all the database configurations for this user.
 	 *
 	 */
-	public synchronized void readdbConfigs() {
+	public synchronized void readConnectionConfigs() {
 
-		File findFiles = new File(getPropsPath());
+		File findFiles = new File(getUserProfilePath());
 		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(ConnectionConfig.prop_db_configsuffix));
 		String fileName;
 		ConnectionConfig dbSpec;
 
-		databaseSpecs = new ArrayList();
+		connectionConfigList = new ArrayList();
 
 		for ( int i=0; i<dbPropFileNames.length; i++) {
 
-			fileName = getPropsPath()+dbPropFileNames[i];
+			fileName = getUserProfilePath()+dbPropFileNames[i];
 			try {
-				dbSpec = DatabaseSpecFactory.createDatabaseSpec(fileName);
-				databaseSpecs.add( dbSpec );
+				dbSpec = ConnectionConfigFactory.createConnectionConfig(fileName);
+				connectionConfigList.add( dbSpec );
 				if ( dbPropFileNames[i].equals( defaultdbPropsFile ) ) {
 					defaultDatabaseSpec = dbSpec;
 				}
@@ -329,12 +324,12 @@ public class ProgramConfig extends Observable {
 		}
 		// If after this the vector is empty, show the wizard
 		// for DBSpecs and save it (this will be useful to new users).
-		if ( databaseSpecs.size() == 0 ) {
+		if ( connectionConfigList.size() == 0 ) {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
 			if ( wiz.result != NewServerWizard.OK ) System.exit(0);
 			defaultDatabaseSpec = wiz.getDBSpec();
-			DatabaseSpecFactory.saveDatabaseSpec(defaultDatabaseSpec);
-			databaseSpecs.add(defaultDatabaseSpec);
+			ConnectionConfigFactory.saveConnectionConfig(defaultDatabaseSpec);
+			connectionConfigList.add(defaultDatabaseSpec);
 		}
 		notifyObservers();
 
@@ -343,10 +338,10 @@ public class ProgramConfig extends Observable {
 	/**
 	 * Save all the database specifications.
 	 */
-	public void savedbConfigs() {
-		for (int i=0; i<databaseSpecs.size(); i++) {
-			ConnectionConfig currentSpec = ((ConnectionConfig)databaseSpecs.get(i));
-			DatabaseSpecFactory.saveDatabaseSpec(currentSpec);
+	public void saveConnectionConfigs() {
+		for (int i=0; i<connectionConfigList.size(); i++) {
+			ConnectionConfig currentSpec = ((ConnectionConfig)connectionConfigList.get(i));
+			ConnectionConfigFactory.saveConnectionConfig(currentSpec);
 		}
 	}
 
@@ -359,6 +354,7 @@ public class ProgramConfig extends Observable {
 		saveDirectory = newSaveDirectory;
 		notifyObservers(saveDirectory);
 	}
+
 	public String getSaveDirectory() {
 		return saveDirectory;
 	}

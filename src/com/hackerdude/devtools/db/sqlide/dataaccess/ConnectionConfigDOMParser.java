@@ -11,7 +11,7 @@ import org.apache.xerces.dom.*;
 /**
  * This class can parse Database Specs using a DOM.
  */
-public class DatabaseSpecDOMParser {
+public class ConnectionConfigDOMParser {
 	protected static final String XSPEC_SPEC_ROOTNODE   = "databasespec";
 	protected static final String XSPEC_CONNECTION_NODE ="connection";
 	protected static final String XSPEC_JDBC_NODE       ="jdbc";
@@ -37,7 +37,7 @@ public class DatabaseSpecDOMParser {
 	protected static final String ELEMENT_DEFAULT_CATALOG = "defaultcatalog";
 
 
-	public DatabaseSpecDOMParser() {
+	public ConnectionConfigDOMParser() {
 	}
 
 

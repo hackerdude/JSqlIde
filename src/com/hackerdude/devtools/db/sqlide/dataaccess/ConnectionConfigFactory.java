@@ -6,15 +6,15 @@ import org.xml.sax.SAXException;
 /**
  * A class that creates new Database Specs.
  */
-public class DatabaseSpecFactory {
+public class ConnectionConfigFactory {
 
-	private static DatabaseSpecDOMParser parser = new DatabaseSpecDOMParser();
+	private static ConnectionConfigDOMParser parser = new ConnectionConfigDOMParser();
 
 	/**
 	 * Creates a default database spec.
 	 */
-	public static ConnectionConfig createDatabaseSpec() {
-		InputStream is = DatabaseSpecFactory.class.getResourceAsStream("default.db.xml");
+	public static ConnectionConfig createConnectionConfig() {
+		InputStream is = ConnectionConfigFactory.class.getResourceAsStream("default.db.xml");
 		ConnectionConfig result = null;
 		try {
 			result = parser.parseDatabaseSpec(is);
@@ -24,12 +24,12 @@ public class DatabaseSpecFactory {
 		return result;
 	}
 
-	public static ConnectionConfig createDatabaseSpec(InputStream is) throws SAXException, IOException {
+	public static ConnectionConfig createConnectionConfig(InputStream is) throws SAXException, IOException {
 		ConnectionConfig result = parser.parseDatabaseSpec(is);
 		return result;
 	}
 
-	public static ConnectionConfig createDatabaseSpec(String fileName) throws IOException {
+	public static ConnectionConfig createConnectionConfig(String fileName) throws IOException {
 		ConnectionConfig result = null;
 		try {
 			FileInputStream is = new FileInputStream(fileName);
@@ -42,8 +42,8 @@ public class DatabaseSpecFactory {
 		return result;
 	}
 
-	public static void saveDatabaseSpec(ConnectionConfig spec) {
-		parser.save(spec);
+	public static void saveConnectionConfig(ConnectionConfig config) {
+		parser.save(config);
 	}
 
 }
