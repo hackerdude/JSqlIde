@@ -3,10 +3,6 @@
 
 <UL>
 
-	<LI>The BasicNodeContextOperations class has an option that allows the
-	user to add a custom query to the context menu. This has not been
-	implemented yet.
-
 	<LI>The configuration should have an option to set a default save
 	directory. This directory should default to $HOME/sqlide (no initial dot!),
 	and it should be used as initial directory on all Open/Save dialogs.
@@ -32,13 +28,6 @@ implementation of the registry is in order?
 	<LI>Start working on DB-specific functionality - add a user manager for
 MySQL and come up with a standard set of ResultSets for retrieving users and
 analyzing permissions, as well as standard wrappers for GRANTs.
-
-	<LI>The new action interface is working well, but I need a clean way of
-getting static actions for all thes different panels. Maybe the Panelregistry
-could have an actionclass for each panel? It's late.. This probably will make
-no sense in the morning. Anyway, the user feature would be static things like
-"Edit this table" to <b>create</b> a new table editor with the table loaded,
-etc.
 
 </UL>
 

@@ -19,6 +19,7 @@ import com.hackerdude.swing.table.*;
 import textarea.*;
 import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
 import java.text.*;
+import java.beans.*;
 
 /**
  * The main Interactive SQL Panel.
@@ -56,6 +57,20 @@ public class MainISQLPanel extends JPanel {
 	private int historyBackCount = 0;
 	private JCheckBox cbUpdatable = new JCheckBox();
 
+	public final PropertyChangeListener QUERY_REFRESH_LISTENER = new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			executeCurrentQuery();
+		}
+	};
+
+	public final PropertyChangeListener SQL_EXCEPTION_LISTENER = new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			SQLException exception = (SQLException)evt.getNewValue();
+			resultSetPanel.logSQLException(exception);
+			resultSetPanel.addStatusText("Please correct and try again.");
+		}
+	};
+
 	public MainISQLPanel() {
 		try {
 			jbInit();
@@ -67,6 +82,8 @@ public class MainISQLPanel extends JPanel {
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK), "historyNext");
 			actionMap.put("historyPrev", ACTION_HISTORY_PREV);
 			actionMap.put("historyNext", ACTION_HISTORY_NEXT);
+			resultSetPanel.addPropertyChangeListener(ResultSetPanel.PROPERTY_QUERY_REFRESH_REQUEST, QUERY_REFRESH_LISTENER);
+			resultSetPanel.addPropertyChangeListener(ResultSetPanel.PROPERTY_SQL_EXCEPTION_REPORTED, SQL_EXCEPTION_LISTENER);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -134,7 +151,7 @@ public class MainISQLPanel extends JPanel {
 			if ( queryResults!=null) if ( asUpdate ) resultSetPanel.addStatusText("Rows updated: "+queryResults.getRowsAffected());
 
 		} catch (SQLException exc) {
-			resultSetPanel.addWarningText(exc.toString());
+			resultSetPanel.logSQLException(exc);
 			resultSetPanel.clearResultSetModel();
 			//JOptionPane.showMessageDialog(this, "SQL Exception: " + exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);.
 		} finally {

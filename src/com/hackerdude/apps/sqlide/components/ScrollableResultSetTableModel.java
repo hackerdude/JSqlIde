@@ -5,6 +5,7 @@ import javax.swing.table.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.sql.*;
+import java.util.*;
 
 /**
  * Table Model for a Scrollable ResultSet.
@@ -17,17 +18,22 @@ import java.sql.*;
 public class ScrollableResultSetTableModel extends AbstractTableModel {
 
 	QueryResults queryResults;
-	int columnCount;
 	int rowCount;
 	String[] columnNames;
 	Class[]  columnClasses;
 	ResultSet resultSet;
+
+	ArrayList insertBuffers = new ArrayList();
 
 	public ScrollableResultSetTableModel(QueryResults queryResults) {
 		this.queryResults = queryResults;
 		resultSet = queryResults.getResultSet();
 		columnNames = queryResults.getColumnNames();
 		columnClasses = queryResults.getColumnClasses();
+		setRowCountFromResultSet();
+	}
+
+	private void setRowCountFromResultSet() {
 		// Since this is a scrollable cursor it's okay to go to the bottom right away.
 		try {
 			resultSet.last();
@@ -36,10 +42,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 			exc.printStackTrace();
 			rowCount = 0;
 		}
-	}
 
+	}
 	public int getColumnCount() {
-			return columnCount;
+			return columnNames.length;
 	}
 
 	public Class getColumnClass(int col) {
@@ -47,33 +53,53 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 	}
 
 	public void setValueAt(Object obj, int row, int column) {
-		try {
-			if ( resultSet == null ) return;
-			resultSet.absolute(row+1);
-			resultSet.updateString(column+1, obj.toString());
-			resultSet.updateRow();
-		} catch ( SQLException exc ) {
-			exc.printStackTrace();
+		if ( row < rowCount ) {
+			try {
+				if (resultSet == null)
+					return;
+				resultSet.absolute(row + 1);
+				resultSet.updateString(column + 1, obj.toString());
+				resultSet.updateRow();
+			} catch (SQLException exc) {
+				exc.printStackTrace();
+			}
+		} else {
+			setInsertBufferValueAt(obj, row-rowCount, column);
 		}
+	}
+
+	public void setInsertBufferValueAt(Object obj, int row, int column) {
+		RowInserting currentRow = (RowInserting)insertBuffers.get(row);
+		currentRow.values[column] = obj;
+	}
+
+	public Object getInsertBufferValueAt(int row, int column) {
+		RowInserting currentRow = (RowInserting)insertBuffers.get(row);
+		return currentRow.values[column];
 	}
 
 	public Object getValueAt(int row, int column) {
 		Object result = null;
-
-		try {
-			if ( resultSet == null ) return null;
-			resultSet.absolute(row+1);
-			result = resultSet.getObject(column+1);
-			if ( result == null ) result = resultSet.getString(column+1);
-		} catch (SQLException exc) {
-			resultSet = null;
-			return "SQLException";
+		if ( row < rowCount )  {
+			try {
+				if (resultSet == null)
+					return null;
+				resultSet.absolute(row + 1);
+				result = resultSet.getObject(column + 1);
+				if (result == null)
+					result = resultSet.getString(column + 1);
+			} catch (SQLException exc) {
+				resultSet = null;
+				return "SQLException";
+			}
+		} else {
+			return getInsertBufferValueAt(row-rowCount, column);
 		}
 		return result;
 	}
 
 	public int getRowCount() {
-		return rowCount;
+		return rowCount+insertBuffers.size();
 	}
 
 	public String getColumnName(int columnIndex) {
@@ -90,5 +116,56 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 			return false;
 		}
 	}
+	public void prepareInsertRow() {
+		RowInserting newRow = new RowInserting();
+		newRow.values = new Object[columnNames.length];
+		insertBuffers.add(newRow);
+		fireTableRowsInserted(rowCount, rowCount+1);
+	}
+
+	private void insertRow(RowInserting row) throws SQLException {
+		rowCount++;
+		resultSet.moveToInsertRow(); // moves cursor to the insert row
+		for ( int i=0; i<row.values.length; i++ ) {
+			resultSet.updateObject(i+1, row.values[i]);
+		}
+		resultSet.insertRow();
+//		if ( ! wasEmpty ) resultSet.moveToCurrentRow();
+	}
+
+
+	class RowInserting {
+		Object[] values;
+
+	}
+
+	public synchronized void saveInsertions() throws SQLException {
+//		boolean wasEmpty = rowCount == 0;
+		Iterator iterator = insertBuffers.iterator();
+		while (  iterator.hasNext() ) {
+			RowInserting row = (RowInserting)iterator.next();
+			insertRow(row);// , wasEmpty);
+		}
+	}
+
+	public void deleteRow(int row) throws SQLException {
+		if ( row < rowCount )  {
+			resultSet.absolute(row + 1);
+			resultSet.deleteRow();
+		} else {
+			insertBuffers.remove(row-rowCount);
+		}
+		rowCount--;
+		fireTableDataChanged();
+	}
+
+	public synchronized void rollBack() throws SQLException {
+		insertBuffers.clear();
+		resultSet.getStatement().getConnection().rollback();
+		resultSet = null;
+		rowCount = 0;
+		fireTableDataChanged();
+	}
+
 
 }

@@ -1,9 +1,26 @@
 <H2>Changes in SQLIDE</H2>
 
+<H4>0.1.0:</H4>
+
+<UL>
+<LI>Added History support to the interactive SQL. Now Control-Up/Down will
+navigate your history of succesful queries.</LI>
+
+<LI>Added update capability. If you request an updatable query (and you actually
+receive an updatable resultset), you can edit the resultset and commit it
+or roll it back.
+<P>The JDBC driver and query you submit must both support it for this to work.
+On Oracle, using the classes12 jar, try <CODE>SELECT U.* FROM MYTABLE U</CODE>.
+Don't use oracle's <CODE>FOR UPDATE</CODE> clause on the query because it causes
+problems for their driver.</LI>
+</UL>
+
 <H4>0.0.23:</H4>
 
+<UL>
 <LI>Moved to castor for marshaling db config files. It will make it easier
 to change how things work and to extend for the future.</LI>
+</UL>
 
 <H4>0.0.22:</H4>
 

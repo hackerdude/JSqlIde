@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.sql.*;
 import java.io.*;
+import com.hackerdude.apps.sqlide.components.*;
+import com.hackerdude.apps.sqlide.*;
 
 /**
  * The panel with query results.
@@ -22,6 +24,10 @@ public class ResultSetPanel extends JPanel {
 	private JSplitPane splitTableAndLog = new JSplitPane();
 	private JEditorPane statusLog = new JEditorPane("text/html", "");
 	private JScrollPane spStatus = new JScrollPane();
+
+	public static final String PROPERTY_QUERY_REFRESH_REQUEST = "DATA_READ_REQUEST";
+
+	public static final String PROPERTY_SQL_EXCEPTION_REPORTED = "SQL_EXCEPTION_OCURRED";
 
 	public final Action ACTION_COMMIT = new CommitAction();
 	public final Action ACTION_ROLLBACK = new RollBackAction();
@@ -67,13 +73,9 @@ public class ResultSetPanel extends JPanel {
 		splitTableAndLog.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		pnlResultsPanel.setLayout(blBorderLayout);
 		btnCommit.setMnemonic('C');
-		btnCommit.setText("Commit");
 		pnlUpdateButtonBar.setLayout(gbGridBagLayout);
 		btnInsert.setMnemonic('I');
-		btnInsert.setText("Insert");
 		btnDelete.setMnemonic('D');
-		btnDelete.setText("Delete");
-		btnRollback.setText("Rollback");
 		spStatus.getViewport().add(statusLog);
 		this.add(pnlTitle, BorderLayout.NORTH);
 		pnlTitle.add(lblStatement, BorderLayout.CENTER);
@@ -113,7 +115,6 @@ public class ResultSetPanel extends JPanel {
 		resultScroll.validate();
 		try {
 			pnlUpdateButtonBar.setVisible( resultSet.getConcurrency() == ResultSet.CONCUR_UPDATABLE );
-
 		}
 		catch (Exception ex) {
 
@@ -152,45 +153,109 @@ public class ResultSetPanel extends JPanel {
 
 	}
 	class DeleteRowAction extends AbstractAction {
+		public DeleteRowAction() {
+			super("Delete", ProgramIcons.getInstance().findIcon("images/DeleteRow.gif"));
+		}
+
 		public void actionPerformed(ActionEvent evt) {
 			try {
-				resultSet.deleteRow();
+				deleteRow(tblResults.getSelectedRow());
 			}
-			catch (Exception ex) {
+			catch (SQLException ex) {
+				logSQLException(ex);
 			}
 
 		}
 	}
 
 	class InsertRowAction extends AbstractAction {
-		public void actionPerformed(ActionEvent evt) {
-			try {
-				resultSet.insertRow();
-			}
-			catch (Exception ex) {
-			}
+		public InsertRowAction() {
+			super("Insert", ProgramIcons.getInstance().findIcon("images/NewRow.gif"));
+		}
 
+		public void actionPerformed(ActionEvent evt) {
+			if ( tblResults.getModel() instanceof ScrollableResultSetTableModel ) {
+				prepareInsertRow();
+			}
 		}
 	}
 
 	class RollBackAction extends AbstractAction {
+		public RollBackAction() {
+			super("Rollback", ProgramIcons.getInstance().findIcon("images/DataQuery.gif"));
+		}
+
 		public void actionPerformed(ActionEvent evt) {
 			try {
-				resultSet.getStatement().getConnection().rollback();
+				rollBack();
+				fireTableDataChanged();
 			}
-			catch (Exception ex) {
+			catch (SQLException ex) {
+				logSQLException(ex);
 			}
 		}
 	}
 
 	class CommitAction extends AbstractAction {
+		public CommitAction() {
+			super("Commit", ProgramIcons.getInstance().findIcon("images/Save.gif"));
+		}
 		public void actionPerformed(ActionEvent evt) {
 			try {
+				saveInsertions();
 				resultSet.getStatement().getConnection().commit();
 			}
-			catch (Exception ex) {
+			catch (SQLException ex) {
+				firePropertyChange(PROPERTY_SQL_EXCEPTION_REPORTED, null, ex);
+				addWarningText("Could Not Commit!");
+				logSQLException(ex);
+				try {
+					//resultSet.getStatement().getConnection().rollback();
+					rollBack();
+					addWarningText("Edits have been rolled back.");
+				} catch (SQLException ex1) {
+					firePropertyChange(PROPERTY_SQL_EXCEPTION_REPORTED, null, ex1);
+					addWarningText("Could not Roll Back!");
+					logSQLException(ex);
+				}
 			}
 		}
 	}
+
+
+	private void fireTableDataChanged() {
+		((AbstractTableModel)tblResults.getModel()).fireTableDataChanged();
+	}
+
+	private void deleteRow(int row) throws SQLException {
+		((ScrollableResultSetTableModel)tblResults.getModel()).deleteRow(row);
+	}
+
+
+	private void prepareInsertRow() {
+		((ScrollableResultSetTableModel)tblResults.getModel()).prepareInsertRow();
+	}
+
+	private void saveInsertions() throws SQLException {
+		((ScrollableResultSetTableModel)tblResults.getModel()).saveInsertions();
+		tblResults.getSelectionModel().setSelectionInterval(tblResults.getRowCount()-1,tblResults.getRowCount()-1 );
+	}
+
+	private void rollBack() throws SQLException {
+		((ScrollableResultSetTableModel)tblResults.getModel()).rollBack();
+		firePropertyChange(PROPERTY_QUERY_REFRESH_REQUEST, false, true);
+	}
+
+	public void logSQLException(SQLException exc) {
+		StringBuffer buffer = new StringBuffer();
+		String message = exc.getMessage();
+		buffer.append(message);
+		SQLException nextException = exc;
+		while ( ( nextException = nextException.getNextException() ) != null ) {
+			buffer.append("\n").append(nextException.getMessage());
+		}
+		addWarningText(buffer.toString());
+	}
+
 
 }
