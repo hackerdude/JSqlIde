@@ -15,43 +15,50 @@ import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
  * @author David Martinez
  * @version 1.0
  */
-public class PluginUserManager implements BrowserExtensionPluginIF  {
+public class PluginUserManager
+	  implements BrowserExtensionPluginIF {
 
+	public void requestAddSubNodes(NodeIDEBase parentNode) {
+		if (parentNode instanceof ItemServerNode) {
+			ItemServerNode serverNode = (ItemServerNode) parentNode;
+			parentNode.add(new UsersCategoryNode("Users", serverNode.getDatabaseProcess()));
+		}
+	}
 
+	public void initPlugin() {
 
-  public void requestAddSubNodes(NodeIDEBase parentNode) {
-	  if ( parentNode instanceof ItemServerNode ) {
-		  ItemServerNode serverNode = (ItemServerNode)parentNode;
-		  parentNode.add(new UsersCategoryNode("Users", serverNode.getDatabaseProcess()));
-	  }
-  }
+	}
 
-  public void initPlugin() {
+	public String getPluginName() {
+		return "User Manager";
+	}
 
-  }
-  public String getPluginName() { return "PostgreSQL User Manager";   }
+	public String getPluginVersion() {
+		return "0";
+	}
 
-  public String getPluginVersion() { return "0";
-  }
-  public void freePlugin() {
-  }
+	public void freePlugin() {
+	}
 
-  public String getPluginShortName() {
-    return "User Mgr";
-  }
-  public Icon getPluginIcon() {
-	  return ProgramIcons.getInstance().getUsersIcon();
-  }
+	public String getPluginShortName() {
+		return "User Mgr";
+	}
 
-  class UsersCategoryNode extends NodeIDECategory {
-	  public UsersCategoryNode(String name, DatabaseProcess proc) {
-		  super(name, proc);
-	  }
-	  public void readChildren() {}
+	public Icon getPluginIcon() {
+		return ProgramIcons.getInstance().getUsersIcon();
+	}
 
-	  public String getInfo() { return "PostgreSQL Users"; }
+	class UsersCategoryNode extends NodeIDECategory {
+		public UsersCategoryNode(String name, DatabaseProcess proc) {
+			super(name, proc);
+		}
 
+		public void readChildren() {}
 
-  }
+		public String getInfo() {
+			return "PostgreSQL Users";
+		}
+
+	}
 
 }
