@@ -14,9 +14,11 @@ import com.hackerdude.apps.sqlide.dataaccess.CredentialsProvider;
 import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
- * This is an interactive credentials provider. It shows a login box
- * to the user in order to obtain the credentials.
- *
+ * Credentials Provider that shows a login box to the user in order to 
+ * obtain the credentials. Once these have been successfully obtained, these
+ * credentials are provided to the caller. 
+ * 
+ * @author davidm <a href="mailto:david@hackerdude.com">david@hackerdude.com</a>
  */
 public class InteractiveCredentialsProvider implements CredentialsProvider {
 
