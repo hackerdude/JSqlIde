@@ -132,7 +132,7 @@ public class Wizard extends JDialog {
     * the array of pages you want to put in a wizard in the
     * proper order. It will start by setting the current
     * page to zero.
-    * @param An array of pages.
+    * @param pages An array of pages.
     */
    public void setPages( WizardPage[] pages ) {
       this.pages = pages;
