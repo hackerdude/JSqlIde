@@ -6,6 +6,7 @@
 	<!-- Give user a chance to override without editing this file
 	(and without typing -D each time it compiles it) -->
 	<property file="${user.home}/.ant.properties"/>
+	<property file="${user.home}/.sqlide.build.properties"/>
 	<!-- Set some basic values locations -->
 	<property name="Name" value="jsqlide"/>
 	<property name="name" value="jsqlide"/>
@@ -14,7 +15,7 @@
 	<!-- Set some basic directory locations -->
 	<property name="jsqlide.home" value="."/>
 	<property name="src.dir" value="src"/>
-	<property name="src.etc.dir" value="${src.dir}/etc"/>
+	<property name="etc.dir" value="etc"/>
 	<property name="src.bin.dir" value="${src.dir}/bin"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="src.tests.dir" value="${src.dir}"/>
@@ -25,7 +26,15 @@
 	<property name="build.classes" value="${build.dir}/classes"/>
 	<property name="build.javadocs" value="${build.dir}/javadocs"/>
 	<property name="build.tests" value="${build.dir}/testcases"/>
+	<property name="temp.dir" value="tmp"/>
+	<property name="unjar.cache" value="${temp.dir}/unjar_cache"/>
 	<property name="jsqlide.dist.dir" value="dist"/>
+	<property name="jsqlide.signjar.alias" value="jarsignalias"/>
+	<property name="jsqlide.signjar.storepass" value="password"/>
+	<property name="jsqlide.codebase.url" value="http://www.hackerdude.com/sqlide"/>
+	<property name="jsqlide.homepage.url" value="http://www.hackerdude.com/sqlide"/>
+	<property name="jsqlide.j2se.version" value="jdk1.3+"/>
+
 
 	<path id="jsqlide_classpath">
 	 <fileset dir="${lib.dir}">
@@ -39,7 +48,6 @@
 	</path>
 
 	<property name="packages" value="com.hackerdude.*"/>
-	<property name="manifest" value="${src.etc.dir}/META-INF/MANIFEST.MF"/>
 	<property name="build.compiler" value="modern"/>
 	<property name="build.compiler.emacs" value="on"/>
 	<!-- =================================================================== -->
@@ -133,14 +141,20 @@
 		</copy>
 	</target>
 
+	<target name="prepare_unjar_cache">
+		<mkdir dir="${unjar.cache}"/>
+		<unjar src="${lib.dir}/xerces.jar" dest="${unjar.cache}"/>
+	</target>
+
 	<!-- =================================================================== -->
 	<!-- Creates the jar archive                                             -->
 	<!-- =================================================================== -->
-	<target name="jar" depends="compile">
+	<target name="jar" depends="compile,prepare_unjar_cache">
 		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**">
 		    <fileset dir="${lib.dir}">
 			    <include name="*.jar"/>
 			</fileset>
+			<fileset dir="${unjar.cache}"/>
 			<manifest>
 				<attribute name="Main-Class" value="com.hackerdude.devtools.db.sqlide.sqlide" />
 				<attribute name="Class-Path" value="/xerces.jar" />
@@ -278,6 +292,7 @@
 	<!-- =================================================================== -->
 	<target name="clean">
 		<delete dir="${build.dir}"/>
+		<delete dir="${temp.dir}"/>
 		<delete dir="${jsqlide.dist.dir}"/>
 	</target>
 
@@ -349,6 +364,22 @@
 			<formatter type="plain" usefile="false"/>
 			<test name="${testcase}"/>
 		</junit>
+	</target>
+
+	<target name="signjar" depends="jar">
+	    <echo message="Signing Jar File... alias ${jsqlide.signjar.alias} passw ${jsqlide.signjar.storepass}"/>
+		<signjar jar="${build.dir}/${name}.jar" alias="${jsqlide.signjar.alias}" storepass="${jsqlide.signjar.storepass}"/>
+	</target>
+
+	<target name="jnlp" depends="jar">
+		<copy file="${etc.dir}/jsqlide.jnlp.template" tofile="${build.dir}/jsqlide.jnlp"/>
+		<replace file="${build.dir}/jsqlide.jnlp" token="@HACKERDUDE_JSQLIDE_CODEBASE_URL" value="${jsqlide.codebase.url}"/>
+		<replace file="${build.dir}/jsqlide.jnlp" token="@HACKERDUDE_JSQLIDE_HOMEPAGE" value="${jsqlide.homepage.url}"/>
+		<replace file="${build.dir}/jsqlide.jnlp" token="@HACKERDUDE_JSQLIDE_J2SE_VERSION" value="${jsqlide.j2se.version}"/>
+		<replace file="${build.dir}/jsqlide.jnlp" token="@HACKERDUDE_JSQLIDE_J2SE_VERSION" value="${jsqlide.j2se.version}"/>
+	</target>
+
+	<target name="release" depends="signjar,jnlp">
 	</target>
 
 </project>

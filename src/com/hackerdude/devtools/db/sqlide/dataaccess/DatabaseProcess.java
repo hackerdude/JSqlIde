@@ -480,7 +480,8 @@ public class DatabaseProcess {
 		message[4] = password;
 		pane.setMessage(message);
 
-		JDialog dialog = pane.createDialog(null, "Database Login");
+		JFrame parentComponent = com.hackerdude.devtools.db.sqlide.sqlide.getFrame();
+		JDialog dialog = pane.createDialog(parentComponent, "Database Login");
 		dialog.show();
 
 		Object theValue = pane.getValue();

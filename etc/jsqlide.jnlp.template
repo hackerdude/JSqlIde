@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="@HACKERDUDE_JSQLIDE_CODEBASE_URL" href="jsqlide.jnlp">
+  <information>
+	<title>Java Sql-Ide</title>
+	<vendor>Hackerdude.com Project</vendor>
+	<homepage href="@HACKERDUDE_JSQLIDE_HOMEPAGE" />
+	<description>This free application allows you to use any SQL backend that has a JDBC driver available for it.</description>
+	<icon href="jsqlide.jpg"/> 
+  </information>
+<security> 
+   <all-permissions/> 
+</security> 
+  <resources>
+	<j2se version="@HACKERDUDE_JSQLIDE_J2SE_VERSION" />
+	<jar href="jsqlide.jar"/>
+  </resources>
+  <application-desc main-class="com.hackerdude.devtools.db.sqlide.sqlide"/>
+</jnlp>
