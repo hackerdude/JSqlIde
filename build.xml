@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+<!-- ======================================================================= -->
+<!-- JSQL Build File Feb 15, 2001	                                         -->
+<!-- ======================================================================= -->
+<project name="jsqlide" default="main" basedir=".">
+	<!-- Give user a chance to override without editing this file
+	(and without typing -D each time it compiles it) -->
+	<property file="${user.home}/.ant.properties"/>
+	<!-- Set some basic values locations -->
+	<property name="Name" value="jsqlide"/>
+	<property name="name" value="jsqlide"/>
+	<property name="version" value="0.0.16"/>
+
+	<!-- Set some basic directory locations -->
+	<property name="jsqlide.home" value="."/>
+	<property name="src.dir" value="src"/>
+	<property name="src.etc.dir" value="${src.dir}/etc"/>
+	<property name="src.bin.dir" value="${src.dir}/bin"/>
+	<property name="src.lib.dir" value="${src.dir}/lib"/>
+	<property name="src.tests.dir" value="${src.dir}"/>
+	<property name="images.dir" value="com/hackerdude/images"/>
+	<property name="docs.dir" value="docs"/>
+	<property name="build.dir" value="build"/>
+	<property name="lib.dir" value="${build.dir}/lib"/>
+	<property name="bin.dir" value="${build.dir}/bin"/>
+	<property name="build.classes" value="${build.dir}/classes"/>
+	<property name="build.javadocs" value="${build.dir}/javadocs"/>
+	<property name="build.tests" value="${build.dir}/testcases"/>
+	<property name="jsqlide.dist.dir" value="dist"/>
+
+	<!-- Now prepare some classpaths we will use for the build -->
+	<path id="classpath"/>
+	<path id="xerces.path">
+		<pathelement path="${src.lib.dir}/xerces.jar"/>
+	</path>
+	<path id="junit.path">
+		<pathelement path="${src.lib.dir}/junit.jar"/>
+	</path>
+
+	<property name="packages" value="com.hackerdude.*"/>
+	<property name="manifest" value="${src.etc.dir}/META-INF/MANIFEST.MF"/>
+	<property name="build.compiler" value="classic"/>
+	<property name="build.compiler.emacs" value="on"/>
+	<!-- =================================================================== -->
+	<!-- Define a global set of patterns that can be referenced by           -->
+	<!-- its id attribute                                                    -->
+	<!-- =================================================================== -->
+	<patternset id="chmod.patterns">
+		<include name="**/jsqlide.sh"/>
+	</patternset>
+	<!-- =================================================================== -->
+	<!-- Check to see what optional dependencies are available               -->
+	<!-- =================================================================== -->
+	<target name="check_for_optional_packages">
+		<available property="jdk1.2+" classname="java.lang.ThreadLocal"/>
+		<available property="jdk1.3+" classname="java.lang.StrictMath"/>
+		<available property="bsf.present" classname="com.ibm.bsf.BSFManager"/>
+		<available property="netrexx.present" classname="netrexx.lang.Rexx"/>
+		<available property="xslp.present" classname="com.kvisco.xsl.XSLProcessor"/>
+		<available property="xalan.present" classname="org.apache.xalan.xslt.XSLTProcessorFactory"/>
+		<available property="ejb.ejbc.present" classname="weblogic.ejbc"/>
+		<available property="ejb.DDCreator.present" classname="weblogic.ejb.utils.DDCreator"/>
+		<available property="ejb.wls.present" classname="weblogic.Server"/>
+		<available property="junit.present" classname="junit.framework.TestCase"/>
+		<available property="ftp.present" classname="com.oroinc.net.ftp.FTPClient"/>
+		<available property="starteam.present" classname="com.starbase.util.Platform"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Prepares the build directory                                        -->
+	<!-- =================================================================== -->
+	<target name="prepare">
+		<mkdir dir="${build.dir}"/>
+		<tstamp/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Compiles the source code                                            -->
+	<!-- =================================================================== -->
+	<target name="compile" depends="prepare,check_for_optional_packages">
+		<mkdir dir="${build.classes}"/>
+		<javac srcdir="${src.dir}" destdir="${build.classes}" debug="on" deprecation="off" optimize="on">
+			<classpath refid="classpath"/>
+			<classpath refid="xerces.path"/>
+			<!-- These excludes are from ant's own build. I'm keeping them here
+				 because some of them might come in handy. -->
+			<exclude name="**/Script.java" unless="bsf.present"/>
+			<exclude name="**/NetRexxC.java" unless="netrexx.present"/>
+			<exclude name="**/XslpLiaison.java" unless="xslp.present"/>
+			<exclude name="**/XalanLiaison.java" unless="xalan.present"/>
+			<exclude name="**/Ejbc*.java" unless="ejb.ejbc.present"/>
+			<exclude name="**/DDCreator*.java" unless="ejb.DDCreator.present"/>
+			<exclude name="**/WLRun.java" unless="ejb.wls.present"/>
+			<exclude name="**/WLStop.java" unless="ejb.wls.present"/>
+			<exclude name="**/EjbJar.java" unless="jdk1.2+"/>
+			<exclude name="**/*DeploymentTool.java" unless="jdk1.2+"/>
+			<exclude name="test/**" unless="junit.present"/>
+			<exclude name="**/FTP*.java" unless="ftp.present"/>
+			<exclude name="**/AntStarTeam*.java" unless="starteam.present"/>
+		</javac>
+
+		<!-- Copy any properties files in the source tree to the same place
+			in the classes directory -->
+		<copy todir="${build.classes}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- Do the same with the image clip art for the application.  -->
+		<copy todir="${build.classes}/${images.dir}">
+			<fileset dir="${src.dir}/${images.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+
+		<!-- Do the same with the xml files the application needs.  -->
+		<copy todir="${build.classes}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+		<filter token="VERSION" value="${version}"/>
+		<filter token="DATE" value="${TODAY}"/>
+		<filter token="TIME" value="${TSTAMP}"/>
+		<!-- Copy the Version.txt and a default manifest (TODO: Is this necessary?) -->
+		<copy todir="${build.classes}" overwrite="true" filtering="on">
+			<fileset dir="${src.dir}">
+				<include name="**/version.txt"/>
+				<include name="**/defaultManifest.mf"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Creates the jar archive                                             -->
+	<!-- =================================================================== -->
+	<target name="jar" depends="compile">
+		<mkdir dir="${lib.dir}"/>
+		<jar jarfile="${lib.dir}/${name}.jar" basedir="${build.classes}" includes="*/**" manifest="${manifest}"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Creates the binary structure                                        -->
+	<!-- =================================================================== -->
+	<target name="main" depends="jar" description="Creates the binary structure">
+		<mkdir dir="${bin.dir}"/>
+		<copy todir="${bin.dir}">
+			<fileset dir="${src.bin.dir}"/>
+		</copy>
+		<copy todir="${lib.dir}">
+			<fileset dir="${src.lib.dir}"/>
+		</copy>
+		<chmod perm="+x">
+			<fileset dir="${bin.dir}">
+				<patternset refid="chmod.patterns"/>
+			</fileset>
+		</chmod>
+		<fixcrlf srcdir="${bin.dir}" includes="ant,antRun" cr="remove"/>
+		<fixcrlf srcdir="${bin.dir}" includes="*.bat" cr="add"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Creates the API documentation                                       -->
+	<!-- =================================================================== -->
+	<target name="javadocs" depends="prepare" description="Creates the API documentation">
+		<mkdir dir="${build.javadocs}"/>
+		<javadoc packagenames="${packages}" sourcepath="${basedir}/${src.dir}" destdir="${build.javadocs}" author="true" version="true" windowtitle="${Name} API" doctitle="${Name}" bottom="Copyright © 2001 by David Martinez. Licensed under the GNU GPL. Visit http://www.hackerdude.com"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Creates the distribution                                            -->
+	<!-- =================================================================== -->
+	<target name="dist" depends="main,jar" description="Creates the distribution">
+		<mkdir dir="${jsqlide.dist.dir}"/>
+		<mkdir dir="${jsqlide.dist.dir}/bin"/>
+		<mkdir dir="${jsqlide.dist.dir}/lib"/>
+		<mkdir dir="${jsqlide.dist.dir}/docs"/>
+		<mkdir dir="${jsqlide.dist.dir}/docs/api"/>
+		<mkdir dir="${jsqlide.dist.dir}/src"/>
+		<copy todir="${jsqlide.dist.dir}/src">
+			<fileset dir="${src.dir}"/>
+		</copy>
+		<copy todir="${jsqlide.dist.dir}/lib">
+			<fileset dir="${lib.dir}"/>
+		</copy>
+		<copy file="build.xml" tofile="${jsqlide.dist.dir}/build.xml"/>
+		<copy todir="${jsqlide.dist.dir}/bin">
+			<fileset dir="src/bin"/>
+		</copy>
+		<copy todir="${jsqlide.dist.dir}/docs">
+			<fileset dir="${docs.dir}"/>
+		</copy>
+		<copy todir="${jsqlide.dist.dir}/docs/api">
+			<fileset dir="${build.javadocs}"/>
+		</copy>
+		<fixcrlf srcdir="${jsqlide.dist.dir}/bin" includes="jsqlide.sh" cr="remove"/>
+		<fixcrlf srcdir="${jsqlide.dist.dir}/bin" includes="*.bat" cr="add"/>
+		<chmod perm="+x">
+			<fileset dir="${jsqlide.dist.dir}/bin">
+				<patternset refid="chmod.patterns"/>
+			</fileset>
+		</chmod>
+		<copy file="docs/README.html" tofile="${jsqlide.dist.dir}/docs/README.html"/>
+		<copy file="docs/CHANGES.html" tofile="${jsqlide.dist.dir}/docs/CHANGES.html"/>
+		<copy file="docs/TODO.html" tofile="${jsqlide.dist.dir}/docs/TODO.html"/>
+		<copy file="docs/LICENSE.html" tofile="${jsqlide.dist.dir}/LICENSE.html"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Packages the distribution with ZIP                                  -->
+	<!-- =================================================================== -->
+	<target name="dist-zip" depends="dist,javadocs">
+		<zip zipfile="${Name}-${version}.zip" basedir="${jsqlide.dist.dir}" includes="**"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Packages the distribution with TAR-GZIP                             -->
+	<!-- =================================================================== -->
+	<target name="dist-tgz" depends="dist,javadocs">
+		<tar tarfile="${Name}-${version}.tar" basedir="${jsqlide.dist.dir}" includes="**"/>
+		<gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar"/>
+	</target>
+
+	<target name="dist-all" depends="dist-tgz,dist-zip"/>
+
+	<!-- =================================================================== -->
+	<!-- Installs the jsqlide.jar library and binary files into jsqlide.home -->
+	<!-- =================================================================== -->
+	<target name="install" depends="dist" if="jsqlide.install">
+		<echo message="installing full copy of jsqlide into ${jsqlide.install}"/>
+		<mkdir dir="${jsqlide.install}"/>
+		<copy todir="${jsqlide.install}">
+			<fileset dir="${jsqlide.dist.dir}"/>
+		</copy>
+		<chmod perm="+x">
+			<fileset dir="${jsqlide.install}/bin">
+				<patternset refid="chmod.patterns"/>
+			</fileset>
+		</chmod>
+	</target>
+
+	<target name="fullinstall" depends="install"/>
+
+	<target name="mininstall" depends="main" if="jsqlide.install">
+		<echo message="copy minimal jsqlide installation into ${jsqlide.install}"/>
+		<mkdir dir="${jsqlide.install}"/>
+		<copy todir="${jsqlide.install}/lib">
+			<fileset dir="${lib.dir}"/>
+		</copy>
+		<copy todir="${jsqlide.install}/bin">
+			<fileset dir="${bin.dir}"/>
+		</copy>
+		<chmod perm="+x">
+			<fileset dir="${jsqlide.install}/bin">
+				<patternset refid="chmod.patterns"/>
+			</fileset>
+		</chmod>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Cleans up generated stuff                                           -->
+	<!-- =================================================================== -->
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${jsqlide.dist.dir}"/>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Total cleanup                                                       -->
+	<!-- =================================================================== -->
+	<target name="total-clean" depends="clean">
+		<delete dir="${bin.dir}"/>
+		<delete file="${lib.dir}/${name}.jar"/>
+		<delete file="${Name}-${version}.zip"/>
+		<delete file="${Name}-${version}.tar"/>
+		<delete file="${Name}-${version}.tar.gz"/>
+		<delete>
+			<fileset dir="." includes="**/*\~"/>
+		</delete>
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Compile testcases                                                   -->
+	<!-- =================================================================== -->
+	<target name="compiletests" depends="jar" if="junit.present">
+		<mkdir dir="${build.tests}"/>
+		<javac srcdir="${src.tests.dir}" destdir="${build.tests}" debug="on" deprecation="off">
+			<classpath>
+				<pathelement location="${lib.dir}/${name}.jar"/>
+				<path refid="classpath"/>
+			</classpath>
+		</javac>
+   </target>
+
+	<!-- =================================================================== -->
+	<!-- Run testcase                                                        -->
+	<!-- =================================================================== -->
+	<target name="runtests" depends="compiletests" if="junit.present">
+		<junit printsummary="no" haltonfailure="yes">
+			<classpath>
+				<pathelement location="${lib.dir}/${name}.jar"/>
+				<pathelement location="${build.tests}"/>
+				<path refid="classpath"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+			<formatter type="plain" usefile="false"/>
+			<batchtest>
+				<fileset dir="${src.tests.dir}">
+					<include name="**/*Test*"/>
+					<!-- abstract class, not a testcase -->
+					<exclude name="org/apache/tools/ant/taskdefs/TaskdefsTest.java"/>
+					<!-- these depend on order -->
+					<exclude name="org/apache/tools/ant/taskdefs/GUnzipTest.java"/>
+					<exclude name="org/apache/tools/ant/taskdefs/GzipTest.java"/>
+				</fileset>
+			</batchtest>
+			<test name="org.apache.tools.ant.taskdefs.GzipTest"/>
+			<test name="org.apache.tools.ant.taskdefs.GUnzipTest"/>
+		</junit>
+		<!-- clean up again -->
+		<delete dir="src/etc/testcases/taskdefs/taskdefs.tmp"/>
+		<delete dir="src/etc/testcases/taskdefs.tmp"/>
+	</target>
+
+	<target name="run.single.test" if="testcase" depends="compiletests">
+		<junit printsummary="no" haltonfailure="yes">
+			<classpath>
+				<pathelement location="${lib.dir}/${name}.jar"/>
+				<pathelement location="${build.tests}"/>
+				<path refid="classpath"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+			<formatter type="plain" usefile="false"/>
+			<test name="${testcase}"/>
+		</junit>
+	</target>
+
+</project>

@@ -1,0 +1,11 @@
+[PropertyInfo]
+className,String,false,false, , ,true,<default>
+fileFilter,javax.swing.filechooser.FileFilter,false,false, , ,true,<default>
+fileSelectionEnabled,boolean,false,false, , ,true,<default>
+serverTitle,String,false,false, , ,true,<default>
+URL,String,false,false, , ,true,<default>
+[IconNames]
+
+
+
+
