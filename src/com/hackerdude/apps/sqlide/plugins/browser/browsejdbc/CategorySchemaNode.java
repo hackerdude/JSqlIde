@@ -23,7 +23,12 @@ import java.sql.*;
  */
 public class CategorySchemaNode extends NodeIDECategory {
 
-   public CategorySchemaNode(DatabaseProcess proc) { super(proc.getSchemaTitle(), proc); };
+	String schemaTerm;
+
+   public CategorySchemaNode(DatabaseProcess proc) throws SQLException {
+	   super(determineCatalogTerm(proc), proc);
+	   schemaTerm = determineCatalogTerm(proc);
+   }
 
    public void readChildren() {
 		DefaultMutableTreeNode dbItem = null;
@@ -42,7 +47,23 @@ public class CategorySchemaNode extends NodeIDECategory {
 
    public boolean canHaveChildren() { return true; }
 
-   public String getInfo() { return "<HTML><P>Schemas"; }
+   public String getInfo() {
+	   return "<HTML><P>"+schemaTerm;
+   }
 
+   public String getSchemaTerm() {
+	   return schemaTerm;
+   }
 
-};
+   public static String determineCatalogTerm(DatabaseProcess proc) throws SQLException {
+	   Connection conn = null;
+	   try {
+		   conn = proc.getConnection();
+		   return conn.getMetaData().getCatalogTerm();
+	   }
+	   finally {
+		   proc.returnConnection(conn);
+	   }
+
+   }
+}

@@ -201,34 +201,6 @@ public class DatabaseProcess {
 	}
 
 
-	public String getCatalogTitle() {
-		String s = "Catalog";
-		if ( ! doConnect() ) return s;
-		try {
-			Connection conn = getPool().getConnection();
-			try {
-				s = conn.getMetaData().getCatalogTerm();
-				} finally { getPool().releaseConnection(conn); }
-
-				} catch ( SQLException exc ) {}
-				return s;
-	}
-
-	public String getSchemaTitle() {
-		String s = "Schema";
-		if ( ! doConnect() ) return s;
-		try {
-			Connection conn = getPool().getConnection();
-			try {
-				s = conn.getMetaData().getSchemaTerm();
-			} finally {
-				getPool().releaseConnection(conn);
-			}
-
-			} catch ( SQLException exc ) {}
-			return s;
-	}
-
 	public Vector getSchemas() throws SQLException {
 		Vector v = new Vector();
 		if ( ! doConnect() ) return v;

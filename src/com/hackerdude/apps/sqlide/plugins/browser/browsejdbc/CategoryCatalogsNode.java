@@ -13,8 +13,11 @@ import java.sql.*;
  */
 public class CategoryCatalogsNode extends NodeIDECategory {
 
-	public CategoryCatalogsNode(DatabaseProcess proc) {
-		super(getNodeName(proc), proc);
+	String catalogTerm;
+
+	public CategoryCatalogsNode(DatabaseProcess proc) throws SQLException {
+		super(determineCatalogTerm(proc), proc);
+		catalogTerm = determineCatalogTerm(proc);
 	}
 
 	public void readChildren() {
@@ -29,20 +32,40 @@ public class CategoryCatalogsNode extends NodeIDECategory {
 			}
 
 		} catch ( SQLException exc ) {
-			add(new ItemCatalogNode(null, db));
+			try {
+				add(new ItemCatalogNode(null, db));
+			}
+			catch (Exception ex) {
+			}
 		}
 
 
 	}
+	public static String determineCatalogTerm(DatabaseProcess proc) throws SQLException {
+		Connection conn = null;
+		try {
+			conn = proc.getConnection();
+			return conn.getMetaData().getCatalogTerm();
+		}
+		finally {
+			proc.returnConnection(conn);
+		}
 
-	public static String getNodeName(DatabaseProcess proc) {
-		String nodeName = proc.getCatalogTitle();
-		if ( nodeName == null || nodeName.equals("") ) nodeName = "Catalogs";
-		return nodeName;
 	}
 
 	public boolean canHaveChildren() { return true; }
 
-	public String getInfo() { return "<HTML><P><B>"+db.getCatalogTitle(); }
+	public String getInfo() {
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append("<HTML><P><B>");
+		try {
+			stringBuffer.append(determineCatalogTerm(db));
+		}
+		catch (Exception ex) {
+		}
+		return stringBuffer.toString();
+	}
+
+
 
 }

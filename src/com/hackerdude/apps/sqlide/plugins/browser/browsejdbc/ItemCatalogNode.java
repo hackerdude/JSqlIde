@@ -12,14 +12,17 @@ package com.hackerdude.apps.sqlide.plugins.browser.browsejdbc;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 
+import java.sql.*;
 
 public class ItemCatalogNode extends NodeIDEItem {
 
 	String catalogName;
+	String catalogInfo;
 
-	public ItemCatalogNode(String containerName, DatabaseProcess proc) {
+	public ItemCatalogNode(String containerName, DatabaseProcess proc) throws SQLException {
 		super(containerName, proc);
 		catalogName = containerName;
+		catalogInfo = "<HTML><P><B>"+CategoryCatalogsNode.determineCatalogTerm(db)+" name</B>: "+catalogName;
 	};
 
 	public void readChildren() {
@@ -28,6 +31,8 @@ public class ItemCatalogNode extends NodeIDEItem {
 
 	public boolean canHaveChildren() { return true; }
 
-	public String getInfo() { return "<HTML><P><B>"+db.getCatalogTitle()+" name</B>:"+catalogName; }
+	public String getInfo() {
+		return catalogInfo;
+	}
 
 }
