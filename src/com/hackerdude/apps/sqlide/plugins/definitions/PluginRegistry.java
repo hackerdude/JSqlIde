@@ -90,11 +90,10 @@ public class PluginRegistry {
 		IDEVisualPluginIF[] thePlugins = new IDEVisualPluginIF[visualPlugins.size()];
 		thePlugins = (IDEVisualPluginIF[])visualPlugins.toArray(thePlugins);
 		return thePlugins;
-	};
-
-/*	public Icon[] getAllVisualPluginIcons() {
 	}
-*/
+
+
+
 	/**
 	 * This returns an array with all the recommended shorts.
 	 */
