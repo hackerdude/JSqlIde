@@ -49,17 +49,20 @@ public class ProgramConfig extends Observable {
 
 	public final static String VERSION_NUMBER = determineVersion();
 
+	public static final String PROP_FONT_FOR_EDITOR    = "editor";
+	public static final String PROP_FONT_FOR_RESULTSET = "resultset";
+	public static final String PROP_FONT_FOR_BROWSER   = "browser";
+
+	public static final String[] FONT_NAMES = { PROP_FONT_FOR_EDITOR, PROP_FONT_FOR_RESULTSET, PROP_FONT_FOR_BROWSER };
+
 	// Some important basic properties
 	public static final String PROP_LOOK_AND_FEEL      = "general.ui.lookandfeel";
 	public static final String PROP_SAVE_DIRECTORY    = "general.ui.persistence.savedir";
 	public static final String PROP_LOOK_AND_FEEL_CLASS = "general.ui.lookandfeel.class";
-	public static final String PROP_SQL_FONT_SIZE     = "general.panel.isql.fontsize";
-	public static final String PROP_SQL_FONT_NAME     = "general.panel.isql.fontname";
+	public static final String PROP_FONT_SIZE     = "general.fontsize.";
+	public static final String PROP_FONT_NAME     = "general.fontname.";
 	public static final String PROP_SQL_TABLE_VIEW    = "general.panel.isql.tableview";
 	public static final String PROP_ISQL_BY_DEFAULT      = "general.panel.isql.default";
-
-	public static final String PROP_RESULTSET_FONT_SIZE = "general.resultset.font.size";
-	public static final String PROP_RESULTSET_FONT_NAME = "general.resultset.font.name";
 
 	public static final String propertiesFile = "sqlIDE.properties"; // Main Properties file
 	static String defaultdbPropsFile;  // Default DB properties file
@@ -109,41 +112,39 @@ public class ProgramConfig extends Observable {
 	}
 
 	public void setResultSetFont(Font newFont) {
+		setFont(PROP_FONT_FOR_RESULTSET, newFont);
+	}
+
+	public void setFont(String fontDefinitionName, Font newFont) {
 		String fontName = newFont.getName();
 		int fontSize = newFont.getSize();
-		userinterface.setProperty(PROP_RESULTSET_FONT_NAME, fontName);
-		userinterface.setProperty(PROP_RESULTSET_FONT_SIZE, new Integer(fontSize).toString() );
+		userinterface.setProperty(PROP_FONT_NAME+fontDefinitionName, fontName);
+		userinterface.setProperty(PROP_FONT_SIZE+fontDefinitionName, Integer.toString(fontSize));
 		notifyObservers();
+	}
+
+	public Font getFont(String fontDefinitionName) {
+		String fontName = userinterface.getProperty(PROP_FONT_NAME+fontDefinitionName, "Monospaced");
+		int fontSize = 10;
+		try {
+			fontSize = Integer.parseInt(userinterface.getProperty(PROP_FONT_SIZE+fontDefinitionName));
+		}
+		catch (Throwable ex) {}
+		Font result = new Font(fontName, Font.PLAIN, fontSize);
+		return result;
 	}
 
 	public void setSQLFont(Font newFont) {
-		String fontName = newFont.getName();
-		int fontSize = newFont.getSize();
-		userinterface.setProperty(PROP_SQL_FONT_NAME, fontName);
-		userinterface.setProperty(PROP_SQL_FONT_SIZE, new Integer(fontSize).toString() );
-		notifyObservers();
+		setFont(PROP_FONT_FOR_EDITOR, newFont);
 	}
 
+
 	public Font getResultSetFont() {
-		String fontName = userinterface.getProperty(PROP_RESULTSET_FONT_NAME, "Monospaced");
-		int fontSize = 10;
-		try {
-			fontSize = Integer.parseInt(userinterface.getProperty(PROP_RESULTSET_FONT_SIZE));
-		}
-		catch (Throwable ex) {}
-		Font result = new Font(fontName, Font.PLAIN, fontSize);
-		return result;
+		return getFont(PROP_FONT_FOR_RESULTSET);
 	}
 
 	public Font getSQLFont() {
-		String fontName = userinterface.getProperty(PROP_SQL_FONT_NAME, "Monospaced");
-		int fontSize = 10;
-		try {
-			fontSize = Integer.parseInt(userinterface.getProperty(PROP_SQL_FONT_SIZE));
-		}
-		catch (Throwable ex) {}
-		Font result = new Font(fontName, Font.PLAIN, fontSize);
-		return result;
+		return getFont(PROP_FONT_FOR_EDITOR);
 	}
 
 	/**
@@ -206,9 +207,6 @@ public class ProgramConfig extends Observable {
 		userinterface.setProperty(PROP_LOOK_AND_FEEL_CLASS, "javax.swing.plaf.metal.MetalLookAndFeel");
 		userinterface.setProperty(PROP_ISQL_BY_DEFAULT, "yes");
 		userinterface.setProperty(PROP_SQL_TABLE_VIEW, "true");
-		userinterface.setProperty(PROP_SQL_FONT_SIZE, "12");
-		userinterface.setProperty(PROP_SQL_FONT_NAME, "MonoSpaced");
-//		userinterface.setProperty(SqlideHostConfig.PROP_DEFAULT_CATALOG, "default");
 
 		File saveDir = new File(saveDirectory);
 		if ( ! saveDir.exists() ) saveDir.mkdir();
