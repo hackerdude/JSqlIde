@@ -23,4 +23,7 @@ public class OracleServerType extends ServerType {
 	  public String getServerTitle() { return "Oracle 8i on Localhost"; }
 	  public String getDefaultCatalog() { return "mysql"; }
 
+	  public boolean supportsSQLDotNotation() { return true; }
+
+
 }

@@ -32,6 +32,8 @@ public class InterClientServerType extends ServerType {
 		return "jdbc:interbase://server/c:/database-dir/databasename.gdb";
 	}
 
+	public boolean supportsSQLDotNotation() { return true; }
+
 	public String toString() {
 		return "Interbase Server Driver";
 	}

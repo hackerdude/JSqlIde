@@ -94,31 +94,17 @@ public class DlgPanelEditorPage extends JPanel {
 
 
     public void readFromModel() {
-		String fontName = ProgramConfig.getInstance().getSQLFontName();
-		int fontSize = ProgramConfig.getInstance().getSQLFontSize();
-		currentSQLFont = new Font(fontName, Font.PLAIN, fontSize);
-		currentResultSetFont = currentSQLFont;
+		currentSQLFont = ProgramConfig.getInstance().getSQLFont();
+		currentResultSetFont = ProgramConfig.getInstance().getResultSetFont();
+		lblSqlFontDescription.setFontToDescribe(currentSQLFont);
+		lblResultSetFontDescription.setFontToDescribe(currentResultSetFont);
+
 	}
 
 
 	public void applyToModel() {
-		/** @todo Implement */
-/*		Object selectedFontName = pgEditor.cbSQLFontName.getSelectedItem();
-		String selectedFontSize = pgEditor.cbSQLFontSize.getText();
-		String fontName = null;
-		int fontSize=-1;
-		if ( selectedFontName != null ) fontName = selectedFontName.toString();
-		try {
-			if ( selectedFontSize != null ) fontSize = Integer.parseInt(selectedFontSize);
-		} catch ( NumberFormatException exc ) {
-			System.out.println("[DlgIDEConfigure] Could not interpret font size of "+selectedFontSize+". using 10 as default");
-			fontSize = 10;
-		}
-
-		if ( fontName != null ) ProgramConfig.getInstance().setSQLFontName( fontName );
-		if ( selectedFontSize != null ) ProgramConfig.getInstance().setSQLFontSize( fontSize );
-*/
-
+		if ( currentSQLFont != null ) ProgramConfig.getInstance().setSQLFont(currentSQLFont);
+		if ( currentResultSetFont != null ) ProgramConfig.getInstance().setResultSetFont(currentResultSetFont);
 	}
 
 	class FontDescriptionLabel extends JLabel {
@@ -163,8 +149,10 @@ public class DlgPanelEditorPage extends JPanel {
 
 		public void actionPerformed(ActionEvent evt) {
 			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change SQL Editor Font", "Compose a new Font for the SQL Editor", currentSQLFont);
-			if ( newFont != null ) currentSQLFont = newFont;
-			lblSqlFontDescription.setFontToDescribe(newFont);
+			if ( newFont != null ) {
+				currentSQLFont = newFont;
+				lblSqlFontDescription.setFontToDescribe(newFont);
+			}
 		}
 	}
 
@@ -175,8 +163,10 @@ public class DlgPanelEditorPage extends JPanel {
 
 		public void actionPerformed(ActionEvent evt) {
 			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change ResultSet Font", "Compose a new font for the ResultSet", currentResultSetFont);
-			if ( newFont != null ) currentResultSetFont = newFont;
-			lblResultSetFontDescription.setFontToDescribe(newFont);
+			if ( newFont != null ) {
+				currentResultSetFont = newFont;
+				lblResultSetFontDescription.setFontToDescribe(newFont);
+			}
 		}
 	}
 

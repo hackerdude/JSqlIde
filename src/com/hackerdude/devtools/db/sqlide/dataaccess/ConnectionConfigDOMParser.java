@@ -36,6 +36,8 @@ public class ConnectionConfigDOMParser {
 	protected static final String ELEMENT_JAR_FILE   = "jarfile"; // Where is the jar file that implements this driver?
 	protected static final String ELEMENT_DEFAULT_CATALOG = "defaultcatalog";
 
+	protected static final String ELEMENT_SQL_GENERATION = "sqlgeneration";
+	protected static final String ATTRIBUTE_SUPPORTS_DOT_NOTATION = "dotnotation";
 
 	public ConnectionConfigDOMParser() {
 	}
@@ -72,7 +74,16 @@ public class ConnectionConfigDOMParser {
 			else if ( nodeName.equalsIgnoreCase(XSPEC_JDBC_NODE)    ) { parseJdbc(topic, destination); }
 			else if ( nodeName.equalsIgnoreCase(XSPEC_SQLIDE)  ) { parseSQLIDE(topic, destination); }
 			else if ( nodeName.equalsIgnoreCase(XSPEC_CLASSPATH) ) { parseClassPathNode(topic, destination); }
+			else if ( nodeName.equals(ELEMENT_SQL_GENERATION) ) { parseSQLGenerationNode(topic, destination); }
 		}
+	}
+
+	private void parseSQLGenerationNode(Node sqlGenerationNode, ConnectionConfig destination ) {
+		NamedNodeMap attr = sqlGenerationNode.getAttributes();
+		Node supportsDotNotationNode = attr.getNamedItem(ATTRIBUTE_SUPPORTS_DOT_NOTATION);
+		if ( supportsDotNotationNode == null ) return;
+		String supportsDotNotation = supportsDotNotationNode.getNodeValue();
+		destination.setSupportsDotNotation(Boolean.valueOf(supportsDotNotation).booleanValue());
 	}
 
 
@@ -80,7 +91,7 @@ public class ConnectionConfigDOMParser {
 	  NamedNodeMap nm = connectionNode.getAttributes();
 	  String sConnections = nm.getNamedItem(ATTRIBUTE_NUM_CONNECTIONS).getNodeValue();
 	  NodeList nl = connectionNode.getChildNodes();
-	  destination.setConnections(Integer.parseInt(sConnections));
+	  destination.setMaxConnections(Integer.parseInt(sConnections));
 	  Properties connectionProperties = new Properties();
 	  for ( int i=0; i<nl.getLength(); i++) {
 		 Node current = nl.item(i);
@@ -128,7 +139,7 @@ public class ConnectionConfigDOMParser {
 			}
 		}
 		spec.setDriverClassName(driver);
-		spec.setURL(url);
+		spec.setJDBCURL(url);
 	}
 
 
@@ -199,7 +210,9 @@ public class ConnectionConfigDOMParser {
 		Element jdbcNode    = xmlDatabaseSpec.createElement(XSPEC_JDBC_NODE);
 		Element connectionNode = xmlDatabaseSpec.createElement(XSPEC_CONNECTION_NODE);
 		Element classPathNode = xmlDatabaseSpec.createElement(XSPEC_CLASSPATH);
-		connectionNode.setAttribute(ATTRIBUTE_NUM_CONNECTIONS, Integer.toString(spec.getConnections()));
+		Element sqlGenerationNode = xmlDatabaseSpec.createElement(ELEMENT_SQL_GENERATION);
+		sqlGenerationNode.setAttribute(ATTRIBUTE_SUPPORTS_DOT_NOTATION, spec.isSupportsDotNotation()?Boolean.TRUE.toString():Boolean.FALSE.toString());
+		connectionNode.setAttribute(ATTRIBUTE_NUM_CONNECTIONS, Integer.toString(spec.getMaxConnections()));
 
 //		jdbcNode.setAttribute(specDriverJar, spec.getJarFileName());
 		// Save the connection properties
@@ -242,7 +255,7 @@ public class ConnectionConfigDOMParser {
 		Text driverName    = xmlDatabaseSpec.createTextNode(spec.getDriverClassName());
 		driverElement.appendChild(driverName);
 		Element urlElement = xmlDatabaseSpec.createElement(ELEMENT_BASE_URL);
-		Text urlName       = xmlDatabaseSpec.createTextNode(spec.getURL());
+		Text urlName       = xmlDatabaseSpec.createTextNode(spec.getJDBCURL());
 		urlElement.appendChild(urlName);
 
 		jdbcNode.appendChild(driverElement);
@@ -254,6 +267,7 @@ public class ConnectionConfigDOMParser {
 		rootNode.appendChild(jdbcNode);
 		rootNode.appendChild(sqlideNode);
 		rootNode.appendChild(connectionNode);
+		rootNode.appendChild(sqlGenerationNode);
 		xmlDatabaseSpec.appendChild(rootNode);
 
 		try {

@@ -27,6 +27,7 @@ import com.hackerdude.devtools.db.sqlide.dataaccess.*;
 import com.hackerdude.lib.*;
 import com.hackerdude.devtools.db.sqlide.plugins.browser.*;
 import com.hackerdude.devtools.db.sqlide.plugins.browser.browsejdbc.*;
+import com.hackerdude.swing.SwingUtils;
 import java.sql.*;
 
 import java.awt.*;
@@ -111,8 +112,8 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 	  fieldCollection.setupDataTypeEditor(tbFields);
 	  JScrollPane scPane = new JScrollPane(tbFields);
 
-	  tbFields.registerKeyboardAction(ACTION_DELETEFIELD, "InsField", KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0), WHEN_FOCUSED );
-	  tbFields.registerKeyboardAction(ACTION_INSERTFIELD, "DelField", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), WHEN_FOCUSED);
+	  tbFields.registerKeyboardAction(ACTION_INSERTFIELD, "InsField", KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0), WHEN_FOCUSED );
+	  tbFields.registerKeyboardAction(ACTION_DELETEFIELD, "DelField", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), WHEN_FOCUSED);
 
 	  btnSQL = new JButton(ACTION_PREVIEW);
 
@@ -221,12 +222,12 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 
    public void showPreview() {
 
-	  frm = new JFrame();
-
+	  frm = new JFrame("Preview/Create");
+	  frm.setIconImage(sqlide.getFrame().getIconImage());
 	  SyntaxDocument sd = new SyntaxDocument();
 	  sd.setTokenMarker(new TSQLTokenMarker());
 	  theStatement.setDocument(sd);
-	  Font theFont = new Font(conf.getSQLFontName(), Font.PLAIN, conf.getSQLFontSize() );
+	  Font theFont = conf.getSQLFont();
 	  theStatement.setFont(theFont);
 	  theStatement.getPainter().setFont(theFont);
 
@@ -264,6 +265,8 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 	  frm.getContentPane().add(theStatement, BorderLayout.CENTER);
 	  frm.getContentPane().add(okPanel, BorderLayout.SOUTH);
 	  frm.pack();
+	  Point centerPoint = SwingUtils.getCenteredWindowPoint(frm);
+	  frm.setLocation(centerPoint);
 	  frm.show();
 
    }
@@ -274,8 +277,6 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 	private void setUpComboBoxEditor(JTable table) {
 	  //First, set up the button that brings up the dialog.
 	  final JButton button = new JButton(""); // {
-	  //public void setText(String s) {} // Don't set any text.
-	  //}
 	  button.setBackground(Color.white);
 	  button.setBorderPainted(false);
 	  button.setMargin(new Insets(0,0,0,0));
@@ -312,7 +313,9 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 
 		}
 		public void actionPerformed(ActionEvent ev) {
-			fieldCollection.insertField( tbFields.getEditingRow() );
+			TableField tableField = new TableField();
+			tableField.fieldType = fieldCollection.classFldType;
+			fieldCollection.insertField( tableField );
 		}
 	}
 

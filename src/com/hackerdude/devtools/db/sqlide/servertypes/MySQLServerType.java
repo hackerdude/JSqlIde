@@ -20,4 +20,7 @@ public class MySQLServerType extends ServerType {
 	  public String getClassName() { return "org.gjt.mm.mysql.Driver"; }
 	  public String getServerTitle() { return "MySQL on Localhost"; }
 	  public String getDefaultCatalog() { return "mysql"; }
+
+	  public boolean supportsSQLDotNotation() { return false; }
+
 }

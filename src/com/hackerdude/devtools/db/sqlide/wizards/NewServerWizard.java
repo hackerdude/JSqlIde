@@ -86,7 +86,7 @@ public class NewServerWizard extends Wizard {
 		String baseFileName = pageNewServer.fFileName.getText();
 		String fileName = ProgramConfig.getInstance().getUserProfilePath()+baseFileName+".db.xml";
 		databaseSpec.setFileName(fileName);
-		databaseSpec.setURL(pageNewServer.fURL.getText());
+		databaseSpec.setJDBCURL(pageNewServer.fURL.getText());
 		databaseSpec.setPoliteName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
 		databaseSpec.setDriverClassName(pageNewServer.fClassName.getText());
 		databaseSpec.setConnectionProperties(pageServerDetails.propertiesModel.getProperties());

@@ -18,5 +18,6 @@ public class SybaseServerType extends ServerType {
 	  public String getClassName() { return "com.sybase.jdbc.SybDriver"; }
 	  public String getServerTitle() { return "Sybase ASE on hostname"; }
 	  public String getDefaultCatalog() { return "master"; }
+	  public boolean supportsSQLDotNotation() { return false; }
 
 }

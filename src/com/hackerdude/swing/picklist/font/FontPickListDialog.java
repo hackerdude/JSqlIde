@@ -25,7 +25,7 @@ public class FontPickListDialog extends JDialog {
 
 	int modalResult = JOptionPane.CANCEL_OPTION;
 
-	public FontPickListDialog(JFrame owner) throws HeadlessException {
+	public FontPickListDialog(JFrame owner) {
 		super(owner);
 		try {
 			jbInit();
@@ -35,7 +35,7 @@ public class FontPickListDialog extends JDialog {
 		}
 	}
 
-    public FontPickListDialog() throws HeadlessException {
+    public FontPickListDialog()  {
         try {
             jbInit();
         }

@@ -200,7 +200,8 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	class ActionCANCEL extends AbstractAction {
 		public ActionCANCEL() { super("Cancel", ProgramIcons.getInstance().findIcon("images/Error.gif")); }
 		public void actionPerformed(ActionEvent ev) {
-			cancelConfiguration(); result = CANCEL;
+			cancelConfiguration();
+			result = CANCEL;
 			hide();
 		}
 	}
