@@ -213,6 +213,40 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
+        //-- _browserPlugin
+        desc = new XMLFieldDescriptorImpl(BrowserPlugin.class, "_browserPlugin", "browserPlugin", NodeType.Element);
+        handler = (new XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                return target.getBrowserPlugin();
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                    target.setBrowserPlugin( (BrowserPlugin) value);
+                }
+                catch (Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return new BrowserPlugin();
+            }
+        } );
+        desc.setHandler(handler);
+        desc.setNameSpaceURI("urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd");
+        desc.setMultivalued(false);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _browserPlugin
+        fieldValidator = new FieldValidator();
+        { //-- local scope
+        }
+        desc.setValidator(fieldValidator);
         //-- _pluginSpecificList
         desc = new XMLFieldDescriptorImpl(PluginSpecific.class, "_pluginSpecificList", "plugin-specific", NodeType.Element);
         handler = (new XMLFieldHandler() {

@@ -105,6 +105,14 @@ database specification).
 
 </xsd:complexType>
 
+
+<xsd:complexType name="BROWSERPLUGINType">
+ <xsd:sequence>
+	<xsd:element name="namedQueries" type="GENERICPROPERTIESType"/>
+	<xsd:element name="pluginProperties" type="GENERICPROPERTIESType" minOccurs="0"/>
+ </xsd:sequence>
+</xsd:complexType>
+
 <xsd:complexType name="SQLIDEHOSTCONFIGType">
  <xsd:annotation>
 	 <xsd:documentation>
@@ -116,6 +124,7 @@ Our root element.
 	<xsd:element name="name" type="xsd:string"/>
 	<xsd:element name="general" type="SQLIDEGENERALType"/>
 	<xsd:element name="jdbc" type="JDBCType"/>
+	<xsd:element name="browserPlugin" type="BROWSERPLUGINType" minOccurs="0" maxOccurs="1"/>
 	<xsd:element name="plugin-specific" type="PLUGINSPECIFICType" minOccurs="0" maxOccurs="unbounded"/>
  </xsd:sequence>
 
