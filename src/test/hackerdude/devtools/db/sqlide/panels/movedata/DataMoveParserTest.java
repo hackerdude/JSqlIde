@@ -1,7 +1,7 @@
 package test.hackerdude.devtools.db.sqlide.panels.movedata;
 
-import com.hackerdude.devtools.db.sqlide.plugins.movedata.model.*;
-import com.hackerdude.devtools.db.sqlide.plugins.movedata.DataMoveParser;
+import com.hackerdude.apps.sqlide.plugins.movedata.model.*;
+import com.hackerdude.apps.sqlide.plugins.movedata.DataMoveParser;
 import junit.framework.*;
 import java.io.*;
 import java.util.*;

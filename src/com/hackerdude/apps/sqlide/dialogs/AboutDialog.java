@@ -15,7 +15,7 @@ import com.hackerdude.apps.sqlide.*;
 
 public class AboutDialog extends JDialog implements KeyListener {
 
-	public final Action LICENSE_ACTION = sqlide.getInstance().HELP_LICENSE;
+	public final Action LICENSE_ACTION = SqlIdeApplication.getInstance().HELP_LICENSE;
 
 	LogoPanel logoPanel = new LogoPanel();
 

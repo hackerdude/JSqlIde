@@ -67,7 +67,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	JPanel jPanel1 = new JPanel();
 	JLabel lblInfo = new JLabel();
 	JMenuItem mnuCopyName = new JMenuItem();
-	sqlide ide;
+	SqlIdeApplication ide;
 	BorderLayout borderLayout3 = new BorderLayout();
 
 	/**
@@ -153,7 +153,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 		//
 	}
 
-	public void setSQLIDE(sqlide ide) {
+	public void setSQLIDE(SqlIdeApplication ide) {
 		this.ide = ide;
 	}
 

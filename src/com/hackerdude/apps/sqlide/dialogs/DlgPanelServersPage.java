@@ -143,7 +143,7 @@ public class DlgPanelServersPage extends JPanel {
 				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			DlgConnectionConfig.showConfigurationDialog( sqlide.getFrame(), spec );
+			DlgConnectionConfig.showConfigurationDialog( SqlIdeApplication.getFrame(), spec );
 		}
 	}
 

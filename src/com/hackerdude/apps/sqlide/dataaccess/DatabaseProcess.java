@@ -124,7 +124,7 @@ public class DatabaseProcess {
 			return conn;
 		} catch( SQLException sqle ) {
 			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(sqlide.getFrame(), sqle, "SQL Error when getting Connection", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle, "SQL Error when getting Connection", JOptionPane.ERROR_MESSAGE);
 		}
 		return conn;
 	}
@@ -168,7 +168,7 @@ public class DatabaseProcess {
 				while(rs.next()) { types.add( rs.getString(1) ); }
 				} finally { getPool().releaseConnection(conn); }
 		} catch ( SQLException sqle ) {
-			JOptionPane.showMessageDialog(sqlide.getFrame(), sqle,"SQL Error while getting types",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,"SQL Error while getting types",JOptionPane.ERROR_MESSAGE);
 		}
 		return(types);
 	}
@@ -188,7 +188,7 @@ public class DatabaseProcess {
 			while(rs.next()) { tbls.add( rs.getString(3) );}
 		} catch( SQLException sqle ) {
 			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(sqlide.getFrame(), sqle,"SQL Error while getting tables",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,"SQL Error while getting tables",JOptionPane.ERROR_MESSAGE);
 		} finally {
 				returnConnection(conn);
 		}
@@ -257,7 +257,7 @@ public class DatabaseProcess {
 			}
 		} catch( SQLException sqle ) {
 			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(sqlide.getFrame(), sqle,
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,
 					"SQL Error when getting procedures", JOptionPane.ERROR_MESSAGE);
 		}
 		return v;
@@ -282,7 +282,7 @@ public class DatabaseProcess {
 			if ( currentCatalog != null && !currentCatalog.equals("") ) conn.setCatalog(currentCatalog);
 		} catch( SQLException sqle ) {
 			sqle.printStackTrace();
-			JOptionPane.showMessageDialog(sqlide.getFrame(), sqle,
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,
 					"SQL Error while changing DB", JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -361,7 +361,7 @@ public class DatabaseProcess {
 				DriverManager.registerDriver( currentDriver );
 			} catch(Exception exc) {
 				exc.printStackTrace();
-				JOptionPane.showMessageDialog(sqlide.getFrame(), exc, "The Driver was Loaded, but had a Problem",
+				JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), exc, "The Driver was Loaded, but had a Problem",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -407,13 +407,13 @@ public class DatabaseProcess {
 				}  // if tryagain
 			} // while
 		} catch(SQLWarning exc) {
-			JOptionPane.showMessageDialog(sqlide.getFrame(), getMessageFromWarnings(exc), "SQL Warning",
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), getMessageFromWarnings(exc), "SQL Warning",
 					JOptionPane.ERROR_MESSAGE);
 		} catch(SQLException exc) {
-			JOptionPane.showMessageDialog(sqlide.getFrame(), getMessageFromWarnings(exc), "SQL Exception",
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), getMessageFromWarnings(exc), "SQL Exception",
 					JOptionPane.ERROR_MESSAGE);
 		} catch(Throwable exc) {
-			JOptionPane.showMessageDialog(sqlide.getFrame(), exc.toString(), "Java Exception",
+			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), exc.toString(), "Java Exception",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		boolean retValue = conn==null?false:true;
@@ -449,7 +449,7 @@ public class DatabaseProcess {
 		message[4] = password;
 		pane.setMessage(message);
 
-		JFrame parentComponent = com.hackerdude.apps.sqlide.sqlide.getFrame();
+		JFrame parentComponent = com.hackerdude.apps.sqlide.SqlIdeApplication.getFrame();
 		JDialog dialog = pane.createDialog(parentComponent, "Database Login");
 		dialog.show();
 

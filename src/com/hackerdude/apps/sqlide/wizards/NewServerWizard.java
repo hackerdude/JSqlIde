@@ -99,7 +99,7 @@ public class NewServerWizard extends Wizard {
 	}
 
 	public static NewServerWizard showWizard(boolean modal) {
-		NewServerWizard wiz = new NewServerWizard(sqlide.getFrame(), modal);
+		NewServerWizard wiz = new NewServerWizard(SqlIdeApplication.getFrame(), modal);
 		wiz.setEnabled(true);
 		wiz.pack();
 		Dimension screen = wiz.getToolkit().getScreenSize();
