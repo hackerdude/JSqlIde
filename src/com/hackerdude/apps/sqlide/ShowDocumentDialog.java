@@ -84,7 +84,7 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show "Paying for SQLIDE" dialog.
 	 */
 	public void showPayDialog() {
-		showDialog("Paying for SQLIDE", ShowDocumentDialog.class.getResourceAsStream("paying.html"));
+		showDialog("Paying for SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/paying.html"));
 	}
 
 
@@ -92,7 +92,7 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show the TODO.HTML dialog.
 	 */
 	public void showTodoDialog() {
-		showDialog("To do List for Project", ShowDocumentDialog.class.getResourceAsStream("todo.html"));
+		showDialog("To do List for Project", ShowDocumentDialog.class.getResourceAsStream("/docs/TODO.html"));
 	}
 
 
@@ -100,14 +100,14 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show the readme dialog.
 	 */
 	public void showReadmeDialog() {
-		showDialog("Project README", ShowDocumentDialog.class.getResourceAsStream("readme.html"));
+		showDialog("Project README", ShowDocumentDialog.class.getResourceAsStream("/docs/README.html"));
 	}
 
 	/**
 	 * Show the Known Bugs dialog.
 	 */
 	public void showKnownBugsDialog() {
-		showDialog("Known Bugs in SQLIDE", ShowDocumentDialog.class.getResourceAsStream("knownbugs.html"));
+		showDialog("Known Bugs in SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/BUGS.html"));
 	}
 
 
@@ -137,7 +137,7 @@ public class ShowDocumentDialog extends JDialog {
 	}
 
 	public void showLicenseDialog() {
-		showDialog("SQLIDE License Agreement", ShowDocumentDialog.class.getResourceAsStream("license.html"));
+		showDialog("SQLIDE License Agreement", ShowDocumentDialog.class.getResourceAsStream("/docs/LICENSE.html"));
 	}
 
 	void jButton1_actionPerformed(ActionEvent e) {
