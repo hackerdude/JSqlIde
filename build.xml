@@ -31,10 +31,12 @@
 	<property name="jsqlide.dist.dir" value="dist"/>
 	<property name="jsqlide.signjar.alias" value="jarsignalias"/>
 	<property name="jsqlide.signjar.storepass" value="password"/>
+	<property name="jsqlide.j2se.version" value="1.4.0+"/>
 	<property name="jsqlide.codebase.url" value="http://www.hackerdude.com/sqlide"/>
 	<property name="jsqlide.homepage.url" value="http://www.hackerdude.com/sqlide"/>
-	<property name="jsqlide.j2se.version" value="1.4.0+"/>
-
+	<property name="jsqlide.publish.server.name" value="hackerdude.sourceforge.net"/>
+	<property name="jsqlide.publish.server.path" value="/home/groups/h/ha/hackerdude/htdocs/jsqlide/"/>
+	<property name="jsqlide.scp.user.name" value="yoursourceforgename"/>
 
 	<path id="jsqlide_classpath">
 	 <fileset dir="${lib.dir}">
@@ -374,5 +376,12 @@
 
 	<target name="release" depends="signjar,jnlp">
 	</target>
+
+	<target name="publish" depends="release">
+	    <exec executable="scp">
+		    <arg value="${build.dir}/jsqlide.j* ${jsqlide.scp.user.name}@${jsqlide.publish.server.name}:${jsqlide.publish.server.path}"/>
+		</exec>
+	</target>
+
 
 </project>
