@@ -7,7 +7,6 @@ import java.util.*;
  * An encapsulation of the query results so that JDBC 1.0 drivers can remain
  * compatible with their 2.0 counterparts.
  */
-
 public class QueryResults {
 
 	private ResultSet results;

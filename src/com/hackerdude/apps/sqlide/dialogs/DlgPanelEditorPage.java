@@ -32,6 +32,12 @@ import com.hackerdude.apps.sqlide.*;
 import com.hackerdude.swing.picklist.font.FontPickListDialog;
 import java.util.ArrayList;
 
+/**
+ * This panel allows the user to specify the fonts for different on-screen
+ * elements.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class DlgPanelEditorPage extends JPanel {
 
 
@@ -52,8 +58,6 @@ public class DlgPanelEditorPage extends JPanel {
 	}
 
 	public void jbInit() {
-		this.addFocusListener(new java.awt.event.FocusAdapter() {
-		});
 		this.setLayout(borderLayout1);
 		jPanel1.setLayout(gridBagLayout1);
 		lblAppFonts.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,7 +88,7 @@ public class DlgPanelEditorPage extends JPanel {
 
 	public void applyToModel() {
 		for ( int i=0; i<ProgramConfig.FONT_NAMES.length; i++ ) {
-			Font newFont = actions[0].getFont();
+			Font newFont = actions[i].getFont();
 			ProgramConfig.getInstance().setFont(ProgramConfig.FONT_NAMES[i], newFont);
 		}
 	}
@@ -97,7 +101,7 @@ public class DlgPanelEditorPage extends JPanel {
 			String instructions = "Compose a new Font for "+currentFontName;
 			ActionChangeSQLFont changeAction = new ActionChangeSQLFont(SqlIdeApplication.getFrame(),
 			title, instructions,
-   ProgramConfig.getInstance().getFont(currentFontName), new FontDescriptionLabel(currentFontName+": "));
+			ProgramConfig.getInstance().getFont(currentFontName), new FontDescriptionLabel(currentFontName+": "));
 			arrayList.add(changeAction);
 		}
 		ActionChangeSQLFont[] result = new ActionChangeSQLFont[arrayList.size()];
@@ -160,7 +164,11 @@ public class DlgPanelEditorPage extends JPanel {
 		}
 	}
 
-
+	/**
+	 * This action allows you to change the Font for an element.
+	 * @author David Martinez
+	 * @version 1.0
+	 */
 	class ActionChangeSQLFont extends AbstractAction {
 
 		JFrame owner;
@@ -180,7 +188,6 @@ public class DlgPanelEditorPage extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-//			Font newFont = FontPickListDialog.showFontSelectionDialog(SqlIdeApplication.getFrame(), "Change SQL Editor Font", "Compose a new Font for the SQL Editor", currentSQLFont);
 			Font newFont = FontPickListDialog.showFontSelectionDialog(owner, title, instructions, currentFont);
 			if ( newFont != null ) {
 				currentFont = newFont;

@@ -7,6 +7,11 @@ import javax.swing.event.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.apps.sqlide.xml.*;
 
+/**
+ * Panel that allows the user to specify the connection parameters.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class ConnectionParametersPanel extends JPanel {
 
 	public final Action ACTION_NEW_CONNECTION = new NewConnectionAction();

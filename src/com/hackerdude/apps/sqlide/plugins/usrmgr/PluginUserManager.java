@@ -138,7 +138,7 @@ public class PluginUserManager extends AbstractVisualPlugin {
 	 * @return the returned Action[]
 	 */
 	public Action[] getPossibleActions() {
-		return null;
+		return NULL_ACTIONS;
 	}
 	/**
 	 * getActionsFor
@@ -147,8 +147,7 @@ public class PluginUserManager extends AbstractVisualPlugin {
 	 * @return the returned Action[]
 	 */
 	public Action[] getActionsFor(NodeIDEBase[] node) {
-		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
-		throw new java.lang.UnsupportedOperationException("Method getActionsFor() not yet implemented.");
+		return NULL_ACTIONS;
 	}
 
 	/**

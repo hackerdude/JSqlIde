@@ -28,7 +28,6 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 	public final static String ITEM_COLUMN_PREFIX = "ItemTableColumnNode";
 
 	public final static String ICON_SUFFIX = ".icon";
-	public final static Action[] NULL_ACTION = new Action [0];
 	public final static Action[] NOT_SAME_PROCESS = new Action[1];
 
     public ContextCommandRunner() {
@@ -87,12 +86,12 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 
 		IDEVisualPluginIF activePlugin = SqlIdeApplication.getInstance().getRightPanel();
 
-		if ( activePlugin == null ) return null;
+		if ( activePlugin == null ) return NULL_ACTIONS;
 		if ( ! (activePlugin instanceof PluginInteractiveSQL) ) { return null; }
 		PluginInteractiveSQL isqlPlugin = (PluginInteractiveSQL)activePlugin;
 
 		DatabaseProcess databaseProcess = activePlugin.getDatabaseProcess();
-		if ( nodes.length != 1 ) return NULL_ACTION;
+		if ( nodes.length != 1 ) return NULL_ACTIONS;
 		NodeIDEBase node = nodes[0];
 		ArrayList al = new ArrayList();
 
