@@ -146,6 +146,9 @@
 	<target name="prepare_unjar_cache">
 		<mkdir dir="${unjar.cache}"/>
 		<unjar src="${lib.dir}/xerces.jar" dest="${unjar.cache}"/>
+		<echo file="${unjar.cache}/sqlide.properties">
+jsqlide.version=${version}
+</echo>
 	</target>
 
 	<!-- =================================================================== -->
@@ -153,9 +156,6 @@
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile,prepare_unjar_cache">
 		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**">
-		    <!--<fileset dir="${lib.dir}">
-			    <include name="*.jar"/>
-			</fileset>-->
 			<fileset dir="${unjar.cache}"/>
 			<manifest>
 				<attribute name="Main-Class" value="com.hackerdude.apps.sqlide.SqlIdeApplication" />
