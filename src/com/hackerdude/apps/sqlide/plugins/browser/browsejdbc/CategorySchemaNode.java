@@ -59,7 +59,7 @@ public class CategorySchemaNode extends NodeIDECategory {
 	   Connection conn = null;
 	   try {
 		   conn = proc.getConnection();
-		   return conn.getMetaData().getCatalogTerm();
+		   return conn.getMetaData().getSchemaTerm();
 	   }
 	   finally {
 		   proc.returnConnection(conn);

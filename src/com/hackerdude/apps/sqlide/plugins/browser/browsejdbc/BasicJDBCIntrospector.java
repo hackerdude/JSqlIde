@@ -4,6 +4,7 @@ import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.ProgramIcons;
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 import javax.swing.Icon;
+import com.hackerdude.apps.sqlide.nodes.CategoryStoredProcedureNode;
 
 /**
  * The Basic JDBC Introspector implements the base browser functionality,
@@ -34,22 +35,33 @@ public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 		 * not exist, the node should not be there because that item type
 		 * is not supported (for catalogs & schemas).
 		 */
-
+		NodeIDEBase theNode = null;
 		try {
-			NodeIDEBase theNode = new CategoryCatalogsNode(db);
+			theNode = new CategoryCatalogsNode(db);
 			if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
+		}
+		catch (Exception ex) {
+		}
+		try {
 			theNode = new CategorySchemaNode(db); //  devicesNodes.elementAt(i);
 			if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
 		}
 		catch (Exception ex) {
 		}
+
+		/*
+		If the back-end does not support catalogs or schemas, then create
+		simple nodes with tables and stored procedures underneath the
+		connection. This is for the benefit of backends like
+		hypersonic which do not support this concept.
+		*/
+
 		if ( parentNode.getChildCount() == 0 ) {
 			/** @todo We need to add the list of objects that are outside catalogs/schemas,
 			for the benefit of those who don't have such concepts. */
-		   parentNode.add(new CategoryTableNode(null, null, db));
+			parentNode.add(new CategoryTableNode(null, null, db));
+			parentNode.add(new CategoryStoredProcedureNode(null, null, db));
 		}
-
-
 
 	}
 

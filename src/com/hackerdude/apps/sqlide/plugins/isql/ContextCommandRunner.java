@@ -188,7 +188,6 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 
 	public String determineTableName(NodeIDEBase node) {
 		String result;
-
 		String table = "";
 		String catalog = "";
 		if ( node instanceof ItemTableNode ) {
@@ -200,12 +199,18 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 			table = columnItem.getTableName();
 			catalog = columnItem.getCatalogName();
 		}
-		if ( node.getDatabaseProcess().getConnectionConfig().isSupportsDotNotation() && ( ! catalog.equals("") ) ) {
+		// If we support dot notation and there is a catalog, use the fully qualified name
+		boolean isCatalogEmpty = catalog==null || catalog.equals("");
+		if ( node.getDatabaseProcess().getConnectionConfig().isSupportsDotNotation() && ! isCatalogEmpty )
+		{
 			result = catalog+"."+table;
-		} else { result = table; }
+
+		} else {
+			result = table;
+		}
+		// If it has spaces in the name, add quotes.
 		if ( result.indexOf(" ") > -1 ) result = "\""+result+"\"";
 		return result;
-
 
 	}
 
