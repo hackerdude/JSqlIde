@@ -1,0 +1,315 @@
+<HTML>
+	<HEAD>
+	</HEAD>
+
+	<BODY>
+		<H1>SQLIDE User's Guide</H1>
+
+
+		<OL>
+			<LI><A HREF="#Introduction">Introduction</A></LI>
+			<LI><A HREF="#Acnowledgements">Acknowledgements</A></LI>
+			<LI><A HREF="#License">License Agreement</A></LI>
+			<LI><A HREF="#Tutorial">Tutorial</A></LI>
+			<LI><A HREF="#SQL">SQL Reference</A></LI>
+			<LI><A HREF="#Plugin">Plugin Descriptions</A></LI>
+			<LI><A HREF="#Programmer">Programmer's Reference</A></LI>
+		</OL>
+
+		<H2><A NAME="Introduction">Introduction</A></H2>
+
+		<P>SQLIDE is a program that lets you work with relational databases.
+		You can create tables, run SQL commands directly and it has some 
+		basic features for editing and analyzing data.
+		</P>
+
+		<P></P>
+
+		<H2><A NAME="Acknowledgements">Acknowledgements</A></H2>
+
+		<P>Thank to the following people (in no particular order) for the
+		following:
+
+		<UL>
+
+			<LI>To my wife Cindy, for putting up with me while I wrote this and
+			for supporting me on all my endeavours.</LI>
+
+			<LI>To my Father, for buying me my first computer. My life would
+			have been much different (for the worse) otherwise.</LI>
+
+			<LI>To Sun, for making Java, and for making the first usable, truly
+			cross-platform UI.</LI>
+
+			<LI>To Slava Pestov, whose jEdit TextArea is a part of SQLIDE's
+			interactive SQL panel.</LI>
+
+			<LI>To the companies I've worked during the years, for teaching me
+			about databases and the very useful things they can do.</LI>
+
+			<LI>To the XML consortium and the Castor project at exolab, for 
+			accelerating the development of SQLIDE.</LI>
+
+			<LI>To Borland, whose JBuilder has helped develop SQLIDE.</LI>
+
+		</UL>
+		</P>
+
+
+		<H2><A NAME="License">License Agreement</A></H2>
+
+		<P>This program is licensed under the GNU GPL. You can read the license
+		agreement by selecting "Help-&gt;License" or by clicking on the
+		"License" button on the SQLIDE About Box.</P>
+
+		<P>Basically, it's a free license with absolutely no warranty.</P>
+
+		<H2><A NAME="Tutorial">Tutorial</A></H2>
+
+		<P>This tutorial will walk you through doing some database access
+		using SQLIDE.</P>
+
+		<P>Start SQLIDE. If you have never set up a server profile, you 
+		will be prompted to create a new one.</P>
+
+		<H3>Creating a new Server Profile</H3>
+
+		<P>Create a new server profile. You will need to download a driver for
+		the database server you are using. If you only want to test, you can
+		download a good, if limited, embedded SQL database at <A
+				HREF="http://www.hsqldb.org">http://www.hsqldb.org</A>.</P>
+
+		<P>This tutorial will show you how you can create the server profile
+		for HSQLDB. The tutorial uses this database for most sections except
+		where more advanced features are needed, in which case we will use <A
+				HREF="http://www.postgresql.org">PostgreSQL</A>. SQLIDE works
+		with most JDBC drivers.</P>
+
+		<P>After you download the drivers from the web, you will have one (or
+		more) JAR files that you need to add to this connection's CLASSPATH.  A
+		Class path is a java concept that allows you to load libraries
+		dynamically (in this case, the database access libraries).
+
+		<BR/><CENTER><IMG SRC="newserverprofile.png"/></CENTER></P>
+
+		<P>Now that you have the drivers, press "Next". You will then see a
+		dialog box prompting you the name of your connection and the server
+		type. Select the server type from the list first, and this will
+		typically set sensible defaults.
+
+		<BR/><CENTER><IMG SRC="newserverprofile2.png"/></CENTER></P>
+
+		<P Class="Note">Note: If your server type has no equivalent on
+		the list, you can consult the documentation of your JDBC driver
+		to still get a succesful connection.</P>
+
+		<P>Always consult the documentation for your JDBC driver so you can set
+		better values than the recommended, in particular for the driver class
+		name and the URL. The URL suggested is typically meant as a help so you
+		can set your own values. For example, in our case, the URL
+		jdbc:hsqldb:/home/dmartinez/MyDBFile refers to the fact that the
+		embedded Hypersonic database file will be created in your home
+		directory.</P>
+
+		<P>Once you make the changes you need for this page, you will be
+		asked to set other connection parameters on the next page. These are
+		only necessary if your JDBC connection requires it, so we will just 
+		click on "I'm Done!".
+
+		<BR/><CENTER><IMG SRC="newserverprofile3.png"/></CENTER></P>
+
+		<P>We are done creating our connection. Next you will see the main 
+		Window of SQL-IDE, which is always the first window you see now that 
+		you have at least one connection set up (to create more connections or
+		change the configuration of the existing connection, select 
+		"Tools-&gt;Configure").</P>
+
+		<H3>SQLIDE Guided Tour</H3>
+
+		<P>So now we are in the main window.
+
+		<BR/><CENTER><IMG SRC="mainwindow.png"/></CENTER></P>
+
+		<P>Double-click on "My Environment". You will see a list of your
+		connections. Double-clicking on a connection connects you (you will se
+		a login dialog) and opens the browser to see the metadata (the list of
+		catalogs, tables and stored procedures).</P>
+
+		<P>Like this you can browse the information on the entire database, and
+		you can see the details of the selected item in the browser at the
+		bottom Information panel.</P>
+
+		<H3>Using the Interactive SQL</H3>
+
+		<P>So now that we've been browsing for a little bit, let's try
+		executing some statements against this database. On the menu, select
+		"Plug-In-&gt;Interactive SQL", which will bring up an interactive
+		window to execute queries against this database connection directly. On
+		the editor side, you will se the interactive SQL window.
+
+		<P>With the interactive SQL Window you can execute queries by simply
+		tyuping in the statement and pressing the "Go" button or Ctrl-Enter.
+		You will see the result set on a table below your query, and a log
+		section at the bottom of the editor.</P>
+
+		<P>Now let's try something interesting. Using the editor, select a
+		numeric ID field in a table you have on your connection and right-click
+		on it. You will now see a list of useful queries that are related to
+		this column. Select a query from the list and it will be automatically
+		typed into the interactive SQL:
+
+		<BR/><CENTER><IMG SRC="interactivesql.png"/></CENTER></P>
+
+		<P>Now press Control-Enter. You will see the results of the data in the
+		bottom.
+
+		<BR/><CENTER><IMG SRC="interactivesqlresultset.png"/></CENTER></P>
+
+		<P>Now, if your database supports it (Postgres and Oracle do,
+		Hypersonic doesn't), you can request for the query to be updatable.
+		Enable updatable and execute the query again. If your database supports
+		it, you will get a message in the log saying "Updatable Resultset
+		obtained". You will also get buttons for insert, delete, commit and
+		rollback.
+
+		<BR/><CENTER><IMG SRC="updatableresultset.png"/></CENTER></P>
+
+		<P Class="Note">Note: In order to get an updatable resultset in oracle,
+		you need to get the Oracle ROWID, which does not come in when importing
+		the tables with an asterisk unless you qualify the tabnle with an
+		alias. The Oracle RowID can be obtained easily by formatting your query
+		like "SELECT U.* FROM MYTABLE U"</P>
+
+		<P>You can navigate up and down the history list of queries you have
+		entered by using Control-Up and Control-Down.</P>
+
+		<P>Something other you can do is this: If you typically type in a query
+		that is very complex, you can save it for posterity and give it a name,
+		and it will appear on the context menu for this connection for whenever
+		you right-click on any of the elements within that connection. For
+		example, below you can see that we have created an interesting Join
+		that shows songs and the bands that play them. We right-click on the
+		selected item on the browser and select "Add this query to
+		[MyConnection]". You will be prompted for a name. I entered "My Songs
+		Join" so I remember it.
+
+		<BR/><CENTER><IMG SRC="addquery.png"/></CENTER></P>
+
+		<P>So for now on, whenever I right-click on the browser inside this
+		connection I have this query as an option:
+
+		<BR/><CENTER><IMG SRC="userquery.png"/></CENTER></P>
+
+		<P>Those are the basics of using SQLIDE. There are other editors
+		in addition to the Interactive SQL, such as a table editor.</P>
+
+		<H2><A NAME="SQL">SQL Reference</A></H2>
+
+		<P>SQL stands for "Structured Query Language". It is a language that
+		most relational databases support in their own way. This section 
+		explains common useful commands you can use.</P>
+
+		<P>SQL Commands sometimes return one (or more) set of results in
+		tabular format, and sometimes don't return anything. The commands
+		themselves are case-insensitive, but the case sensitivity of the object
+		names (in the database) depends on the server you use.</P>
+
+		<H4>Conventions</H4>
+
+		<P>When specifying a syntax, the following conventions are used:</P>
+
+		<UL>
+			<LI>{} - Non-literal entry, non-optional</LI>
+			<LI>[] - Optional section</LI>
+			<LI>.. - Continuation of a pattern</LI>
+		</UL>
+
+		<H4>SELECT</H4>
+
+		<P>Basic Syntax: 
+		<CODE>SELECT {FIELDSPEC} FROM {TABLENAME} [, TABLENAME..]} [WHERE {EXPRESSION}] [ORDER BY {EXPRESSION}</CODE>
+		</P>
+
+		<P>This is the basic command used to return tabular-formatted
+		information from a tablespace. Some databases treat the details a
+		little differently, but in general you select a series of fields
+		(asterisk means all fields) or expressions from a table (or series of
+		tables, if you are specifying a "join"). You can specify a sort order
+		with ORDER BY, and limit the amount of records that are returned with
+		the WHERE clause.</P>
+
+		<P>Examples:
+
+		<BR/><CODE>SELECT * FROM ADDRESSBOOK WHERE LASTNAME = 'Smith'</CODE>
+		<BR/><CODE>SELECT * FROM ADDRESSBOOK ORDER BY LASTNAME, FIRSTNAME</CODE>
+		<BR/><CODE>SELECT * FROM ADDRESSBOOK WHERE LASTNAME LIKE 'M%' ORDER BY CITY, LASTNAME</CODE>
+		</P>
+
+		<H4>UPDATE</H4>
+
+		<P>Basic Syntax: 
+		<CODE>UPDATE {TABLENAME} SET {FIELD} = {EXPRESSION} [WHERE {EXPRESSION}]</CODE>
+		</P>
+
+		<P>This is a command that modifies existing data. Although the WHERE is
+		optional, it is recommended you always use it, since an UPDATE without
+		a where clause will modify all the rows in the table. The command is
+		pretty straightforward and allows you to make individual and bulk
+		updates.</P>
+
+		<P>Examples:
+
+		<BR/><CODE>UPDATE ADDRESSBOOK SET STATE = 'CA' WHERE CITY = 'Los Angeles'</CODE>
+		<BR/><CODE>UPDATE ADDRESSBOOK SET FIRSTNAME = 'Elvis', LASTNAME = 'Presley' WHERE ALIAS = 'The King'</CODE>
+		</P>
+
+		<H4>DELETE</H4>
+
+		<P>Basic Syntax: 
+		<CODE>DELETE FROM {TABLENAME} [WHERE {EXPRESSION}]</CODE>
+		</P>
+
+		<P>This command deletes information from the specified table. As in
+		update, the WHERE clause is optional but you should always use it
+		(ommiting a WHERE clause on a DELETE removes all the data in the
+		table).</P>
+
+		<P>Examples:
+		<BR/><CODE>DELETE FROM ADDRESSBOOK WHERE COMMENTS = 'Annoying Dude'</CODE>
+		</P>
+
+		<H4>INSERT</H4>
+
+		<P>Basic Syntax: 
+		<CODE>INSERT INTO {TABLENAME} [ ( {FIELDS} ) ] VALUES ( {VALUES} )</CODE>
+		<BR/><CODE>INSERT INTO {TABLENAME} [ ( {FIELDS} ) ] SELECT ..</CODE>
+		</P>
+
+		<P>This command inserts new records into the specified table. If you
+		don't specify a list of fields, you need to specify all the values in
+		the order the database has been designed. If you do specify a set of
+		fields, there has to be the same amount of fields than values.</P>
+
+		<P>If you combine the INSERT with a SELECT statement, you can insert
+		several rows at a time.
+
+		<P>Examples:
+		<BR/><CODE>INSERT INTO PERSON_TYPE VALUES ( 1, 'Cool Person' )</CODE>
+		<BR/><CODE>INSERT INTO ADDRESSBOOK ( PERSONID, FIRSTNAME, LASTNAME ) VALUES ( 1, 'Elvis', 'Presley' )</CODE>
+		<BR/><CODE>INSERT INTO ADDRESSBOOK ( PERSONID, FIRSTNAME, LASTNAME ) VALUES ( SELECT PERSONID, FIRSTNAME, LASTNAME FROM ADDRESSBOOK_BACKUP WHERE LASTNAME LIKE 'M%' ) </CODE>
+		</P>
+
+		<P>This is just a few of the basic data manipulation commands you can
+		use. See your database user guide for a complete explanation of the
+		language and instructions specific to your database.</P>
+
+		<H2><A NAME="Plugin">Plugin Descriptions</A></H2>
+		
+		<P>TODO</P>
+
+		<H2><A NAME="Programmer">Programmer's Reference</A></H2>
+
+		<P>TODO</P>
+
+	</BODY>
+</HTML>
