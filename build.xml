@@ -10,7 +10,7 @@
 	<!-- Set some basic values locations -->
 	<property name="Name" value="jsqlide"/>
 	<property name="name" value="jsqlide"/>
-	<property name="version" value="0.0.21"/>
+	<property name="version" value="0.1.5"/>
 
 	<!-- Set some basic directory locations -->
 	<property name="jsqlide.home" value="."/>
@@ -20,7 +20,7 @@
 	<property name="lib.dir" value="lib"/>
 	<property name="src.tests.dir" value="${src.dir}"/>
 	<property name="images.dir" value="com/hackerdude/images"/>
-	<property name="docs.dir" value="docs"/>
+	<property name="docs.dir" value="src/docs"/>
 	<property name="build.dir" value="build"/>
 	<property name="bin.dir" value="${build.dir}/bin"/>
 	<property name="build.classes" value="${build.dir}/classes"/>
@@ -37,6 +37,7 @@
 	<property name="jsqlide.publish.server.name" value="hackerdude.sourceforge.net"/>
 	<property name="jsqlide.publish.server.path" value="/home/groups/h/ha/hackerdude/htdocs/jsqlide/"/>
 	<property name="jsqlide.scp.user.name" value="yoursourceforgename"/>
+	<property name="castor.jar" value="castor-0.9.4.1.jar"/>
 
 	<path id="jsqlide_classpath">
 	 <fileset dir="${lib.dir}">
@@ -114,6 +115,7 @@
 		<copy todir="${build.classes}">
 			<fileset dir="${src.dir}">
 				<include name="**/*.properties"/>
+				<include name="docs/**/*.html"/>
 			</fileset>
 		</copy>
 
@@ -146,6 +148,8 @@
 	<target name="prepare_unjar_cache">
 		<mkdir dir="${unjar.cache}"/>
 		<unjar src="${lib.dir}/xerces.jar" dest="${unjar.cache}"/>
+		<unjar src="${lib.dir}/${castor.jar}" dest="${unjar.cache}"/>
+
 		<echo file="${unjar.cache}/sqlide.properties">
 jsqlide.version=${version}
 </echo>
@@ -164,14 +168,14 @@ jsqlide.version=${version}
 				<attribute name="Implementation-Vendor" value="Hackerdude.com" />
 			</manifest>
 		</jar>
-
 	</target>
 
 	<!-- =================================================================== -->
 	<!-- Creates the binary structure                                        -->
 	<!-- =================================================================== -->
-	<target name="main" depends="jar" description="Creates the binary structure">
-		<mkdir dir="${bin.dir}"/>
+	<target name="main" depends="jar" description="Compiles the SQLIDE jar.">
+
+<!--		<mkdir dir="${bin.dir}"/>
 		<copy todir="${bin.dir}">
 			<fileset dir="${src.bin.dir}"/>
 		</copy>
@@ -179,9 +183,7 @@ jsqlide.version=${version}
 			<fileset dir="${bin.dir}">
 				<patternset refid="chmod.patterns"/>
 			</fileset>
-		</chmod>
-		<fixcrlf srcdir="${bin.dir}" includes="ant,antRun" cr="remove"/>
-		<fixcrlf srcdir="${bin.dir}" includes="*.bat" cr="add"/>
+		</chmod>-->
 	</target>
 
 	<!-- =================================================================== -->

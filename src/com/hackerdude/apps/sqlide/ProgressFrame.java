@@ -63,7 +63,20 @@ public class ProgressFrame extends JFrame {
 	  super(title);
 	  progressPanel = new JPanel();
 	  progressPanel.setLayout( new BoxLayout(progressPanel, BoxLayout.Y_AXIS));
-	  JLabel jb = new JLabel(icon); // new ImageIcon(url) );
+	  JLabel jb = new JLabel(icon) {
+		  public void paint(Graphics graphics) {
+			  super.paint(graphics);
+			  String message = "Version "+ProgramConfig.determineVersion();
+			  graphics.setFont(graphics.getFont().deriveFont(Font.BOLD+Font.ITALIC));
+			  graphics.setColor(Color.red);
+			  Dimension dim = getSize();
+			  int width = graphics.getFontMetrics().stringWidth(message);
+			  int height = graphics.getFontMetrics().getHeight();
+			  int X = dim.width-width-5;
+			  int Y = dim.height-height-3;
+			  graphics.drawString(message, X, Y);
+		  }
+	  };
 	  jb.setAlignmentX(CENTER_ALIGNMENT);
 	  progressPanel.add( jb );
 
@@ -99,6 +112,7 @@ public class ProgressFrame extends JFrame {
 	 * calling this guy every once in a while.
 	 */
 	public void changeMessage( String newMessage ) { progressLabel.setText(newMessage); }
+
 
 }
 
