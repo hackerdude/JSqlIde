@@ -15,12 +15,15 @@ import com.hackerdude.devtools.db.sqlide.*;
 
 public class AboutDialog extends JDialog implements KeyListener {
 
+	public final Action LICENSE_ACTION = sqlide.getInstance().HELP_LICENSE;
+
 	LogoPanel logoPanel = new LogoPanel();
 
 	JLabel label = new JLabel("JSQLIDE V "+ProgramConfig.VERSION_NUMBER);
 	JPanel bottomPanel = new JPanel();
 	JButton btn = new JButton("Ok", ProgramIcons.getInstance().getAppIcon());
-	JButton btnLicense = new JButton(sqlide.getInstance().getLicenseAction());
+	JButton btnLicense = new JButton(LICENSE_ACTION);
+
 	public AboutDialog(JFrame owner) {
 		super(owner);
 		jbInit();
@@ -67,6 +70,7 @@ public class AboutDialog extends JDialog implements KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {}
+
 
 	public static void main(String []args) {
 		AboutDialog dlg = new AboutDialog();

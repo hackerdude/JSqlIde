@@ -56,7 +56,6 @@ public class NewServerWizSelectServerType extends WizardPage {
 	JLabel lblFileName = new JLabel();
 	JTextField fFileName = new JTextField();
 	BorderLayout borderLayout7 = new BorderLayout();
-	JButton btnBrowse = new JButton();
 	JPanel jPanel8 = new JPanel();
 	BorderLayout borderLayout8 = new BorderLayout();
 	JLabel jLabel3 = new JLabel();
@@ -104,81 +103,61 @@ public class NewServerWizSelectServerType extends WizardPage {
 		lblClassName.setText("Class Name: ");
 		lblFileName.setDisplayedMnemonic('F');
 		lblFileName.setLabelFor(fFileName);
-		lblFileName.setText("File Name:");
+		lblFileName.setText("File Name (No path):");
 		fFileName.setToolTipText("");
 		jPanel7.setLayout(borderLayout7);
-		btnBrowse.setFont(new java.awt.Font("Dialog", 1, 10));
-		btnBrowse.setMnemonic('B');
-		btnBrowse.setText("Browse...");
-		btnBrowse.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnBrowse_actionPerformed(e);
-			}
-		});
 
-
-/*      fClassName.addActionListener(new java.awt.event.ActionListener() {
-   public void actionPerformed(ActionEvent ev) {
-   if ( wizard != null ) wizard.updateControlState();
-   }
-   });
-   fFileName.addActionListener(new java.awt.event.ActionListener() {
-   public void actionPerformed(ActionEvent ev) {
-   if ( wizard != null ) wizard.updateControlState();
-   }
-   });*/
 
 		jPanel8.setLayout(borderLayout8);
-   jLabel3.setToolTipText("");
-   jLabel3.setDisplayedMnemonic('S');
-   jLabel3.setLabelFor(fServerTitle);
-   jLabel3.setText("Server Title: ");
-   lblDriverInfo.setHorizontalAlignment(SwingConstants.RIGHT);
-   lblDriverInfo.setText("Driver Version: 0.0");
-   fClassName.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-	   public void propertyChange(PropertyChangeEvent e) {
-		   fClassName_propertyChange(e);
-	   }
-   });
-   jPanel9.setLayout(borderLayout9);
-   jLabel4.setDisplayedMnemonic('D');
-   jLabel4.setLabelFor(fCatalogName);
-   jLabel4.setText("Default Catalog: ");
-   this.add(jPanel1, BorderLayout.NORTH);
-   jPanel1.add(jLabel1, BorderLayout.CENTER);
-   this.add(jPanel2, BorderLayout.CENTER);
-   jPanel2.add(jPanel3,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   jPanel3.add(jLabel2, BorderLayout.WEST);
-   jPanel3.add(cmbServerType, BorderLayout.CENTER);
-   jPanel2.add(jPanel4,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   jPanel4.add(lblHostName, BorderLayout.WEST);
-   jPanel4.add(fHostName, BorderLayout.CENTER);
-   jPanel2.add(jPanel5,     new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   jPanel5.add(lblURL, BorderLayout.WEST);
-   jPanel5.add(fURL, BorderLayout.CENTER);
-   jPanel2.add(jPanel6,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   jPanel6.add(lblClassName, BorderLayout.WEST);
-   jPanel6.add(fClassName, BorderLayout.CENTER);
-   jPanel7.add(lblFileName, BorderLayout.WEST);
-   jPanel7.add(fFileName, BorderLayout.CENTER);
-   jPanel7.add(btnBrowse, BorderLayout.EAST);
-   jPanel2.add(jPanel8,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   jPanel8.add(jLabel3, BorderLayout.WEST);
-   jPanel8.add(fServerTitle, BorderLayout.CENTER);
-   jPanel2.add(lblDriverInfo,     new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-   jPanel2.add(jPanel9,    new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-   jPanel9.add(fCatalogName, BorderLayout.CENTER);
-   jPanel9.add(jLabel4, BorderLayout.WEST);
-   jPanel2.add(jPanel7, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
-		   ,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-   addServerTypes();
+		jLabel3.setToolTipText("");
+		jLabel3.setDisplayedMnemonic('S');
+		jLabel3.setLabelFor(fServerTitle);
+		jLabel3.setText("Server Title: ");
+		lblDriverInfo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDriverInfo.setText("Driver Version: 0.0");
+		fClassName.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent e) {
+				fClassName_propertyChange(e);
+			}
+		});
+		jPanel9.setLayout(borderLayout9);
+		jLabel4.setDisplayedMnemonic('D');
+		jLabel4.setLabelFor(fCatalogName);
+		jLabel4.setText("Default Catalog: ");
+		this.add(jPanel1, BorderLayout.NORTH);
+		jPanel1.add(jLabel1, BorderLayout.CENTER);
+		this.add(jPanel2, BorderLayout.CENTER);
+		jPanel2.add(jPanel3,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel3.add(jLabel2, BorderLayout.WEST);
+		jPanel3.add(cmbServerType, BorderLayout.CENTER);
+		jPanel2.add(jPanel4,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel4.add(lblHostName, BorderLayout.WEST);
+		jPanel4.add(fHostName, BorderLayout.CENTER);
+		jPanel2.add(jPanel5,     new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel5.add(lblURL, BorderLayout.WEST);
+		jPanel5.add(fURL, BorderLayout.CENTER);
+		jPanel2.add(jPanel6,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel6.add(lblClassName, BorderLayout.WEST);
+		jPanel6.add(fClassName, BorderLayout.CENTER);
+		jPanel7.add(lblFileName, BorderLayout.WEST);
+		jPanel7.add(fFileName, BorderLayout.CENTER);
+		jPanel2.add(jPanel8,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel8.add(jLabel3, BorderLayout.WEST);
+		jPanel8.add(fServerTitle, BorderLayout.CENTER);
+		jPanel2.add(lblDriverInfo,     new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		jPanel2.add(jPanel9,    new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+				,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		jPanel9.add(fCatalogName, BorderLayout.CENTER);
+		jPanel9.add(jLabel4, BorderLayout.WEST);
+		jPanel2.add(jPanel7, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+				,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		addServerTypes();
 	}
 
 	/**
@@ -200,10 +179,6 @@ public class NewServerWizSelectServerType extends WizardPage {
 		}
 
 	}
-
-
-
-
 
 	public void setURL(String url) {
 		fURL.setText(url);
@@ -235,6 +210,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 
 	public void updateDriverInfo() {
 		databaseSpec.setDriverClassName(fClassName.getText());
+		if ( fFileName.isEnabled() ) setFileNameDefault();
 		try {
 			Driver drv = (Driver)databaseSpec.resolveDriverClass().newInstance();
 			String driverVersion = "Driver V"+drv.getMajorVersion()+"."+drv.getMinorVersion();
@@ -280,6 +256,11 @@ public class NewServerWizSelectServerType extends WizardPage {
 	public boolean nextPageOK() {
 		String className = fClassName.getText();
 		String fileName = fFileName.getText();
+		boolean ok = true;
+		if ( className.equals("") ) return false;
+		if ( fileName.equals("") ) return false;
+		if ( new File(getFullyQualifiedFileName(fileName)).exists() ) return false;
+
 		return ( ! className.equals("") && ! fileName.equals("") );
 	}
 
@@ -294,7 +275,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 	}
 
 	public void toNextPage() throws VetoWizardPageChange {
-		File selectedFile = new File ( fFileName.getText() );
+		File selectedFile = new File ( getFullyQualifiedFileName(fFileName.getText()) );
 		if (  selectedFile.exists() &&
 			! (JOptionPane.showConfirmDialog(this, "Are you sure you want to overwrite file "+selectedFile.getName()+"?",
 			"Overwrite File?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION ) ) {
@@ -304,16 +285,49 @@ public class NewServerWizSelectServerType extends WizardPage {
 
 	public boolean isFileSelectionEnabled() { return fFileName.isEnabled(); }
 
-	public void enableFileSelection() { fFileName.enable(); btnBrowse.enable(); }
-
-	public void disableFileSelection() { fFileName.disable(); btnBrowse.disable(); }
-
 	void fClassName_propertyChange(PropertyChangeEvent e) {
 		databaseSpec.setDriverClassName(fClassName.getText());
 		updateDriverInfo();
 	}
 	public void setDatabaseSpec(ConnectionConfig newSpec) {
 		databaseSpec = newSpec;
+	}
+
+	public void setFileNameDefault() {
+		fFileName.setText(calculateFileName());
+	}
+
+	public String calculateFileName() {
+		StringBuffer candidate = new StringBuffer();
+		candidate.append(fHostName.getText());
+		String className = fClassName.getText();
+		int ix = className.indexOf(".");
+		String classNameRight = ix>-0?className.substring(ix+1 ):className;
+		ix = classNameRight.indexOf(".");
+		classNameRight = ix>-0?classNameRight.substring(0, ix):classNameRight;
+		candidate.append(".").append(classNameRight);
+		String result = candidate.toString().toLowerCase();
+		result = resolveBaseFbasileNameToFilePath(result);
+		return result;
+	}
+
+	public String resolveBaseFbasileNameToFilePath(String baseFileName) {
+		String fileNameCandidate = baseFileName;
+		String result = getFullyQualifiedFileName(baseFileName);
+		int i=1;
+		while ( new File(result).exists() ) {
+			fileNameCandidate = baseFileName+i++;
+			result = getFullyQualifiedFileName(fileNameCandidate);
+		}
+		return fileNameCandidate;
+	}
+
+	public void setFileNameEnabled(boolean isEnabled) {
+		fFileName.setEnabled(isEnabled);
+	}
+
+	public String getFullyQualifiedFileName(String baseFileName) {
+		return ProgramConfig.getUserProfilePath()+baseFileName+".db.xml"; /** @todo Find dynamic suffix */
 	}
 
 }

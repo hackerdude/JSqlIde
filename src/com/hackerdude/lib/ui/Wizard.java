@@ -39,6 +39,11 @@ import javax.swing.*;
  */
 public class Wizard extends JDialog {
 
+	public final Action ACTION_CANCEL = new CancelAction();
+	public final Action ACTION_PREVIOUS = new PreviousPageAction();
+	public final Action ACTION_NEXT     = new NextPageAction();
+	public final Action ACTION_DONE     = new DoneAction();
+
    // Wizard Elements
    WizardPage[] pages;
    WizardPage currentPage;
@@ -55,11 +60,11 @@ public class Wizard extends JDialog {
    BorderLayout borderLayout3 = new BorderLayout();
    JPanel pnlCurrentPageContainer = new JPanel();
    JPanel jPanel4 = new JPanel();
-   JButton btnNext = new JButton();
-   JButton btnPrev = new JButton();
-   JButton btnDone = new JButton();
+   JButton btnNext = new JButton(ACTION_NEXT);
+   JButton btnPrev = new JButton(ACTION_PREVIOUS);
+   JButton btnDone = new JButton(ACTION_DONE);
    BorderLayout borderLayout4 = new BorderLayout();
-   JButton btnCancel = new JButton();
+   JButton btnCancel = new JButton(ACTION_CANCEL);
    JPanel jPanel2 = new JPanel();
 
 	public static int OK = 0;
@@ -79,22 +84,37 @@ public class Wizard extends JDialog {
    /**
     * Creates a new Wizard with the specified title and introductory text.
     */
-   public Wizard(String title, String introText, boolean modal) {
-      this(title, title, introText, modal);
+   public Wizard(JFrame owner, String title, String introText, boolean modal) {
+      this(owner, title, title, introText, modal);
    }
 
    /**
     * Create a new Wizard, with the specified window title, large font
     * title, and an introductory text.
     */
-   public Wizard(String windowTitle, String title, String introText, boolean modal) {
-	this();
+   public Wizard(JFrame owner, String windowTitle, String title, String introText, boolean modal) {
+	super(owner);
+	try {
+		jbInit();
+	}
+	catch (Exception ex) {
+		ex.printStackTrace();
+	}
 	this.setModal(modal);
 	taPageText.setText(introText);
 	lblWizardTitle.setText(title);
 	setTitle(windowTitle);
 	this.updateControlState();
    }
+
+   public void setIntroText(String introText) {
+	   taPageText.setText(introText);
+   }
+
+   public void setWizardTitle(String wizardTitle) {
+	   lblWizardTitle.setText(wizardTitle);
+   }
+
 
    /**
     * This method loads the pages into the wizard. Feed it
@@ -154,12 +174,6 @@ public class Wizard extends JDialog {
       btnCancel.setFont(new java.awt.Font("Dialog", 1, 11));
       btnCancel.setMnemonic('C');
       btnCancel.setText("Cancel");
-      btnCancel.addActionListener(new java.awt.event.ActionListener() {
-
-         public void actionPerformed(ActionEvent e) {
-            btnCancel_actionPerformed(e);
-         }
-      });
       this.getContentPane().add(jPanel1, BorderLayout.NORTH);
       jPanel1.add(btnWizardIcon, BorderLayout.WEST);
       jPanel1.add(taPageText, BorderLayout.CENTER);
@@ -171,15 +185,11 @@ public class Wizard extends JDialog {
       jPanel4.add(btnDone, null);
       pnlBottomBar.add(jPanel2, BorderLayout.WEST);
       jPanel2.add(btnCancel, null);
-      ActionListener buttonListener = new ControlButtonsAL();
-      btnPrev.addActionListener(buttonListener);
-      btnNext.addActionListener(buttonListener);
-      btnDone.addActionListener(buttonListener);
       this.getContentPane().add(pnlCurrentPageContainer, BorderLayout.CENTER);
    }
 
    public static void main(String[] args) {
-      Wizard wiz = new Wizard("Create a new Database Server",
+      Wizard wiz = new Wizard(null, "Create a new Database Server",
           "This wizard will help you create a new Database Entry.\n"
           +"\nRayando el sol, desesperacion, es mas facil llegar al sol que a tu corazon", true
           );
@@ -202,10 +212,6 @@ public class Wizard extends JDialog {
     * Set the title of the window that holds the wizard.
     */
    public void setWindowTitle(String windowTitle) { super.setTitle(windowTitle); }
-   /**
-    * Set the large font title of the wizard.
-    */
-   public void setWizardTitle(String title) { lblWizardTitle.setText(title); }
 
    /**
     * This method updates the logic enabled/disabled state of
@@ -260,29 +266,40 @@ public class Wizard extends JDialog {
       updateControlState();
    }
 
-	private class ControlButtonsAL implements ActionListener {
 
-		public void actionPerformed(ActionEvent ev) {
-		      String actionCommand = ev.getActionCommand();
-		      if ( actionCommand.equals("Prev") ) {
-			      try {
-				      currentPage.toPreviousPage();
-				      setCurrentPage(currentPageNo-1);
-				} catch ( VetoWizardPageChange exc ) {}
-		      }
-		      if ( actionCommand.equals("Next") ) {
-				try {
-				      currentPage.toNextPage();
-				      setCurrentPage(currentPageNo+1);
-				} catch ( VetoWizardPageChange exc ) {}
-		      }
-		      if ( actionCommand.equals("Done") ) {
-			      result = OK;
-				doneWizard();
-		      }
-		}
-	}
+   private class DoneAction extends AbstractAction {
+	   public void actionPerformed(ActionEvent evt) {
+		   result = OK;
+		   doneWizard();
+	   }
+   }
 
+
+   private class NextPageAction extends AbstractAction {
+	   public void actionPerformed(ActionEvent evt) {
+		   try {
+			   currentPage.toNextPage();
+			   setCurrentPage(currentPageNo+1);
+		   }
+		   catch (VetoWizardPageChange ex) {
+
+		   }
+	   }
+   }
+
+
+   private class PreviousPageAction extends AbstractAction {
+	   public void actionPerformed(ActionEvent evt) {
+		   try {
+			   currentPage.toPreviousPage();
+			   setCurrentPage(currentPageNo-1);
+
+		   }
+		   catch (VetoWizardPageChange ex) {
+
+		   }
+	   }
+   }
 
    /**
     * This method is called when the Done button is
@@ -292,9 +309,11 @@ public class Wizard extends JDialog {
    public void doneWizard() {
    }
 
-   void btnCancel_actionPerformed(ActionEvent e) {
-	result = CANCEL;
-     setVisible(false);
+   class CancelAction extends AbstractAction {
+	   public void actionPerformed(ActionEvent e) {
+		   result = CANCEL;
+		   setVisible(false);
+	   }
    }
 
 

@@ -74,25 +74,25 @@ public class sqlide  {
 
 	private IDEVisualPluginIF rightIdePanel;
 
-	private final Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
-	private final Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
-	private final Action FILE_EXIT = new ActionProgramExit();
-	private final Action EDIT_CUT  = new ActionSQLIDE("Cut", ProgramIcons.getInstance().findIcon("images/Cut.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false), KeyEvent.VK_T);
-	private final Action EDIT_COPY = new ActionSQLIDE("Copy", ProgramIcons.getInstance().findIcon("images/Copy.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false), KeyEvent.VK_C);
-	private final Action EDIT_PASTE = new ActionSQLIDE("Paste", ProgramIcons.getInstance().findIcon("images/Paste.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false), KeyEvent.VK_P);
-	private final Action TOOLS_CONFIGURE = new ActionToolsConfigure();
-	private final Action VIEW_BROWSER = new ActionSQLIDE("Browser", ProgramIcons.getInstance().getServerIcon(), KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK, false), KeyEvent.VK_B);
-	private final Action PLUGIN_CLOSE = new ActionPluginClose();
-	private final Action SELECT_LEFT = new ActionSelectLeftPanel();
-	private final Action SELECT_RIGHT = new ActionSelectRightPanel();
+	public final Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
+	public final Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
+	public final Action FILE_EXIT = new ActionProgramExit();
+	public final Action EDIT_CUT  = new ActionSQLIDE("Cut", ProgramIcons.getInstance().findIcon("images/Cut.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false), KeyEvent.VK_T);
+	public final Action EDIT_COPY = new ActionSQLIDE("Copy", ProgramIcons.getInstance().findIcon("images/Copy.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false), KeyEvent.VK_C);
+	public final Action EDIT_PASTE = new ActionSQLIDE("Paste", ProgramIcons.getInstance().findIcon("images/Paste.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false), KeyEvent.VK_P);
+	public final Action TOOLS_CONFIGURE = new ActionToolsConfigure();
+	public final Action VIEW_BROWSER = new ActionSQLIDE("Browser", ProgramIcons.getInstance().getServerIcon(), KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK, false), KeyEvent.VK_B);
+	public final Action PLUGIN_CLOSE = new ActionPluginClose();
+	public final Action SELECT_LEFT = new ActionSelectLeftPanel();
+	public final Action SELECT_RIGHT = new ActionSelectRightPanel();
 
-	private final Action HELP_CHANGES   = new ActionHelpChanges();
-	private final Action HELP_ABOUT     = new ActionHelpAbout();
-	private final Action HELP_README    = new ActionHelpReadme();
-	private final Action HELP_PAYING    = new ActionHelpPaying();
-	private final Action HELP_TO_DO     = new ActionHelpTodo();
-	private final Action HELP_KNOWNBUGS = new ActionHelpBugs();
-	private final Action PLUGIN_CONTROL = new ActionPluginControl();
+	public final Action HELP_CHANGES   = new ActionHelpChanges();
+	public final Action HELP_ABOUT     = new ActionHelpAbout();
+	public final Action HELP_README    = new ActionHelpReadme();
+	public final Action HELP_PAYING    = new ActionHelpPaying();
+	public final Action HELP_TO_DO     = new ActionHelpTodo();
+	public final Action HELP_KNOWNBUGS = new ActionHelpBugs();
+	public final Action PLUGIN_CONTROL = new ActionPluginControl();
 
 	public final Action HELP_LICENSE = new ActionHelpLicense();
 
@@ -272,9 +272,13 @@ public class sqlide  {
 	public static void initializeUI() {
 		// Set the Look-and-Feel
 		try {
-			UIManager.setLookAndFeel(ProgramConfig.getInstance().getUILookandFeelClass());
-			SwingUtilities.updateComponentTreeUI(frame);
-			frame.pack();
+			String lookAndFeelClass = ProgramConfig.getInstance().getUILookandFeelClass();
+			UIManager.setLookAndFeel(lookAndFeelClass);
+			if ( frame != null ) {
+				SwingUtilities.updateComponentTreeUI(frame);
+				frame.pack();
+			}
+
 		} catch (Exception exc) {
 			System.err.println("Error: Could not load LookAndFeel: " + ProgramConfig.getInstance().getUILookandFeelClass());
 		}
@@ -287,7 +291,7 @@ public class sqlide  {
 	 */
 	public static void main(String s[]) {
 
-
+		initializeUI();
 		instance = new sqlide();
 		// Create the sqlide and put it on a frame.
 		frame.addWindowListener(new WindowAdapter() {
@@ -705,8 +709,6 @@ public class sqlide  {
 			}
 		}
 	}
-
-	public Action getLicenseAction() { return HELP_LICENSE; }
 
 	public void requestAddSubNodes(NodeIDEBase parentNode) {
 		runningPlugins.requestAddSubNodes(parentNode);

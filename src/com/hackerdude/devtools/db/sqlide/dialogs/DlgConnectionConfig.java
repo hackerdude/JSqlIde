@@ -40,6 +40,7 @@ import java.lang.Exception.*;
 import java.io.*;
 import javax.swing.event.*;
 import com.hackerdude.devtools.db.sqlide.ProgramConfig;
+import com.hackerdude.swing.SwingUtils;
 
 /**
  * Dialog to configure the database connection profile
@@ -133,13 +134,9 @@ public class DlgConnectionConfig extends JDialog {
 		DlgConnectionConfig configuration = new DlgConnectionConfig( frame , s );
 		configuration.setModal(true);
 		configuration.setTitle("Database Spec: "+s.getPoliteName());
-		Dimension screen = configuration.getToolkit().getScreenSize();
 		configuration.pack();
-		Dimension configDim = configuration.getSize();
-
-		int x = new Double(( screen.getWidth() - configDim.getWidth() )/ 2).intValue();
-		int y = new Double((screen.getHeight() - configDim.getHeight()) / 2).intValue();
-		configuration.setLocation(x,y);
+		Point location = SwingUtils.getCenteredWindowPoint(configuration);
+		configuration.setLocation(location);
 		configuration.setVisible(true);
 	}
 
@@ -158,6 +155,9 @@ public class DlgConnectionConfig extends JDialog {
 /*
 
   $Log$
+  Revision 1.2  2002/08/16 16:39:47  davidmartinez
+  Lots of fixes around dialogs and new server wizard.
+
   Revision 1.1  2002/08/14 16:40:07  davidmartinez
   Refactored- Renamed DatabaseSpec to ConnectionConfig, and dialogs as well.
 
