@@ -24,25 +24,33 @@
 package com.hackerdude.devtools.db.sqlide.dialogs;
 
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 
 import com.hackerdude.devtools.db.sqlide.*;
+import com.hackerdude.swing.picklist.font.FontPickListDialog;
 
 public class DlgPanelEditorPage extends JPanel {
 
-   static String[] fontFamilyNames;
+	final Action ACTION_CHANGE_SQLCODEFONT = new ActionChangeSQLFont();
+	final Action ACTION_CHANGE_RESULTSETFONT = new ActionChangeResultSetFont();
+
     BorderLayout borderLayout1 = new BorderLayout();
     JPanel jPanel1 = new JPanel();
     GridBagLayout gridBagLayout1 = new GridBagLayout();
     JPanel pnTopPane2;
-    JTextField cbSQLFontSize = new JTextField();
-    JLabel lblSQLFontSize;
-    JComboBox cbSQLFontName = new JComboBox();
+    FontDescriptionLabel lblResultSetFontDescription;
     JPanel pnTopPane;
-    JLabel lblSQLFontName;
+    FontDescriptionLabel lblSqlFontDescription;
     BorderLayout borderLayout2 = new BorderLayout();
     BorderLayout borderLayout3 = new BorderLayout();
+    private JButton btnChangeSQLCodeFont = new JButton(ACTION_CHANGE_SQLCODEFONT);
+    private JButton btnChange = new JButton(ACTION_CHANGE_RESULTSETFONT);
+    private JLabel lblAppFonts = new JLabel();
+
+	private Font currentResultSetFont;
+	private Font currentSQLFont;
 
     public DlgPanelEditorPage() {
 
@@ -53,50 +61,123 @@ public class DlgPanelEditorPage extends JPanel {
 
    public void jbInit() {
       pnTopPane2 = new JPanel();
-        lblSQLFontSize = new JLabel("SQL Code Font Size: ");
+        lblResultSetFontDescription = new FontDescriptionLabel("ResultSet Font: ");
         pnTopPane = new JPanel();
-        lblSQLFontName = new JLabel("SQL Code Font Name: ");
+        lblSqlFontDescription = new FontDescriptionLabel("SQL Code Font: ");
         this.addFocusListener(new java.awt.event.FocusAdapter() {
       });
       this.setLayout(borderLayout1);
         jPanel1.setLayout(gridBagLayout1);
         pnTopPane2.setLayout(borderLayout2);
         pnTopPane.setLayout(borderLayout3);
-        cbSQLFontSize.setMinimumSize(new Dimension(15, 21));
+        btnChangeSQLCodeFont.setText("Change...");
+        btnChange.setText("Change...");
+        lblResultSetFontDescription.setText("ResultSet: ");
+        lblSqlFontDescription.setText("SQL Code: ");
+        lblAppFonts.setHorizontalAlignment(SwingConstants.CENTER);
+        lblAppFonts.setHorizontalTextPosition(SwingConstants.LEFT);
+        lblAppFonts.setText("Application Fonts: ");
         this.add(jPanel1,  BorderLayout.CENTER);
-        pnTopPane2.add(lblSQLFontSize,  BorderLayout.WEST);
-        pnTopPane2.add(cbSQLFontSize, BorderLayout.CENTER);
-        jPanel1.add(pnTopPane,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+        pnTopPane2.add(lblResultSetFontDescription,  BorderLayout.WEST);
+        jPanel1.add(pnTopPane,    new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-        pnTopPane.add(lblSQLFontName, BorderLayout.CENTER);
-        pnTopPane.add(cbSQLFontName, BorderLayout.EAST);
-        jPanel1.add(pnTopPane2,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+        pnTopPane.add(lblSqlFontDescription, BorderLayout.CENTER);
+        jPanel1.add(pnTopPane2,   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnTopPane.add(btnChangeSQLCodeFont,  BorderLayout.EAST);
+        pnTopPane2.add(btnChange, BorderLayout.EAST);
+        jPanel1.add(lblAppFonts,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
 
-    };
-
-	public void updateFonts() {
-		boolean shouldUpdateConfig = false;
-		if ( fontFamilyNames == null ) {
-		 shouldUpdateConfig = true;
-		 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		 fontFamilyNames = ge.getAvailableFontFamilyNames();
-		}
-		if ( cbSQLFontName.getItemCount() < 1 ) for ( int f=0; f<fontFamilyNames.length; f++ ) cbSQLFontName.addItem(fontFamilyNames[f]);
-		if ( shouldUpdateConfig ) readFromModel();
-
-	}
+    }
 
 
     public void readFromModel() {
-		int i;
-		for ( i=0; i<cbSQLFontName.getItemCount(); i++) {
-			if ( cbSQLFontName.getItemAt(i).equals(ProgramConfig.getInstance().getSQLFontName()) ) {
-				cbSQLFontName.setSelectedIndex(i);
-			}
+		String fontName = ProgramConfig.getInstance().getSQLFontName();
+		int fontSize = ProgramConfig.getInstance().getSQLFontSize();
+		currentSQLFont = new Font(fontName, Font.PLAIN, fontSize);
+		currentResultSetFont = currentSQLFont;
+	}
+
+
+	public void applyToModel() {
+		/** @todo Implement */
+/*		Object selectedFontName = pgEditor.cbSQLFontName.getSelectedItem();
+		String selectedFontSize = pgEditor.cbSQLFontSize.getText();
+		String fontName = null;
+		int fontSize=-1;
+		if ( selectedFontName != null ) fontName = selectedFontName.toString();
+		try {
+			if ( selectedFontSize != null ) fontSize = Integer.parseInt(selectedFontSize);
+		} catch ( NumberFormatException exc ) {
+			System.out.println("[DlgIDEConfigure] Could not interpret font size of "+selectedFontSize+". using 10 as default");
+			fontSize = 10;
 		}
-		cbSQLFontSize.setText(Integer.toString(ProgramConfig.getInstance().getSQLFontSize()));
+
+		if ( fontName != null ) ProgramConfig.getInstance().setSQLFontName( fontName );
+		if ( selectedFontSize != null ) ProgramConfig.getInstance().setSQLFontSize( fontSize );
+*/
+
+	}
+
+	class FontDescriptionLabel extends JLabel {
+
+		Font fontToDescribe;
+
+		public FontDescriptionLabel(String text) {
+			super(text);
+		}
+
+		public void setFontToDescribe(Font newFont) {
+			fontToDescribe = newFont;
+			updateUI();
+		}
+
+		public Font getFontToDescribe() { return fontToDescribe; }
+
+		public String getText() {
+			String text = super.getText();
+			text = text+getFontDescription();
+			return text;
+		}
+
+		public String getFontDescription() {
+			if ( fontToDescribe == null ) return "<No font defined>";
+			String	strStyle;
+
+			if (fontToDescribe.isBold()) {
+				strStyle = fontToDescribe.isItalic() ? "bold+italic" : "bold";
+			} else {
+				strStyle = fontToDescribe.isItalic() ? "italic" : "plain";
+			}
+
+			String result = fontToDescribe.getName() +", "+strStyle + ", " + fontToDescribe.getSize()+" pt";
+			return result;
+		}
+	}
+
+	class ActionChangeSQLFont extends AbstractAction {
+		public ActionChangeSQLFont() {
+		}
+
+		public void actionPerformed(ActionEvent evt) {
+			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change SQL Editor Font", "Compose a new Font for the SQL Editor", currentSQLFont);
+			if ( newFont != null ) currentSQLFont = newFont;
+			lblSqlFontDescription.setFontToDescribe(newFont);
+		}
+	}
+
+
+	class ActionChangeResultSetFont extends AbstractAction {
+		public ActionChangeResultSetFont() {
+		}
+
+		public void actionPerformed(ActionEvent evt) {
+			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change ResultSet Font", "Compose a new font for the ResultSet", currentResultSetFont);
+			if ( newFont != null ) currentResultSetFont = newFont;
+			lblResultSetFontDescription.setFontToDescribe(newFont);
+		}
 	}
 
 }

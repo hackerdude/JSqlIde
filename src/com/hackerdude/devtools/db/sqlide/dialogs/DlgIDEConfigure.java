@@ -122,24 +122,9 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	 * This takes the configuration object and calls the methods to change
 	 * things according to what has been entered on the widgets.
 	 */
-	public void applyConfiguration() {
+	public void applyToModel() {
 
-		// Apply all the configuration changes.
-		Object selectedFontName = pgEditor.cbSQLFontName.getSelectedItem();
-		String selectedFontSize = pgEditor.cbSQLFontSize.getText();
-		String fontName = null;
-		int fontSize=-1;
-		if ( selectedFontName != null ) fontName = selectedFontName.toString();
-		try {
-			if ( selectedFontSize != null ) fontSize = Integer.parseInt(selectedFontSize);
-		} catch ( NumberFormatException exc ) {
-			System.out.println("[DlgIDEConfigure] Could not interpret font size of "+selectedFontSize+". using 10 as default");
-			fontSize = 10;
-		}
-
-		if ( fontName != null ) ProgramConfig.getInstance().setSQLFontName( fontName );
-		if ( selectedFontSize != null ) ProgramConfig.getInstance().setSQLFontSize( fontSize );
-
+		pgEditor.applyToModel();
 		ProgramConfig.getInstance().setUILookandFeel( pgGeneral.cbLookFeel.getSelectedItem().toString() );
 		ProgramConfig.getInstance().saveConfiguration();
 
@@ -167,6 +152,8 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 		pgServers.readFromModel();
 
 	}
+
+
 
 	// Quick-Test this dialog
 	public static void main(String s[]) {
@@ -197,7 +184,6 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	void tbPane_stateChanged(ChangeEvent e) {
 		if ( tbPane.getSelectedComponent() == pgEditor ) {
 			this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			pgEditor.updateFonts();
 			this.setCursor(Cursor.getDefaultCursor());
 		}
 	}
@@ -206,7 +192,7 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	class ActionOK extends AbstractAction {
 		public ActionOK() { super("OK", ProgramIcons.getInstance().findIcon("images/Check.gif")); }
 		public void actionPerformed(ActionEvent ev) {
-			applyConfiguration();
+			applyToModel();
 			result = OK;
 			hide();
 		}

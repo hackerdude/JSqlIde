@@ -2,6 +2,7 @@ package com.hackerdude.swing.picklist.font;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.util.*;
 
 public class FontPickListPanel extends JPanel {
@@ -9,6 +10,10 @@ public class FontPickListPanel extends JPanel {
 	private FontNamesListModel fontNamesModel = new FontNamesListModel();
 	private FontSizesListModel fontSizesModel = new FontSizesListModel();
 	private FontStylesModel    fontStylesModel = new FontStylesModel();
+
+	final UpdateFontSelectionListener selectionListener = new UpdateFontSelectionListener();
+
+	private boolean inUpdate = false;
 
     private BorderLayout borderLayout1 = new BorderLayout();
     private JPanel pnlCenterPanel = new JPanel();
@@ -27,7 +32,7 @@ public class FontPickListPanel extends JPanel {
     private JPanel pnlSizePanel = new JPanel();
     private BorderLayout borderLayout4 = new BorderLayout();
     private JLabel lblFontSizes = new JLabel();
-    private JTextField jTextField1 = new JTextField();
+    private JTextField fldSize = new JTextField();
     private JScrollPane jScrollPane1 = new JScrollPane();
     private JList lstFontNames = new JList();
     private JScrollPane jScrollPane2 = new JScrollPane();
@@ -38,13 +43,16 @@ public class FontPickListPanel extends JPanel {
     private JList lstStyles = new JList();
     private JLabel lblStyle = new JLabel();
 
+
     public FontPickListPanel() {
         try {
             jbInit();
 			lstFontNames.setModel(fontNamesModel);
 			lstSize.setModel(fontSizesModel);
 			lstStyles.setModel(fontStylesModel);
-
+			lstFontNames.addListSelectionListener(selectionListener);
+			lstSize.addListSelectionListener(selectionListener);
+			lstStyles.addListSelectionListener(selectionListener);
         }
         catch(Exception ex) {
             ex.printStackTrace();
@@ -65,16 +73,16 @@ public class FontPickListPanel extends JPanel {
         pnlSizePanel.setLayout(borderLayout4);
         lblFontSizes.setDisplayedMnemonic('Z');
         lblFontSizes.setText("Size:");
-        jTextField1.setText("11");
+        fldSize.setText("11");
         pnlStyle.setLayout(borderLayout5);
         lblStyle.setDisplayedMnemonic('T');
         lblStyle.setText("Style:");
-        this.add(pnlCenterPanel, BorderLayout.CENTER);
-        this.add(pnlPreview,  BorderLayout.SOUTH);
+        this.add(pnlCenterPanel,  BorderLayout.NORTH);
+        this.add(pnlPreview,  BorderLayout.CENTER);
         pnlPreview.add(lblPreview, BorderLayout.NORTH);
         pnlPreview.add(scrollPreview,  BorderLayout.CENTER);
         scrollPreview.getViewport().add(taPreview, null);
-        this.add(pnlTopPanel, BorderLayout.NORTH);
+        this.add(pnlTopPanel, BorderLayout.SOUTH);
         pnlCenterPanel.add(pnlFontNames,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         pnlFontNames.add(lblFontName,  BorderLayout.NORTH);
@@ -84,7 +92,7 @@ public class FontPickListPanel extends JPanel {
             ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 30, 0));
         pnlFontSizes.add(pnlSizePanel, BorderLayout.NORTH);
         pnlSizePanel.add(lblFontSizes,  BorderLayout.WEST);
-        pnlSizePanel.add(jTextField1,  BorderLayout.CENTER);
+        pnlSizePanel.add(fldSize,  BorderLayout.CENTER);
         pnlFontSizes.add(jScrollPane2,  BorderLayout.CENTER);
         pnlCenterPanel.add(pnlStyle, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
@@ -102,10 +110,11 @@ public class FontPickListPanel extends JPanel {
 		/** @todo Implement */
 	}
 
-	public Font getFont() {
+	public Font getCurrentFont() {
 		/** @todo Implement */
 		String fontName = (String)lstFontNames.getSelectedValue();
 		Integer fontSize = (Integer)lstSize.getSelectedValue();
+		if ( fontSize == null ) fontSize = new Integer(10);
 		int fontStyle = getFontStyle((String)lstStyles.getSelectedValue());
 		return new Font(fontName, fontStyle, fontSize.intValue());
 	}
@@ -173,17 +182,40 @@ public class FontPickListPanel extends JPanel {
 		return result;
 	}
 
-	public static void main(String[] args) {
-		FontPickListPanel panel = new FontPickListPanel();
-		JDialog dlg = new JDialog();
-		dlg.getContentPane().add(panel);
-		dlg.pack();
-		dlg.show();
+	public void updateFontPreview() {
+		if ( inUpdate ) return;
+		Font currentFont = getCurrentFont();
+		taPreview.setFont(currentFont);
 	}
 
-	public void updateFontPreview() {
-		Font currentFont = getFont();
-		taPreview.setFont(currentFont);
+	class UpdateFontSelectionListener implements ListSelectionListener {
+		public void valueChanged(ListSelectionEvent evt) {
+			if ( inUpdate ) return;
+			try {
+				updateFontPreview();
+				inUpdate = true;
+				Object size = lstSize.getSelectedValue();
+				if ( size != null )
+				fldSize.setText(size.toString());
+			}
+			finally {
+				inUpdate = false;
+			}
+		}
+	}
+
+	public void setStyleEnabled(boolean styleEnabled) {
+		pnlStyle.setEnabled(styleEnabled);
+		lstStyles.setEnabled(styleEnabled);
+	}
+
+	public void setCurrentFont(Font currentFont) {
+		String fontName = currentFont.getName();
+		Integer fontSize = new Integer(currentFont.getSize());
+		Integer fontStyle = new Integer(currentFont.getStyle());
+		lstFontNames.setSelectedValue(fontName, true);
+		lstSize.setSelectedValue(fontSize, true);
+		lstStyles.setSelectedValue(fontStyle, true);
 	}
 
 }
