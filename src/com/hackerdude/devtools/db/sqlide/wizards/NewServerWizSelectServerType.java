@@ -65,6 +65,10 @@ public class NewServerWizSelectServerType extends WizardPage {
 	BorderLayout borderLayout9 = new BorderLayout();
 	JTextField fCatalogName = new JTextField();
 	JLabel jLabel4 = new JLabel();
+    private JLabel lblSQLGeneration = new JLabel();
+    private JCheckBox cbSupportsDotNotation = new JCheckBox();
+    private JPanel pnlSQLGenerationPanel = new JPanel();
+    private GridBagLayout gridBagLayout2 = new GridBagLayout();
 
 
 	public NewServerWizSelectServerType() {
@@ -124,39 +128,48 @@ public class NewServerWizSelectServerType extends WizardPage {
 		jLabel4.setDisplayedMnemonic('D');
 		jLabel4.setLabelFor(fCatalogName);
 		jLabel4.setText("Default Catalog: ");
-		this.add(jPanel1, BorderLayout.NORTH);
+		lblSQLGeneration.setText("SQL Generation:");
+        cbSupportsDotNotation.setText("Dot Notation Supported");
+        pnlSQLGenerationPanel.setLayout(gridBagLayout2);
+        this.add(jPanel1, BorderLayout.NORTH);
 		jPanel1.add(jLabel1, BorderLayout.CENTER);
 		this.add(jPanel2, BorderLayout.CENTER);
-		jPanel2.add(jPanel3,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel2.add(jPanel3,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel3.add(jLabel2, BorderLayout.WEST);
 		jPanel3.add(cmbServerType, BorderLayout.CENTER);
-		jPanel2.add(jPanel4,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel2.add(jPanel4,           new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel4.add(lblHostName, BorderLayout.WEST);
 		jPanel4.add(fHostName, BorderLayout.CENTER);
-		jPanel2.add(jPanel5,     new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
-				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel2.add(jPanel5,           new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel5.add(lblURL, BorderLayout.WEST);
 		jPanel5.add(fURL, BorderLayout.CENTER);
-		jPanel2.add(jPanel6,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-				,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel2.add(jPanel6,           new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel6.add(lblClassName, BorderLayout.WEST);
 		jPanel6.add(fClassName, BorderLayout.CENTER);
 		jPanel7.add(lblFileName, BorderLayout.WEST);
 		jPanel7.add(fFileName, BorderLayout.CENTER);
-		jPanel2.add(jPanel8,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+        jPanel2.add(lblDriverInfo,  new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        jPanel2.add(pnlSQLGenerationPanel,      new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+        pnlSQLGenerationPanel.add(lblSQLGeneration, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnlSQLGenerationPanel.add(cbSupportsDotNotation, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTH, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		jPanel2.add(jPanel8,           new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel8.add(jLabel3, BorderLayout.WEST);
 		jPanel8.add(fServerTitle, BorderLayout.CENTER);
-		jPanel2.add(lblDriverInfo,     new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-				,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		jPanel2.add(jPanel9,    new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
-				,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		jPanel2.add(jPanel9,          new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		jPanel9.add(fCatalogName, BorderLayout.CENTER);
 		jPanel9.add(jLabel4, BorderLayout.WEST);
-		jPanel2.add(jPanel7, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
-				,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
+		jPanel2.add(jPanel7,       new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		addServerTypes();
 	}
 
@@ -203,6 +216,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 			wiz.setProperties(selectedItem.getProperties());
 			wiz.setClassName(selectedItem.getClassName());
 			fCatalogName.setText(selectedItem.getDefaultCatalog());
+			cbSupportsDotNotation.setSelected(selectedItem.supportsSQLDotNotation());
 			updateDriverInfo();
 			wiz.updateControlState();
 		}
@@ -266,7 +280,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 
 	public javax.swing.filechooser.FileFilter getFileFilter() {
 
-		String exFFSuffix = ConnectionConfig.prop_db_configsuffix;
+		String exFFSuffix = ConnectionConfig.PROP_DB_CONFIG_SUFFIX;
 		if ( exFFSuffix.startsWith(".") ) exFFSuffix = exFFSuffix.substring(1);
 		String[] filters = { exFFSuffix };
 		String description = "SQLIDE Configuration Files";

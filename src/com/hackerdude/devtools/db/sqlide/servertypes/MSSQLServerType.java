@@ -13,5 +13,6 @@ public class MSSQLServerType extends ServerType {
 	  public String getClassName() { return "com.microsoft.jdbc.sqlserver.SQLServerDriver"; }
 	  public String getServerTitle() { return "MS SQL Server on Localhost"; }
 	  public String getDefaultCatalog() { return "master"; }
+	  public boolean supportsSQLDotNotation() { return false; }
 
 }

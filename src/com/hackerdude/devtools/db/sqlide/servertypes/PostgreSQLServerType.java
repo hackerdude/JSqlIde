@@ -19,5 +19,6 @@ public class PostgreSQLServerType extends ServerType {
 	  public String getClassName() { return "postgresql.Driver"; }
 	  public String getServerTitle() { return "PostgreSQL on LocalHost"; }
 	  public String getDefaultCatalog() { return "test"; }
+	  public boolean supportsSQLDotNotation() { return true; }
 
 }

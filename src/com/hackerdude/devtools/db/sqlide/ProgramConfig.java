@@ -48,15 +48,18 @@ public class ProgramConfig extends Observable {
 	public final static String VERSION_NUMBER = "0.0.16";
 
 	// Some important basic properties
-	protected static String prop_lookandfeel      = "general.ui.lookandfeel";
-	protected static String prop_savedirectory    = "general.ui.persistence.savedir";
-	protected static String prop_lookandfeelclass = "general.ui.lookandfeel.class";
-	protected static String prop_isqlfontsize     = "general.panel.isql.fontsize";
-	protected static String prop_isqlfontname     = "general.panel.isql.fontname";
-	protected static String prop_isqltableview    = "general.panel.isql.tableview";
-	protected static String prop_isqldefault      = "general.panel.isql.default";
+	public static final String PROP_LOOK_AND_FEEL      = "general.ui.lookandfeel";
+	public static final String PROP_SAVE_DIRECTORY    = "general.ui.persistence.savedir";
+	public static final String PROP_LOOK_AND_FEEL_CLASS = "general.ui.lookandfeel.class";
+	public static final String PROP_SQL_FONT_SIZE     = "general.panel.isql.fontsize";
+	public static final String PROP_SQL_FONT_NAME     = "general.panel.isql.fontname";
+	public static final String PROP_SQL_TABLE_VIEW    = "general.panel.isql.tableview";
+	public static final String PROP_ISQL_BY_DEFAULT      = "general.panel.isql.default";
 
-	static final String propertiesFile = "sqlIDE.properties"; // Main Properties file
+	public static final String PROP_RESULTSET_FONT_SIZE = "general.resultset.font.size";
+	public static final String PROP_RESULTSET_FONT_NAME = "general.resultset.font.name";
+
+	public static final String propertiesFile = "sqlIDE.properties"; // Main Properties file
 	static String defaultdbPropsFile;  // Default DB properties file
 
 	protected Properties userinterface;  // The user interface properties.
@@ -75,13 +78,13 @@ public class ProgramConfig extends Observable {
 	 * returns the current look and feel as a string.
 	 * @return A string specifying the look-and-feel.
 	 */
-	public String getUILookandFeel() {  return(userinterface.getProperty(prop_lookandfeel)); }
+	public String getUILookandFeel() {  return(userinterface.getProperty(PROP_LOOK_AND_FEEL)); }
 
 	/**
 	 * Returns the current look and feel class as a string.
 	 * @return The class name that implements the current look-and-feel.
 	 */
-	public String getUILookandFeelClass() { return(userinterface.getProperty(prop_lookandfeelclass)); }
+	public String getUILookandFeelClass() { return(userinterface.getProperty(PROP_LOOK_AND_FEEL_CLASS)); }
 
 	/**
 	 * Change the look and feel. This method receives a look and feel
@@ -97,44 +100,48 @@ public class ProgramConfig extends Observable {
 			lookandFeelClass = theLooks[lf].getClassName();
 
 		if ( lookandFeelClass != null ) {
-			userinterface.setProperty(prop_lookandfeel, lookandFeel);
-			userinterface.setProperty(prop_lookandfeelclass, lookandFeelClass);
+			userinterface.setProperty(PROP_LOOK_AND_FEEL, lookandFeel);
+			userinterface.setProperty(PROP_LOOK_AND_FEEL_CLASS, lookandFeelClass);
 		}
 		notifyObservers();
 	}
 
-	// Font size and name
-
-	/**
-	 * This function gets the font size for SQL Windows.
-	 * @return An int specifying the size of the font.
-	 */
-	public int getSQLFontSize() { return(Integer.parseInt(userinterface.getProperty(prop_isqlfontsize))); }
-
-	/**
-	 * This function returns the font name for SQL Windows
-	 * @return A String specifying the font name.
-	 */
-	public String getSQLFontName() { return(userinterface.getProperty(prop_isqlfontname)); }
-
-	/**
-	 * Use this method to change the font size. Font size is in points.
-	 * @param fontSize The new font size.
-	 * @see #getSQLFontSize()
-	 */
-	public void setSQLFontSize( int fontSize ) {
-		userinterface.setProperty(prop_isqlfontsize, new Integer(fontSize).toString() );
+	public void setResultSetFont(Font newFont) {
+		String fontName = newFont.getName();
+		int fontSize = newFont.getSize();
+		userinterface.setProperty(PROP_RESULTSET_FONT_NAME, fontName);
+		userinterface.setProperty(PROP_RESULTSET_FONT_SIZE, new Integer(fontSize).toString() );
 		notifyObservers();
 	}
 
-	/**
-	 * Use this method to change the font name.
-	 * @param fontName The new Font Name.
-	 * @see #getSQLFontName()
-	 */
-	public void setSQLFontName(String fontName) {
-		userinterface.setProperty(prop_isqlfontname, fontName);
+	public void setSQLFont(Font newFont) {
+		String fontName = newFont.getName();
+		int fontSize = newFont.getSize();
+		userinterface.setProperty(PROP_SQL_FONT_NAME, fontName);
+		userinterface.setProperty(PROP_SQL_FONT_SIZE, new Integer(fontSize).toString() );
 		notifyObservers();
+	}
+
+	public Font getResultSetFont() {
+		String fontName = userinterface.getProperty(PROP_RESULTSET_FONT_NAME, "Monospaced");
+		int fontSize = 10;
+		try {
+			fontSize = Integer.parseInt(userinterface.getProperty(PROP_RESULTSET_FONT_SIZE));
+		}
+		catch (Throwable ex) {}
+		Font result = new Font(fontName, Font.PLAIN, fontSize);
+		return result;
+	}
+
+	public Font getSQLFont() {
+		String fontName = userinterface.getProperty(PROP_SQL_FONT_NAME, "Monospaced");
+		int fontSize = 10;
+		try {
+			fontSize = Integer.parseInt(userinterface.getProperty(PROP_SQL_FONT_SIZE));
+		}
+		catch (Throwable ex) {}
+		Font result = new Font(fontName, Font.PLAIN, fontSize);
+		return result;
 	}
 
 	/**
@@ -143,7 +150,7 @@ public class ProgramConfig extends Observable {
 	 * @return True if we want to specify a table view.
 	 */
 	public Boolean getSQLUseTableView() {
-		return(new Boolean(userinterface.getProperty(prop_isqltableview).equals("true") ));
+		return(new Boolean(userinterface.getProperty(PROP_SQL_TABLE_VIEW).equals("true") ));
 	};
 
 	/**
@@ -181,8 +188,8 @@ public class ProgramConfig extends Observable {
 			setDefaults(userinterface);
 		}
 
-		defaultdbPropsFile = userinterface.getProperty(ConnectionConfig.prop_db_defaultdb)+ConnectionConfig.prop_db_configsuffix;
-		iSQLbyDefault = userinterface.getProperty(prop_isqldefault).equals(new String("yes"));
+		defaultdbPropsFile = userinterface.getProperty(ConnectionConfig.PROP_DEFAULT_CATALOG)+ConnectionConfig.PROP_DB_CONFIG_SUFFIX;
+		iSQLbyDefault = userinterface.getProperty(PROP_ISQL_BY_DEFAULT).equals(new String("yes"));
 
 		readConnectionConfigs();
 
@@ -193,17 +200,17 @@ public class ProgramConfig extends Observable {
 	 * @param userinterface The Properties item we need to fill out.
 	 */
 	public void setDefaults(Properties userinterface) {
-		userinterface.setProperty(prop_lookandfeel, "metal");
-		userinterface.setProperty(prop_lookandfeelclass, "javax.swing.plaf.metal.MetalLookAndFeel");
-		userinterface.setProperty(prop_isqldefault, "yes");
-		userinterface.setProperty(prop_isqltableview, "true");
-		userinterface.setProperty(prop_isqlfontsize, "12");
-		userinterface.setProperty(prop_isqlfontname, "MonoSpaced");
-		userinterface.setProperty(ConnectionConfig.prop_db_defaultdb, "default");
+		userinterface.setProperty(PROP_LOOK_AND_FEEL, "metal");
+		userinterface.setProperty(PROP_LOOK_AND_FEEL_CLASS, "javax.swing.plaf.metal.MetalLookAndFeel");
+		userinterface.setProperty(PROP_ISQL_BY_DEFAULT, "yes");
+		userinterface.setProperty(PROP_SQL_TABLE_VIEW, "true");
+		userinterface.setProperty(PROP_SQL_FONT_SIZE, "12");
+		userinterface.setProperty(PROP_SQL_FONT_NAME, "MonoSpaced");
+		userinterface.setProperty(ConnectionConfig.PROP_DEFAULT_CATALOG, "default");
 
 		File saveDir = new File(saveDirectory);
 		if ( ! saveDir.exists() ) saveDir.mkdir();
-		userinterface.setProperty(prop_savedirectory, saveDir.toString());
+		userinterface.setProperty(PROP_SAVE_DIRECTORY, saveDir.toString());
 		notifyObservers(userinterface);
 
 	}
@@ -303,7 +310,7 @@ public class ProgramConfig extends Observable {
 	public synchronized void readConnectionConfigs() {
 
 		File findFiles = new File(getUserProfilePath());
-		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(ConnectionConfig.prop_db_configsuffix));
+		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(ConnectionConfig.PROP_DB_CONFIG_SUFFIX));
 		String fileName;
 		ConnectionConfig dbSpec;
 

@@ -46,17 +46,16 @@ public class ConnectionConfig {
 
 	public static final String _ASK_ = "____<ASK>____";
 
-	public static final String prop_db_defaultdb     = "db.defaultdb";
-	public static final String prop_db_configsuffix  = ".db.xml";
-
-	protected Document xmlDatabaseSpec;
+	public static final String PROP_DEFAULT_CATALOG     = "db.defaultdb";
+	public static final String PROP_DB_CONFIG_SUFFIX  = ".db.xml";
 
 	public static final String DEFAULT_DBSPEC = "default";
 	public static final String DBSPEC_SUFFIX = ".db.xml";
 
 	public static final String DEFAULT_DBSPEC_FILENAME = ProgramConfig.getUserProfilePath()+DEFAULT_DBSPEC+DBSPEC_SUFFIX;
 
-	protected Properties connProperties = new Properties();
+	protected Document xmlDatabaseSpec;
+	protected Properties connectionProperties = new Properties();
 
 	protected String fileName;
 	protected String politeName;
@@ -65,12 +64,14 @@ public class ConnectionConfig {
 	protected String defaultCatalog;
 	protected String hostName;
 	protected int maxConnections;
-	protected String urlString;
+	protected String jdbcURL;
 	protected String driverClassName;
 	protected String[] jarFiles;
 	protected String dbIntfClassName = "Database_MSQL";
 	protected boolean jdbcCompliant;
 	protected String userMessage;
+
+	protected boolean supportsDotNotation = false;
 
 	public ConnectionConfig() {
 	   this(DEFAULT_DBSPEC_FILENAME);
@@ -94,13 +95,13 @@ public class ConnectionConfig {
 	public void setDefaultCatalog(String newValue) { defaultCatalog = newValue; }
 
 	public Properties getProperties() {
-	  return connProperties;
+	  return connectionProperties;
 	}
 
 	/**
 	 * Retrieves the file name of the driver jar file.
 	 */
-	public String[] getJarFileNames() { return jarFiles; };
+	public String[] getJarFileNames() { return jarFiles; }
 
 	/**
 	 * Sets the file name of the driver jar file.
@@ -110,7 +111,7 @@ public class ConnectionConfig {
 	/**
 	 * Retrieves the file name of the properties file.
 	 */
-	public String getFileName() { return fileName; };
+	public String getFileName() { return fileName; }
 
 	// Getters and setters for the database configuration.
 
@@ -154,28 +155,36 @@ public class ConnectionConfig {
 	  return jdbcCompliant;
 	}
 
+	/**
+	 * Returns the properties for the connection.
+	 * @return
+	 */
 	public Map getConnectionProperties() {
-	  return connProperties;
+	  return connectionProperties;
 	}
 
+	/**
+	 * Changes the propertties for the connection.
+	 * @param inProperties
+	 */
 	public void setConnectionProperties(Map inProperties) {
-	   connProperties = new Properties();
+	   connectionProperties = new Properties();
 	   Iterator it = inProperties.keySet().iterator();
 	   while ( it.hasNext() ) {
 		  Object obj = it.next();
-		  connProperties.setProperty(obj.toString(), inProperties.get(obj).toString());
+		  connectionProperties.setProperty(obj.toString(), inProperties.get(obj).toString());
 	   }
 	}
 
 	/**
 	 * Returns the URL
 	 */
-	public String getURL() { return urlString; }
+	public String getJDBCURL() { return jdbcURL; }
 
 	/**
 	 * Changes the URL
 	 */
-	public void   setURL( String aValue )  { urlString = aValue; }
+	public void   setJDBCURL( String aValue )  { jdbcURL = aValue; }
 
 	/**
 	 * Returns the polite name (the name that will show up in
@@ -187,20 +196,20 @@ public class ConnectionConfig {
 	 * This determines the number of connections that will be ready
 	 * for access simultaneously by threads.
 	 */
-	public int getConnections() { return(maxConnections); }
+	public int getMaxConnections() { return(maxConnections); }
 
 	/**
 	 *This changes the number of connections that will be readied
 	 * for access simultaneously by threads.
 	 */
-	public void setConnections(int numConnections) { maxConnections = numConnections; }
+	public void setMaxConnections(int numConnections) { maxConnections = numConnections; }
 
 
 	/**
 	 * Changes the polite name (the name that will show up on the browser)
 	 * for this database profile.
 	 */
-	public void   setPoliteName(String aValue) { politeName = aValue; };
+	public void   setPoliteName(String aValue) { politeName = aValue; }
 
 	/**
 	 * Returns the default user name (which will show up in the login prompt)
@@ -218,16 +227,17 @@ public class ConnectionConfig {
 	 * Returns the interface class (internal class that helps us deal with
 	 * different databases - kind of like a plug in) for this database spec.
 	 */
-	public String getDbIntfClassName() { return dbIntfClassName; };
+	public String getDbIntfClassName() { return dbIntfClassName; }
+
 	/**
 	 * Changes the interface class (internal class that helps us deal with
 	 * different databases - kind of like a plug in) for this database spec.
 	 */
-	public void setDbIntfClassName(String aValue) { dbIntfClassName = aValue; };
+	public void setDbIntfClassName(String aValue) { dbIntfClassName = aValue; }
 
-   public String toString() {
-	  return(getPoliteName());
-   };
+	public String toString() {
+		return(getPoliteName());
+	}
 
 
 	public static void main(String[] args) {
@@ -266,6 +276,14 @@ public class ConnectionConfig {
 		}
 		System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
 		return theClass;
+	}
+
+	public boolean isSupportsDotNotation() {
+		return supportsDotNotation;
+	}
+
+	public void setSupportsDotNotation(boolean supportsDotNotation) {
+		this.supportsDotNotation = supportsDotNotation;
 	}
 
 }

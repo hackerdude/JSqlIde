@@ -14,4 +14,7 @@ public abstract class ServerType {
 	public abstract String getClassName();
 	public abstract String getServerTitle();
 	public abstract String getDefaultCatalog();
+
+	public abstract boolean supportsSQLDotNotation();
+
 }

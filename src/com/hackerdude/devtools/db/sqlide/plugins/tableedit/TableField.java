@@ -10,13 +10,10 @@ public TableFieldType fieldType;
 public Integer fieldLen;
 public Boolean canBeNull;
 
-	/**
-	 * Constructor. It adds a CHAR(10) by default.
-	 */
 public TableField() {
 	fieldName = "";
-		fieldType = new TableFieldType("CHAR");
-	fieldLen  = new Integer(10);
+	fieldType = null;
+	fieldLen  = null;
 	canBeNull = new Boolean(false);
 }
 

@@ -39,6 +39,10 @@ public class ConnectionJDBCPanel extends JPanel {
     private BorderLayout borderLayout3 = new BorderLayout();
     private JLabel lblURLForm = new JLabel();
     private JTextField fDisplayName = new JTextField();
+    private JLabel lblSQLGeneration = new JLabel();
+    private JPanel pnlSQLGenerationPanel = new JPanel();
+    private JCheckBox cbSupportsDotNotation = new JCheckBox();
+    private GridBagLayout gridBagLayout2 = new GridBagLayout();
 
     public ConnectionJDBCPanel() {
         try {
@@ -84,6 +88,9 @@ public class ConnectionJDBCPanel extends JPanel {
         jLabel1.setText("Default Catalog: ");
         lblURLForm.setLabelFor(fURLForm);
         lblURLForm.setText("URL:");
+        lblSQLGeneration.setText("SQL Generation:");
+        pnlSQLGenerationPanel.setLayout(gridBagLayout2);
+        cbSupportsDotNotation.setText("Dot Notation Supported");
         pnlPoliteName.add(lblPoliteName, BorderLayout.WEST);
         pnlPoliteName.add(fDisplayName, BorderLayout.CENTER);
         jPanel5.add(lblFileName, BorderLayout.WEST);
@@ -95,18 +102,24 @@ public class ConnectionJDBCPanel extends JPanel {
         pnlIDEManager.add(fIDEManager, BorderLayout.CENTER);
         pnlURLForm.add(lblURLForm, BorderLayout.NORTH);
         pnlURLForm.add(fURLForm, BorderLayout.CENTER);
-        pnlJDBC.add(pnlURLForm,  new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+        pnlJDBC.add(pnlURLForm,        new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 250, 0));
-        pnlJDBC.add(pnlDriver,  new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+        pnlJDBC.add(pnlDriver,        new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 250, 0));
-        pnlJDBC.add(pnlIDEManager,  new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+        pnlJDBC.add(pnlIDEManager,        new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 250, 0));
-        pnlJDBC.add(pnlPoliteName,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+        pnlJDBC.add(pnlPoliteName,        new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        pnlJDBC.add(jPanel5,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+        pnlJDBC.add(jPanel5,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-        pnlJDBC.add(jPanel4,  new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+        pnlJDBC.add(jPanel4,        new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnlJDBC.add(pnlSQLGenerationPanel,        new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnlSQLGenerationPanel.add(lblSQLGeneration,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+        pnlSQLGenerationPanel.add(cbSupportsDotNotation, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTH, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
         pnlJDBC.add(lblDriverMessage,  new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 0, 0));
         pnlDriver.add(lblDriver, BorderLayout.WEST);
@@ -127,7 +140,8 @@ public class ConnectionJDBCPanel extends JPanel {
 		databaseSpec.setDefaultCatalog(fDefaultCatalog.getText());
 		databaseSpec.setFileName(fFileName.getText());
 		databaseSpec.setDbIntfClassName(fIDEManager.getText());
-		databaseSpec.setURL(fURLForm.getText());
+		databaseSpec.setJDBCURL(fURLForm.getText());
+		databaseSpec.setSupportsDotNotation(cbSupportsDotNotation.isSelected());
 	}
 
 
@@ -137,7 +151,8 @@ public class ConnectionJDBCPanel extends JPanel {
 		fDefaultCatalog.setText(databaseSpec.getDefaultCatalog());
 		fFileName.setText(databaseSpec.getFileName());
 		fIDEManager.setText(databaseSpec.getDbIntfClassName());
-		fURLForm.setText(databaseSpec.getURL());
+		fURLForm.setText(databaseSpec.getJDBCURL());
+		cbSupportsDotNotation.setSelected(databaseSpec.isSupportsDotNotation());
 		updateMessageLabel();
 	}
 

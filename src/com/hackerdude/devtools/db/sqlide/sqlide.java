@@ -385,7 +385,7 @@ public class sqlide  {
 	public void setRightPanel(IDEVisualPluginIF plugin) {
 		rightIdePanel = plugin;
 		createPanelMenu(plugin);
-		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getSpec().getPoliteName()+")" );
+		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getConnectionConfig().getPoliteName()+")" );
 	}
 
 	public void pack() {

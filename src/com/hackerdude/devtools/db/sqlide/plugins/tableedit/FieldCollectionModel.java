@@ -3,6 +3,7 @@ package com.hackerdude.devtools.db.sqlide.plugins.tableedit;
 import javax.swing.table.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.*;
 import java.util.*;
 import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseProcess;
 import com.hackerdude.devtools.db.sqlide.pluginapi.*;
@@ -56,15 +57,10 @@ public String getTableName() { return(tableName); }
 
 
 public void refreshTypes(JComboBox cbDatabases) {
-cbDataTypeCombo.refreshTypes(cbDatabases,  panel.getDatabaseProcess());
+	cbDataTypeCombo.refreshTypes(cbDatabases,  panel.getDatabaseProcess());
+	cbDataTypeCombo.setSelectedIndex(0);
 }
 
-
-public void insertField( int row ) {
-	fields.add( new TableField() );
-	fireTableDataChanged();
-
-}
 
 public int getRowCount() { return( fields.size() ); }
 
@@ -177,6 +173,7 @@ public String getColumnName(int column) {
 			String currentDB = (String)cbDatabases.getSelectedItem();
 			if ( currentDB == null ) { currentDB = ideprocess.currentCatalog; }
 			types = ideprocess.getSQLTypes(currentDB);
+			if ( types != null ) classFldType = new TableFieldType((String)types.get(0));
 
 			Enumeration en = types.elements();
 			while ( en.hasMoreElements() ) {
@@ -186,6 +183,7 @@ public String getColumnName(int column) {
 		}
 	}
 
+
 	class TableEditDataTypeEditor extends DefaultCellEditor {
 
 		public TableEditDataTypeEditor(JComboBox cb) {
@@ -194,6 +192,18 @@ public String getColumnName(int column) {
 
 		protected void fireEditingStopped() {
 			super.fireEditingStopped();
+		}
+
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column ) {
+
+			Component result = super.getTableCellEditorComponent(table, value, isSelected, row, column);
+			if ( value instanceof TableFieldType ) {
+				TableFieldType selectedField = (TableFieldType)value;
+				cbDataTypeCombo.setSelectedItem(selectedField.fieldType);
+
+			}
+
+			return result;
 		}
 
 	}
