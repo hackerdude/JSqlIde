@@ -1,7 +1,8 @@
 package com.hackerdude.swing.picklist.addremove;
 
-import javax.swing.*;
-import java.util.*;
+import java.util.Vector;
+
+import javax.swing.AbstractListModel;
 
 /**
  * This list model represents the picklist choices.

@@ -1,10 +1,24 @@
 package com.hackerdude.apps.sqlide;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.html.*;
-import java.io.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  * Dialog box that can show a document. Useful for

@@ -1,8 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.movedata.model;
 
-import java.util.Properties;
-import org.w3c.dom.*;
-import org.apache.xerces.dom.*;
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xerces.dom.ElementImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * Represents a Query Statement (anything that returns a resultset, really)

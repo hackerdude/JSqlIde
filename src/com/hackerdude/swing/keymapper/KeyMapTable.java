@@ -10,9 +10,9 @@ package com.hackerdude.swing.keymapper;
 =====================================================================
 */
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.TableModel;
 
 public class KeyMapTable extends JTable
 {

@@ -1,11 +1,15 @@
 package com.hackerdude.swing.widgets;
 
-import javax.swing.*;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.ref.WeakReference;
 import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  * An extension to JMenuItem that follows changes to accelerator keys.

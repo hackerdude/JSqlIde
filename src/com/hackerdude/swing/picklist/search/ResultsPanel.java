@@ -1,11 +1,12 @@
 package com.hackerdude.swing.picklist.search;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 
 /**

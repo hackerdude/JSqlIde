@@ -1,16 +1,30 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemCatalogNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableColumnNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableNode;
 
 /**
  * This non-visual node context plugin feeds to the interactive SQL commands
@@ -150,9 +164,9 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 		InputStream is = ContextCommandRunner.class.getResourceAsStream("context.commands.properties");
 		Properties props = new Properties();
 		props.load(is);
-		Enumeration enum = props.keys();
-		while ( enum.hasMoreElements() ) {
-			String key = (String)enum.nextElement();
+		Enumeration keysEnum = props.keys();
+		while ( keysEnum.hasMoreElements() ) {
+			String key = (String)keysEnum.nextElement();
 			String value = props.getProperty(key);
 			if ( key.endsWith(ICON_SUFFIX) ) {
 				Icon iconValue = ProgramIcons.getInstance().findIcon(value);

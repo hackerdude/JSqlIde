@@ -22,21 +22,18 @@
  */
 package com.hackerdude.apps.sqlide;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.UIManager.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.io.*;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Observable;
+import java.util.Properties;
 
-import com.hackerdude.apps.sqlide.wizards.NewServerWizard;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.apps.sqlide.xml.*;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * The Program Configuration object. This object's job is to maintain

@@ -1,6 +1,6 @@
 package com.hackerdude.apps.sqlide.servertypes;
 
-import java.util.*;
+import java.util.HashMap;
 
 public class MSSQLServerType extends ServerType {
 

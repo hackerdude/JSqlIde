@@ -1,12 +1,24 @@
 package com.hackerdude.apps.sqlide.plugins.tableedit;
 
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import javax.swing.JTable;
-import java.awt.dnd.*;
-import java.awt.datatransfer.*;
-import java.io.*;
-import java.util.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
+
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategoryColumnsNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableColumnNode;
 
 /**
  * Table Column Editor.
@@ -39,9 +51,9 @@ public class TableColumnsEditor extends JTable implements DropTargetListener {
 			NodeIDEBase item = (NodeIDEBase)transferable.getTransferData(NodeIDEItem.localDataFlavor());
 			if ( item instanceof CategoryColumnsNode ) {
 				CategoryColumnsNode columns = (CategoryColumnsNode)item;
-				Enumeration enum = columns.children();
-				while ( enum.hasMoreElements() ) {
-					Object element = enum.nextElement();
+				Enumeration columnsEnum = columns.children();
+				while ( columnsEnum.hasMoreElements() ) {
+					Object element = columnsEnum.nextElement();
 					if ( element instanceof ItemTableColumnNode ) {
 						ItemTableColumnNode node = (ItemTableColumnNode)element;
 						alColumns.add(node);

@@ -6,9 +6,10 @@
  */
 package com.hackerdude.apps.sqlide.dbspecific;
 
-import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
-import java.sql.*;
+import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
 
 public class Database_PSQL implements SQLIDEDBInterface  {
     public boolean supportsUserManagement() {

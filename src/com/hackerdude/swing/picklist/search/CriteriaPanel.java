@@ -1,10 +1,21 @@
 package com.hackerdude.swing.picklist.search;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import com.hackerdude.swing.widgets.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.text.PlainDocument;
+
+import com.hackerdude.swing.widgets.FloatValueDocument;
+import com.hackerdude.swing.widgets.IntegerValueDocument;
 
 /**
  * The Search Criteria section of the generic search panel.

@@ -1,7 +1,9 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
-import javax.swing.Action;
 import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 
 /**

@@ -9,15 +9,18 @@
  */
 package com.hackerdude.apps.sqlide.wizards;
 
-import com.hackerdude.lib.ui.*;
-import java.util.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.HashMap;
+
 import javax.swing.JFrame;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.apps.sqlide.xml.*;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
+import com.hackerdude.lib.ui.Wizard;
+import com.hackerdude.lib.ui.WizardPage;
 
 
 
@@ -86,7 +89,7 @@ public class NewServerWizard extends Wizard {
 	public void doneWizard() {
 		/** @todo Resolve this correctly. fFileName is only a base filename. It no longer has a path or anything. */
 		String baseFileName = pageNewServer.fFileName.getText();
-		String fileName = ProgramConfig.getInstance().getUserProfilePath()+baseFileName+".db.xml";
+		String fileName = ProgramConfig.getUserProfilePath()+baseFileName+".db.xml";
 		databaseSpec.setFileName(fileName);
 		databaseSpec.getJdbc().setUrl(pageNewServer.fURL.getText());
 		databaseSpec.setName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());

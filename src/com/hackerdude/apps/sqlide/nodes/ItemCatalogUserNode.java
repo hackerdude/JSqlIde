@@ -1,6 +1,6 @@
 package com.hackerdude.apps.sqlide.nodes;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 
 /*
  * Catalog User Node.

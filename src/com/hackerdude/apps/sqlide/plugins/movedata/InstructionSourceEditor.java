@@ -1,8 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.movedata;
 
-import java.awt.*;
-import javax.swing.*;
-import com.hackerdude.apps.sqlide.ProgramConfig;
+import java.awt.BorderLayout;
+
+import javax.swing.JPanel;
+
 import textarea.JEditTextArea;
 import textarea.syntax.HTMLTokenMarker;
 

@@ -1,7 +1,7 @@
 package com.hackerdude.apps.sqlide.servertypes;
 
+import java.io.File;
 import java.util.HashMap;
-import java.io.*;
 
 /**
  * Hypersonic server helper.

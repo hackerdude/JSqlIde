@@ -1,18 +1,29 @@
 package com.hackerdude.apps.sqlide.plugins.pgsql.storedproc;
 
-import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
 import com.hackerdude.apps.sqlide.pluginapi.BrowserExtensionPluginIF;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import java.sql.*;
-import javax.swing.*;
-import java.util.*;
-import java.io.*;
 import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
-import java.awt.event.*;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemCatalogNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemSchemaNode;
 
 /**
  * This is a stored procedure browser extension plugin.

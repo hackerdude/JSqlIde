@@ -1,12 +1,19 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import com.hackerdude.apps.sqlide.plugins.SyntaxTextArea;
-import java.awt.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import textarea.TextAreaDefaults;
-import textarea.syntax.TSQLTokenMarker;
-import javax.swing.*;
-import com.hackerdude.apps.sqlide.plugins.*;
+
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextArea;
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextAreaFactory;
 
 /**
  * Title:        JSqlIde

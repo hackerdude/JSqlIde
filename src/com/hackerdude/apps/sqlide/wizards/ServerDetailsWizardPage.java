@@ -9,14 +9,23 @@
  */
 package com.hackerdude.apps.sqlide.wizards;
 
-import com.hackerdude.lib.ui.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.util.HashMap;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import com.hackerdude.apps.sqlide.dialogs.ConnPropertiesTableModel;
+import com.hackerdude.lib.ui.WizardPage;
 
 public class ServerDetailsWizardPage extends WizardPage {
 

@@ -1,8 +1,8 @@
 package com.hackerdude.apps.sqlide.plugins.movedata.model;
 
 import java.util.ArrayList;
-import javax.swing.event.ListDataListener;
-import javax.swing.*;
+
+import javax.swing.AbstractListModel;
 
 /**
  * MoveDataModel represents the script that is going to be executed.

@@ -1,9 +1,12 @@
 package com.hackerdude.apps.sqlide.plugins.browser.browsejdbc;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
 
 /**
  * A node for category columns.

@@ -1,18 +1,28 @@
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.isql.*;
-import com.hackerdude.apps.sqlide.xml.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.dialogs.DlgConnectionConfig;
+import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.isql.ContextCommandRunner;
+import com.hackerdude.apps.sqlide.plugins.isql.PluginInteractiveSQL;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.BrowserPlugin;
+import com.hackerdude.apps.sqlide.xml.hostconfig.NamedQueries;
+import com.hackerdude.apps.sqlide.xml.hostconfig.Property;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * This plugin returns all the basic Node Context Operations. It is the
@@ -132,7 +142,7 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 			PluginInteractiveSQL iSql = (PluginInteractiveSQL)SqlIdeApplication.getInstance().getRightPanel();
 			String queryValue = iSql.getQueryText();
 			String message = "<HTML><P>Enter a simple name for query:\n"+iSql.getQueryText();
-			String queryName = JOptionPane.showInputDialog(SqlIdeApplication.getInstance().getFrame(), message, "Name Query", JOptionPane.OK_CANCEL_OPTION);
+			String queryName = JOptionPane.showInputDialog(SqlIdeApplication.getFrame(), message, "Name Query", JOptionPane.OK_CANCEL_OPTION);
 			if ( queryName == null ) return;
 			Property prop = new Property();
 			prop.setName(queryName);

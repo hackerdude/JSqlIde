@@ -9,21 +9,36 @@
  */
 package com.hackerdude.apps.sqlide.wizards;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.lib.ui.*;
-import com.hackerdude.lib.*;
-import com.hackerdude.apps.sqlide.servertypes.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.io.File;
 import java.sql.Driver;
-import java.beans.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.apps.sqlide.xml.*;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.servertypes.ServerType;
+import com.hackerdude.apps.sqlide.servertypes.ServerTypeRegistryCache;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
+import com.hackerdude.lib.ExtensionFileFilter;
+import com.hackerdude.lib.ui.VetoWizardPageChange;
+import com.hackerdude.lib.ui.WizardPage;
 
 /**
  * New Server wizard - Select server type page.
@@ -256,11 +271,11 @@ public class NewServerWizSelectServerType extends WizardPage {
 		saveFileChooser = new JFileChooser();
 		saveFileChooser.setDialogTitle("Save SQL File");
 		saveFileChooser.setFileFilter(getFileFilter());
-		saveFileChooser.setCurrentDirectory(new File(ProgramConfig.getInstance().getUserProfilePath()));
+		saveFileChooser.setCurrentDirectory(new File(ProgramConfig.getUserProfilePath()));
 		saveFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 		int selected = saveFileChooser.showSaveDialog(this);
-		if ( selected == saveFileChooser.APPROVE_OPTION ) {
+		if ( selected == JFileChooser.APPROVE_OPTION ) {
 			File selectedFile = saveFileChooser.getSelectedFile();
 			if ( ( ! selectedFile.exists() ) && selectedFile.getName().indexOf(".") < 0 ) { selectedFile = new File(selectedFile.getAbsolutePath()+".db.xml"); }
 			fFileName.setText(selectedFile.getAbsolutePath());

@@ -1,8 +1,20 @@
 package com.hackerdude.apps.sqlide.plugins.movedata;
 
-import com.hackerdude.apps.sqlide.plugins.movedata.model.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.hackerdude.apps.sqlide.plugins.movedata.model.DataDestinationNode;
+import com.hackerdude.apps.sqlide.plugins.movedata.model.DataSourceNode;
+import com.hackerdude.apps.sqlide.plugins.movedata.model.DefaultsNode;
+import com.hackerdude.apps.sqlide.plugins.movedata.model.MoveDataModel;
 
 
 /**

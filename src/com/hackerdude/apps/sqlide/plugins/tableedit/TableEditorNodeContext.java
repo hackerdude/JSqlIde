@@ -1,14 +1,20 @@
 package com.hackerdude.apps.sqlide.plugins.tableedit;
 
-import java.sql.*;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategoryTableNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableNode;
 
 public class TableEditorNodeContext
 	  implements IDENodeContextPluginIF {

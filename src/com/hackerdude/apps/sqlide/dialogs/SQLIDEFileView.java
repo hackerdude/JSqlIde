@@ -1,8 +1,10 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.filechooser.FileView;
-import java.io.*;
+import java.io.File;
+
 import javax.swing.Icon;
+import javax.swing.filechooser.FileView;
+
 import com.hackerdude.apps.sqlide.ProgramIcons;
 
 /**

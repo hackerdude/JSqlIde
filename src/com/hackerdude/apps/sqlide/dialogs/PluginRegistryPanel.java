@@ -1,14 +1,25 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.util.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.plugins.definitions.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.awt.event.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.AbstractListModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.event.ListSelectionListener;
+
+import com.hackerdude.apps.sqlide.RunningPlugins;
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginDefinition;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginRegistry;
 
 public class PluginRegistryPanel extends JPanel  {
 

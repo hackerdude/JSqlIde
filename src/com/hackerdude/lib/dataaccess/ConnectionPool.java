@@ -15,8 +15,10 @@
  */
 package com.hackerdude.lib.dataaccess;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Enumeration;
+import java.util.Vector;
 
 
 /**

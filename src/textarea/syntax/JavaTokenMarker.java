@@ -18,7 +18,6 @@
  */
 package textarea.syntax;
 
-import javax.swing.text.Segment;
 
 /**
  * Java token marker.
@@ -96,8 +95,11 @@ public class JavaTokenMarker extends CTokenMarker
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:45  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:15  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:45  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:23  david
  * Initial Import

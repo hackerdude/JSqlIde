@@ -1,12 +1,18 @@
 package com.hackerdude.apps.sqlide.plugins.tableedit;
 
-import javax.swing.table.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
 
 /**
  * A TableModel for editing the fields in a JTable.

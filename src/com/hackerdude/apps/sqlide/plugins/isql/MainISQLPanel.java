@@ -1,24 +1,56 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
-import java.beans.*;
-import java.io.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.components.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import com.hackerdude.apps.sqlide.plugins.*;
-import com.hackerdude.apps.sqlide.xml.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.swing.table.*;
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.components.ResultSetColumnModel;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.dataaccess.QueryResults;
+import com.hackerdude.apps.sqlide.dialogs.ClobEditorDialog;
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextArea;
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextAreaFactory;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.QueryHistory;
+import com.hackerdude.swing.table.ModalButtonCellEditor;
 
 /**
  * The main Interactive SQL Panel.

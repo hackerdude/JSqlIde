@@ -1,12 +1,24 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
-import java.io.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
+import com.hackerdude.apps.sqlide.xml.hostconfig.ClassPath;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * This panel allows the user to edit a class path.

@@ -21,11 +21,12 @@
  */
 package com.hackerdude.lib;
 
-import java.awt.event.*;
-import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import java.util.*;
 
 /**
  * This is sqlIDE's very own menu generator class.
@@ -103,6 +104,9 @@ public class MenuBroker {
 /*
 
   $Log$
+  Revision 1.3  2005/03/17 21:51:11  davidmartinez
+  Turning into an eclipse project, global import optimize and warning-busting
+
   Revision 1.2  2001/09/07 03:15:33  davidmartinez
   Changed e-mail address.
 

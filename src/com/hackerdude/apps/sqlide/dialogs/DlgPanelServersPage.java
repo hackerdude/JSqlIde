@@ -22,25 +22,33 @@
  */
 
 package com.hackerdude.apps.sqlide.dialogs;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.wizards.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.UIManager.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import javax.swing.event.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
 
-import java.lang.Object.*;
-import java.lang.Exception.*;
-import java.io.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.apps.sqlide.xml.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
+import com.hackerdude.apps.sqlide.wizards.NewServerWizard;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
+import com.hackerdude.lib.ui.Wizard;
 
 
 /**
@@ -173,7 +181,7 @@ public class DlgPanelServersPage extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 			try {
 				NewServerWizard wiz = NewServerWizard.showWizard(true);
-				if ( wiz.result == wiz.OK ) {
+				if ( wiz.result == Wizard.OK ) {
 					SqlideHostConfig spec = wiz.getDBSpec();
 					spec.setFileName(createUniqueFileName(spec));
 					HostConfigFactory.saveSqlideHostConfig(spec);
@@ -190,7 +198,7 @@ public class DlgPanelServersPage extends JPanel {
 	private String createUniqueFileName(SqlideHostConfig hostConfig) {
 		String fileName = hostConfig.getName();
 		fileName = removeIllegalChars(fileName);
-		String directory = ProgramConfig.getInstance().getUserProfilePath();
+		String directory = ProgramConfig.getUserProfilePath();
 
 		String proposedFileName = directory+File.separator+fileName;
 		boolean alreadyExists = new File(proposedFileName+HostConfigFactory.PROP_DB_CONFIG_SUFFIX).exists();

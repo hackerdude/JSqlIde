@@ -19,11 +19,25 @@
 
 package textarea;
 
-import javax.swing.text.*;
-import javax.swing.JComponent;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 
-import textarea.syntax.*;
+import javax.swing.JComponent;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.Segment;
+import javax.swing.text.TabExpander;
+import javax.swing.text.Utilities;
+
+import textarea.syntax.SyntaxStyle;
+import textarea.syntax.SyntaxUtilities;
+import textarea.syntax.Token;
+import textarea.syntax.TokenMarker;
 
 /**
  * The text area repaint manager. It performs double buffering and paints
@@ -622,8 +636,11 @@ public class TextAreaPainter extends JComponent implements TabExpander
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:41  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:13  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:41  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/11/30 18:31:59  david
  * Initial Import

@@ -10,9 +10,11 @@ package com.hackerdude.swing.keymapper;
 =====================================================================
 */
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 public class KeyStrokeField extends JTextField
   implements KeyListener
