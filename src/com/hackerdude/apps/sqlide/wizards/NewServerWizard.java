@@ -41,7 +41,7 @@ public class NewServerWizard extends Wizard {
 		pageSelectClassPath.setWizard(this);
 		pageNewServer.setWizard(this);
 		pageNewServer.setDatabaseSpec(databaseSpec);
-		pageNewServer.cmbServerType.setSelectedIndex(0);
+//		pageNewServer.cmbServerType.setSelectedIndex(0);
 		pageSelectClassPath.setDatabaseSpec(databaseSpec);
 		WizardPage[] pages = new WizardPage[3];
 		pages[0] = pageSelectClassPath;
