@@ -76,10 +76,10 @@ public class ProgramIcons {
 	  propsDefaults.setProperty( prop_treedevices      , "images/devices.gif" );
 	  propsDefaults.setProperty( prop_treeroot         , "images/World2.gif" );
 	  propsDefaults.setProperty( prop_treeserver       , "images/Workstation.gif" );
-	  propsDefaults.setProperty( prop_treelogins       , "images/logins.gif" );
+	  propsDefaults.setProperty( prop_treelogins       , "images/Users.gif" );
 	  propsDefaults.setProperty( prop_treestoredprocs  , "images/storedproc.gif" );
 	  propsDefaults.setProperty( prop_treetriggers     , "images/storedproc.gif" );
-	  propsDefaults.setProperty( prop_Icon_Go          , "images/Go.gif" );
+	  propsDefaults.setProperty( prop_Icon_Go          , "images/go.gif" );
 	  propsDefaults.setProperty( prop_Icon_Stop        , "images/stop.gif" );
 	  propsDefaults.setProperty( prop_Icon_Application , "images/database.gif" );
 	  propsDefaults.setProperty( prop_Icon_Collapse    , "images/minus.gif" );
@@ -240,6 +240,9 @@ public class ProgramIcons {
 /*
 
   $Log$
+  Revision 1.2  2003/01/27 19:44:45  davidmartinez
+  New tasks menu. Miscellaneous fixes.
+
   Revision 1.1  2002/08/21 21:24:12  davidmartinez
   Refactoring - moved application from devtools.... to apps
 

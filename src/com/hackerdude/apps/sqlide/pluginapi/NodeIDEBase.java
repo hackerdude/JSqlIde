@@ -43,7 +43,7 @@ public abstract class NodeIDEBase extends DefaultMutableTreeNode implements Tran
 	 };
 
 	 public DatabaseProcess getDatabaseProcess(){
-	 return (db);
+		 return (db);
 	 };
 
 	 public abstract String getInfo();

@@ -98,7 +98,7 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 		String tableName = determineTableName(node);
 		String columnName = null;
 
-		if ( ! ( node.getDatabaseProcess() == databaseProcess ) )  { return NOT_SAME_PROCESS; }
+		if ( ! ( node.getDatabaseProcess().equals(databaseProcess) ) )  { return NOT_SAME_PROCESS; }
 
 		if ( node instanceof ItemCatalogNode ) {
 			ActionCatalogChanger changer = new ActionCatalogChanger(isqlPlugin, "Change to "+node.toString(), node.toString(), ProgramIcons.getInstance().getDatabaseIcon());

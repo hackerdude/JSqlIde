@@ -28,7 +28,7 @@ public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 	public void requestAddSubNodes(NodeIDEBase parentNode) {
 		DatabaseProcess db = parentNode.getDatabaseProcess();
 		if ( !(parentNode instanceof com.hackerdude.apps.sqlide.nodes.ItemServerNode) ) return;
-		System.out.println("Adding items for subnode of class "+parentNode.getClass().getName());
+//		System.out.println("Adding items for subnode of class "+parentNode.getClass().getName());
 
 		/**
 		 * Note: I'm assuming that if the JDBC name for the item does

@@ -159,7 +159,13 @@ public class DatabaseProcess {
 		Connection conn = getConnection();
 		try {
 			ResultSet rs = conn.getMetaData().getTables( catalogName, schemaName, null, null );
-			while(rs.next()) { tbls.add( rs.getString(3) );}
+			while(rs.next()) {
+				String tableSchema = rs.getString(2);
+				String tableType = rs.getString(4);
+				if ( (tableType !=null ) && ( ! tableType.equals("INDEX") ) ) {
+					 tbls.add(rs.getString(3));
+				}
+			}
 		} catch( SQLException sqle ) {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,"SQL Error while getting tables",JOptionPane.ERROR_MESSAGE);
@@ -279,11 +285,11 @@ public class DatabaseProcess {
 				_executeQuery(rtype);
 			}
 		}
-		if ( rtype == ResultSet.TYPE_SCROLL_INSENSITIVE ) {
-			System.out.println("[DatabaseProcess.runQuery] Cool.. Scrollable resultset returned. Using ScrollableResultSetTableModel");
-		} else {
-			System.out.println("[DatabaseProcess.runQuery] Scrollable resultset not available... Using CachedResultSetTableModel");
-		}
+//		if ( rtype == ResultSet.TYPE_SCROLL_INSENSITIVE ) {
+//			System.out.println("[DatabaseProcess.runQuery] Cool.. Scrollable resultset returned. Using ScrollableResultSetTableModel");
+//		} else {
+//			System.out.println("[DatabaseProcess.runQuery] Scrollable resultset not available... Using CachedResultSetTableModel");
+//		}
 		return lastQueryResults;
 
 	}
@@ -483,7 +489,7 @@ public class DatabaseProcess {
 
 		if ( (configuration.getJdbc().getClassPath().getPathelementCount() == 0 ) ) {
 			theClass = Class.forName(driverClassName);
-			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName+" using base classloader.");
+//			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName+" using base classloader.");
 		} else {
 			String[] classPath = configuration.getJdbc().getClassPath().getPathelement();
 			ArrayList al = new ArrayList();
@@ -497,11 +503,29 @@ public class DatabaseProcess {
 			urls = (URL[])al.toArray(urls);
 			URLClassLoader urlClassLoader = new URLClassLoader(urls);
 			theClass = urlClassLoader.loadClass(driverClassName);
-			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
+//			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
 		}
 		return theClass;
 	}
 
+	public boolean equals(Object obj) {
+		if ( ! ( obj instanceof DatabaseProcess ) ) return false;
+		DatabaseProcess compareTo = (DatabaseProcess)obj;
+		// Short Circuit Null possibilities.
+		if ( compareTo.getHostConfiguration() == null ) return false;
+		if ( compareTo.getHostConfiguration().getJdbc() == null ) return false;
+		if ( getHostConfiguration() == null ) return false;
+		if ( compareTo.getHostConfiguration().getJdbc() == null ) return false;
 
+		// A database process is the same as another one if their URL and Driver class are the same.
+		String compareToURL = compareTo.getHostConfiguration().getJdbc().getUrl();
+		String compareDriverClass = compareTo.getHostConfiguration().getJdbc().getDriver();
+		String url = getHostConfiguration().getJdbc().getUrl();
+		String driverClass = compareTo.getHostConfiguration().getJdbc().getDriver();
+
+		boolean theSame = ( url.equals(compareToURL) && driverClass.equals(compareDriverClass) );
+		return theSame;
+
+	}
 
 }
