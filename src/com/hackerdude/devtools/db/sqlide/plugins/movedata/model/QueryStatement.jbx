@@ -1,0 +1,9 @@
+[PropertyInfo]
+selectStatement,String,false,false,queryName,queryName,true,<default>
+tableName,String,false,false,tableName,tableName,true,<default>
+whereClause,String,false,false,whereStatement,whereStatement,true,<default>
+[IconNames]
+
+
+
+
