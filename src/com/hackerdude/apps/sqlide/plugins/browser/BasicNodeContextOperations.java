@@ -30,6 +30,8 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 		if ( selectedNodes[0] instanceof ItemServerNode ) {
 			Action editServerAction = new ActionEditServer( (ItemServerNode)selectedNodes[0] );
 			actionsList.add(editServerAction);
+			Action newISqlWindow = new ActionISQLWindow((ItemServerNode)selectedNodes[0] );
+			actionsList.add(newISqlWindow);
 		}
 		if ( selectedNodes[0] instanceof NodeIDEBase ) {
 			IDEVisualPluginIF rightComponent = SqlIdeApplication.getInstance().getRightPanel();
@@ -90,6 +92,28 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 
 		}
 	}
+
+
+
+	/**
+	 * Shows the database spec editor.
+	 */
+	class ActionISQLWindow extends AbstractAction {
+		ItemServerNode itemServerNode;
+		public ActionISQLWindow(ItemServerNode itemServerNode) {
+			super("Interactive SQL for " + itemServerNode.toString(), ProgramIcons.getInstance().getGoIcon());
+			this.itemServerNode = itemServerNode;
+		}
+
+		public void actionPerformed(ActionEvent ev) {
+			PluginInteractiveSQL iSql = new PluginInteractiveSQL();
+			iSql.setDatabaseProcess(itemServerNode.getDatabaseProcess());
+			iSql.initPlugin();
+			SqlIdeApplication.getInstance().setRightPanel(iSql);
+		}
+	}
+
+
 
 	/**
 	 * This action allows us to add a custom query to this connection's

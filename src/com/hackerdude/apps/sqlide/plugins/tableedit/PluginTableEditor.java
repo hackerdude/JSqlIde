@@ -286,7 +286,7 @@ public class PluginTableEditor extends JPanel
 		public void actionPerformed(ActionEvent ae) {
 			ideprocess.changeCatalog( (String) cbDatabases.getSelectedItem());
 			try {
-				ideprocess.runQuery(theStatement.getText(), true, false, false);
+				ideprocess.runQuery(theStatement.getText(), true, false);
 			}
 			catch (java.sql.SQLException exc) {
 				JOptionPane.showMessageDialog(null, exc.toString(), "SQL Error", JOptionPane.ERROR_MESSAGE);

@@ -57,6 +57,7 @@ public class DatabaseProcess {
 	public String lastQuery;
 	private TableModel lastResultTable;
 	String userName;
+	int updateCount;
 
 	private Connection lastConnection;
 	private QueryResults lastQueryResults;
@@ -238,13 +239,13 @@ public class DatabaseProcess {
 	 * Call this method to run any query string. The results will be processed
 	 * and placed on the tablemodel for this object.
 	 * @param queryString The string of the query you want to run.
-	 * @param Statisticsio Turn on I/O statistics?  (not implemented yet)
+	 * @param updatableResultSet Should it be updatable?
 	 * @param Statisticstime Turn on Time Statistics? (not implemented yet)
 	 * @param asUpdate Run as update?
 	 * @return QueryResults The results of executing this query.
 	 * @throws SQLException if a SQL error ocurrs
 	 */
-	public QueryResults runQuery(String queryString, boolean asUpdate, boolean Statisticsio, boolean Statisticstime) throws SQLException {
+	public QueryResults runQuery(String queryString, boolean asUpdate, boolean updatableResultSet) throws SQLException {
 
 		lastResultTable = null;
 		if ( lastQueryResults != null ) { lastQueryResults.getResultSet().close(); lastQueryResults = null; }
@@ -254,44 +255,56 @@ public class DatabaseProcess {
 		lastQuery = queryString;
 		if ( lastConnection == null ) lastConnection = getPool().getConnection();
 		changeCatalog(lastConnection);
-		int concurrency = ResultSet.CONCUR_READ_ONLY;
+		if ( updatableResultSet ) lastConnection.setAutoCommit(false);
+		int concurrency = (updatableResultSet?ResultSet.CONCUR_UPDATABLE:ResultSet.CONCUR_READ_ONLY);
 		int rtype        = ResultSet.TYPE_SCROLL_INSENSITIVE;
 		try {
+			// Try a scrollable cursor
 			lastDatabaseCall = lastConnection.prepareStatement(queryString,rtype, concurrency);
+			if ( asUpdate == true ) {
+				_executeUpdate();
+			} else {
+				_executeQuery(rtype);
+			}
 		} catch ( Throwable exc ) {
 			System.out.println("[DatabaseProcess.runQuery] This driver does not support scrollable cursors... Using forward_only and CachedResultSetTableModel.");
 			rtype       = ResultSet.TYPE_FORWARD_ONLY;
-			lastDatabaseCall = lastConnection.prepareStatement(queryString);
+			lastDatabaseCall = lastConnection.prepareStatement(queryString, rtype, concurrency);
+			if ( asUpdate == true ) {
+				_executeUpdate();
+			} else {
+				_executeQuery(rtype);
+			}
 		}
 		if ( rtype == ResultSet.TYPE_SCROLL_INSENSITIVE ) {
 			System.out.println("[DatabaseProcess.runQuery] Cool.. Scrollable resultset returned. Using ScrollableResultSetTableModel");
 		} else {
 			System.out.println("[DatabaseProcess.runQuery] Scrollable resultset not available... Using CachedResultSetTableModel");
 		}
-		if ( asUpdate == true ) {
-			lastDatabaseCall.executeUpdate();
-		} else {
-			ResultSet rs = lastDatabaseCall.executeQuery();
-			lastQueryResults = new QueryResults(rs);
-			if ( rtype == ResultSet.TYPE_FORWARD_ONLY ) {
-				CachedResultSetTableModel model = new CachedResultSetTableModel(lastQueryResults, rtype);
-				lastResultTable = model;
-			} else if ( rtype == ResultSet.TYPE_SCROLL_INSENSITIVE || rtype == ResultSet.TYPE_SCROLL_SENSITIVE ) {
-				ScrollableResultSetTableModel model = new ScrollableResultSetTableModel(lastQueryResults);
-				lastResultTable = model;
-			}
-
-			int updateCount = 0;
-			try {
-				updateCount = lastDatabaseCall.getUpdateCount();
-				} catch (SQLException exc) {}
-				if ( updateCount > 0 ) {
-					//lastResult.append("\nRows Affected: ").append(Integer.toString(updateCount));
-				}
-		}
 		return lastQueryResults;
 
 	}
+
+	private void _executeQuery(int rtype) throws SQLException {
+		ResultSet rs = lastDatabaseCall.executeQuery();
+		lastQueryResults = new QueryResults(rs);
+		if ( rtype == ResultSet.TYPE_FORWARD_ONLY ) {
+			CachedResultSetTableModel model = new CachedResultSetTableModel(lastQueryResults, 1000);
+			lastResultTable = model;
+		} else if ( rtype == ResultSet.TYPE_SCROLL_INSENSITIVE || rtype == ResultSet.TYPE_SCROLL_SENSITIVE ) {
+			ScrollableResultSetTableModel model = new ScrollableResultSetTableModel(lastQueryResults);
+			lastResultTable = model;
+		}
+	}
+
+	private void _executeUpdate() throws SQLException {
+		lastDatabaseCall.executeUpdate();
+		updateCount = 0;
+		try {
+			updateCount = lastDatabaseCall.getUpdateCount();
+		} catch (SQLException exc) {}
+	}
+
 
 	/**
 	 * This call no longer makes any sense. Maybe we can iterate down all

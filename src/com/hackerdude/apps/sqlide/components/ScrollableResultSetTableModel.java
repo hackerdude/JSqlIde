@@ -46,6 +46,17 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 		return columnClasses[col];
 	}
 
+	public void setValueAt(Object obj, int row, int column) {
+		try {
+			if ( resultSet == null ) return;
+			resultSet.absolute(row+1);
+			resultSet.updateString(column+1, obj.toString());
+			resultSet.updateRow();
+		} catch ( SQLException exc ) {
+			exc.printStackTrace();
+		}
+	}
+
 	public Object getValueAt(int row, int column) {
 		Object result = null;
 
@@ -55,6 +66,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 			result = resultSet.getObject(column+1);
 			if ( result == null ) result = resultSet.getString(column+1);
 		} catch (SQLException exc) {
+			resultSet = null;
 			return "SQLException";
 		}
 		return result;
@@ -66,6 +78,17 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 
 	public String getColumnName(int columnIndex) {
 		return columnNames[columnIndex];
+	}
+
+	public boolean isCellEditable(int row, int column) {
+		if ( resultSet == null ) return false;
+		try {
+			boolean isResultSetEditable = (resultSet.getConcurrency() == ResultSet.CONCUR_UPDATABLE);
+			return isResultSetEditable;
+		}
+		catch (SQLException ex) {
+			return false;
+		}
 	}
 
 }
