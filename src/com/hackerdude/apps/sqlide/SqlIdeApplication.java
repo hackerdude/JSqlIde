@@ -88,7 +88,7 @@ public class SqlIdeApplication  {
 	public final Action SELECT_LEFT = new ActionSelectLeftPanel();
 	public final Action SELECT_RIGHT = new ActionSelectRightPanel();
 
-	public final Action HELP_CHANGES   = new ActionHelpChanges();
+//	public final Action HELP_CHANGES   = new ActionHelpChanges();
 	public final Action HELP_ABOUT     = new ActionHelpAbout();
 	public final Action HELP_README    = new ActionHelpReadme();
 	public final Action HELP_PAYING    = new ActionHelpPaying();
@@ -255,7 +255,7 @@ public class SqlIdeApplication  {
 		_addMenu(helpMenu,HELP_PAYING);
 		_addMenu(helpMenu,HELP_README);
 		_addMenu(helpMenu,HELP_TO_DO);
-		_addMenu(helpMenu,HELP_CHANGES);
+//		_addMenu(helpMenu,HELP_CHANGES);
 
 		menubar.add( fileMenu   );
 		menubar.add( editMenu   );
