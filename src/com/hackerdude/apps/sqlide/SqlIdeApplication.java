@@ -138,13 +138,12 @@ public class SqlIdeApplication  {
 		mainPanel.add(jSplitPane1, BorderLayout.CENTER);
 		jSplitPane1.add(jTabbedPane1, "right");
 		jSplitPane1.add(idebrowser, "left");
-        mainPanel.add(tbToolbar,  BorderLayout.SOUTH);
+        mainPanel.add(tbToolbar,  BorderLayout.NORTH);
 		JMenuItem mnuClosePlugin = jPopupMenu1.add( PLUGIN_CLOSE );
 		KeyStroke theAccel = (KeyStroke)PLUGIN_CLOSE.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
         tbToolbar.add(btnOpen, null);
         tbToolbar.add(btnSave, null);
-
 
 	}
 

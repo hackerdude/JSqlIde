@@ -61,6 +61,8 @@ public class QueryResults {
 	}
 
 
+	public int[] getColumnSQLTypes() { return columnSQLTypes; }
+
 	/**
 	 * Returns an array of java classes that contain the column types.
 	 * @return
@@ -103,6 +105,8 @@ public class QueryResults {
 			columnSizes[i] = displaySize;
 		}
 	}
+
+
 
 	/**
 	 * Returns the number of columns
