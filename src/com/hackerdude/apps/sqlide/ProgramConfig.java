@@ -45,7 +45,7 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
  */
 public class ProgramConfig extends Observable {
 
-	public final static String VERSION_NUMBER = "0.0.16";
+	public final static String VERSION_NUMBER = determineVersion();
 
 	// Some important basic properties
 	public static final String PROP_LOOK_AND_FEEL      = "general.ui.lookandfeel";
@@ -373,5 +373,24 @@ public class ProgramConfig extends Observable {
 			return( name.endsWith(matching) );
 		}
 	}
+
+
+
+	public static String determineVersion() {
+		final String CONST_VERSION = "jsqlide.version";
+		String result = "Could not determine version";
+		try {
+			InputStream is = ProgramConfig.class.getResourceAsStream("/sqlide.properties");
+			if ( is == null ) return result;
+			Properties props = new Properties();
+			props.load(is);
+			result = props.getProperty(CONST_VERSION,result);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return result;
+	}
+
 
 }
