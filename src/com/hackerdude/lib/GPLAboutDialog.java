@@ -186,8 +186,7 @@ public class GPLAboutDialog extends AbstractAction {
      * Determines if the about diaog should be displayed using
      * internal frames.
      *
-     * @param internalFrames	<code>true</code> if internal frames
-     *							should be used
+     * @param newInternalFrames <code>true</code> if internal frames should be used
      */
     public void setInternalFrames(boolean newInternalFrames)
     { internalFrames = newInternalFrames; }

@@ -20,7 +20,7 @@ import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
  * A User Manager plugin for PostgreSQL. Displays available users, and lets you
  * add/remove users at will.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

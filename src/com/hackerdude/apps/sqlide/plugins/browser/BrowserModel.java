@@ -37,7 +37,7 @@ import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
  * handle all the UI and this will handle actually asking questions to the
  * database.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

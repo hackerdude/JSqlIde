@@ -55,8 +55,8 @@ import com.hackerdude.lib.dataaccess.ConnectionPool;
  * functions. Just instantiate one of these (using the DatabaseSpec
  * db profile you want to use for the connection) and call its methods!
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
-DatabaseSpec * @author David Martinez
+ * 
+ * @author David Martinez
  * @version 1.0
  */
 public class DatabaseProcess implements CredentialsProvider.CredentialsVerifier, ConnectionFactory {
@@ -259,7 +259,6 @@ public class DatabaseProcess implements CredentialsProvider.CredentialsVerifier,
 	 * and placed on the tablemodel for this object.
 	 * @param queryString The string of the query you want to run.
 	 * @param updatableResultSet Should it be updatable?
-	 * @param Statisticstime Turn on Time Statistics? (not implemented yet)
 	 * @param asUpdate Run as update?
 	 * @return QueryResults The results of executing this query.
 	 * @throws SQLException if a SQL error ocurrs
