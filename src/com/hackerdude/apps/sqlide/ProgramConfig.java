@@ -346,16 +346,30 @@ public class ProgramConfig extends Observable {
 		}
 	}
 
+	/**
+	 * Returns the singleton instance of this configuration object.
+	 * @return The singleton instance
+	 */
 	public static synchronized ProgramConfig getInstance() {
 	  if ( instance == null ) { instance = new ProgramConfig(); }
-	 return instance;
+	  return instance;
 	}
 
+	/**
+	 * Changes the save directory, used to offer as default for saving/loading
+	 * user data.
+	 * @param newSaveDirectory The new save directory.
+	 */
 	public void setSaveDirectory(String newSaveDirectory) {
 		saveDirectory = newSaveDirectory;
 		notifyObservers(saveDirectory);
 	}
 
+	/**
+	 * Returns the current save directory. Use this directory to offer as
+	 * default for saving/loading user data.
+	 * @return The save directory.
+	 */
 	public String getSaveDirectory() {
 		return saveDirectory;
 	}
@@ -375,7 +389,10 @@ public class ProgramConfig extends Observable {
 	}
 
 
-
+	/**
+	 * Determines the current version of SQL-IDE
+	 * @return A string with the current version.
+	 */
 	public static String determineVersion() {
 		final String CONST_VERSION = "jsqlide.version";
 		String result = "Could not determine version";

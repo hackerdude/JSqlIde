@@ -100,7 +100,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 		browserTree.addMouseListener(new BrowserTreePopupAdapter());
 		browserTree.putClientProperty("JTree.lineStyle", "Angled");
 		browserTree.addTreeSelectionListener(
-			new TreeSelectionListener() {
+				new TreeSelectionListener() {
 			public void valueChanged( TreeSelectionEvent e ) {
 				TreePath tp = e.getNewLeadSelectionPath();
 				Object[] objs;
@@ -113,24 +113,24 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 						currentProcess = ((ItemServerNode)myNode).getDatabaseProcess();
 					}
 /*				   myNode = (DefaultMutableTreeNode)objs[i];
-				   Object userObject = myNode.getUserObject();
-				   if ( userObject != null && userObject.getClass() == DatabaseProcess.class ) {
-					 currentProcess = (DatabaseProcess)myNode.getUserObject();
-				   }*/
+	   Object userObject = myNode.getUserObject();
+	   if ( userObject != null && userObject.getClass() == DatabaseProcess.class ) {
+	  currentProcess = (DatabaseProcess)myNode.getUserObject();
+	   }*/
 				}
 				browserTree_valueChanged(e);
 			}
 		});
-		BrowserPanel.add(scroll, BorderLayout.CENTER);
-		scroll.getViewport().add(browserTree, null);
-		jPanel1.add(lblInfo, BorderLayout.CENTER);
-		brenderer = new BrowserRenderer();
-		brenderer.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
-		brenderer.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
-		browserTree.setCellRenderer(brenderer);
-		browserTree.setVisible(true);
-		if ( oldScroll!= null ) BrowserPanel.remove(oldScroll);
-		if ( ide != null ) ide.pack();
+				BrowserPanel.add(scroll, BorderLayout.CENTER);
+				scroll.getViewport().add(browserTree, null);
+				jPanel1.add(lblInfo, BorderLayout.CENTER);
+				brenderer = new BrowserRenderer();
+				brenderer.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
+				brenderer.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
+				browserTree.setCellRenderer(brenderer);
+				browserTree.setVisible(true);
+				if ( oldScroll!= null ) BrowserPanel.remove(oldScroll);
+				if ( ide != null ) ide.pack();
 
 	}
 
@@ -161,7 +161,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	 *  Creates the IdeBrowser-specific menu.
 	 */
 	public JMenu createPanelMenu( JMenu parent ) {
-	return(null);
+		return(null);
 	}
 
 
@@ -174,11 +174,11 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	/**
 	 * Returns the Currently selected Database Process.
 	 */
-  public DatabaseProcess getDatabaseProcess() {
-	System.out.println("[PanelIDEBrowser] "+currentProcess);
-	return(currentProcess);
+	public DatabaseProcess getDatabaseProcess() {
+		System.out.println("[PanelIDEBrowser] "+currentProcess);
+		return(currentProcess);
 
-  }
+	}
 
 	/**
 	 * Since this is a collection panel and doesn't have
@@ -205,63 +205,63 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 
 
 	/**
-	* The listener for the expansion of the nodes.
-	*
-	* see treeWillExpand call.
-	*/
+	 * The listener for the expansion of the nodes.
+	 *
+	 * see treeWillExpand call.
+	 */
 	class BrowserWillExpandListener implements TreeWillExpandListener {
 
 
-	/**
-	* This method is called by the tree when the node is about to expand
-	* and before it actually does. This node
-	*/
-	public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
+		/**
+		 * This method is called by the tree when the node is about to expand
+		 * and before it actually does. This node
+		 */
+		public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
 
-		setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-		TreePath path = e.getPath();
-		Object comp = path.getLastPathComponent();
-		if ( comp == null ) return;  // Odd... ignore.
-		NodeIDEBase node = null;
+			TreePath path = e.getPath();
+			Object comp = path.getLastPathComponent();
+			if ( comp == null ) return;  // Odd... ignore.
+			NodeIDEBase node = null;
 
-		try {
-			node = (NodeIDEBase)comp;
-		} catch( ClassCastException exc ) {
-		// Don't do anything
-		}
+			try {
+				node = (NodeIDEBase)comp;
+			} catch( ClassCastException exc ) {
+				// Don't do anything
+			}
 
-		if ( node == null ) {
-			setCursor(Cursor.getDefaultCursor());
-			return;
-		}
-		// Remove all the children, and re-read them.
-		node.removeAllChildren();
-		try {
-			/* Read the standard children for this node, and also ask
-				any running  browser extension plugins to put their
-				contributions to this node (if any). */
-			node.readChildren();
-			ide.requestAddSubNodes(node);
-		} catch( Exception exc ) {
+			if ( node == null ) {
+				setCursor(Cursor.getDefaultCursor());
+				return;
+			}
+			// Remove all the children, and re-read them.
 			node.removeAllChildren();
-			node.add(new DefaultMutableTreeNode("Dummy"));
+			try {
+   /* Read the standard children for this node, and also ask
+	any running  browser extension plugins to put their
+	contributions to this node (if any). */
+				node.readChildren();
+				ide.requestAddSubNodes(node);
+			} catch( Exception exc ) {
+				node.removeAllChildren();
+				node.add(new DefaultMutableTreeNode("Dummy"));
+				setCursor(Cursor.getDefaultCursor());
+				throw new ExpandVetoException(e);
+			}
 			setCursor(Cursor.getDefaultCursor());
-			throw new ExpandVetoException(e);
+
 		}
-		setCursor(Cursor.getDefaultCursor());
 
-	}
-
-	// Required by TreeWillExpandListener interface.
-	public void treeWillCollapse(TreeExpansionEvent e) {
-		TreePath path = e.getPath();
-		Object comp = path.getLastPathComponent();
-		try {
-			NodeIDEBase node = (NodeIDEBase)comp;
-			node.removeChildren();
-		} catch ( ClassCastException exc ) {}
-	}
+		// Required by TreeWillExpandListener interface.
+		public void treeWillCollapse(TreeExpansionEvent e) {
+			TreePath path = e.getPath();
+			Object comp = path.getLastPathComponent();
+			try {
+				NodeIDEBase node = (NodeIDEBase)comp;
+				node.removeChildren();
+				} catch ( ClassCastException exc ) {}
+		}
 
 
 	}
@@ -269,114 +269,114 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	/**
 	 * The Renderer for the different Icons
 	 */
-class BrowserRenderer extends DefaultTreeCellRenderer {
+	class BrowserRenderer extends DefaultTreeCellRenderer {
 
-	ImageIcon folderIcon;
-	ImageIcon catalogIcon;
-	ImageIcon schemaIcon;
-	ImageIcon serverIcon;
-	ImageIcon loginsIcon;
-	ImageIcon storedProcIcon;
-	ImageIcon triggerIcon;
-	ImageIcon expandIcon;
-	ImageIcon collapseIcon;
-	ImageIcon columnIcon;
-	ImageIcon tableIcon;
-	ImageIcon indexIcon;
-	ImageIcon usersIcon;
-	ImageIcon userIcon;
+		ImageIcon folderIcon;
+		ImageIcon catalogIcon;
+		ImageIcon schemaIcon;
+		ImageIcon serverIcon;
+		ImageIcon loginsIcon;
+		ImageIcon storedProcIcon;
+		ImageIcon triggerIcon;
+		ImageIcon expandIcon;
+		ImageIcon collapseIcon;
+		ImageIcon columnIcon;
+		ImageIcon tableIcon;
+		ImageIcon indexIcon;
+		ImageIcon usersIcon;
+		ImageIcon userIcon;
 
-	public BrowserRenderer() {
+		public BrowserRenderer() {
 
-		indexIcon      = ProgramIcons.getInstance().findIcon("images/BCard.gif");
-		tableIcon      = ProgramIcons.getInstance().findIcon("images/Sheet.gif");
-		folderIcon     = ProgramIcons.getInstance().findIcon("images/Folder.gif");
-		columnIcon     = ProgramIcons.getInstance().findIcon("images/Column.gif");
-		serverIcon     = ProgramIcons.getInstance().getServerIcon();
-		catalogIcon    = ProgramIcons.getInstance().getDatabaseIcon();
-		schemaIcon     = ProgramIcons.getInstance().findIcon("images/Data.gif");
-		loginsIcon     = ProgramIcons.getInstance().getLoginsIcon();
-		storedProcIcon = ProgramIcons.getInstance().getStoredProcIcon();
-		triggerIcon    = ProgramIcons.getInstance().getTriggerIcon();
-		expandIcon     = ProgramIcons.getInstance().getExpandIcon();
-		collapseIcon   = ProgramIcons.getInstance().getCollapseIcon();
-		usersIcon      = ProgramIcons.getInstance().findIcon("images/Users.gif");
-		userIcon      = ProgramIcons.getInstance().findIcon("images/User.gif");
-		setOpenIcon(expandIcon);
-		setClosedIcon(collapseIcon);
+			indexIcon      = ProgramIcons.getInstance().findIcon("images/BCard.gif");
+			tableIcon      = ProgramIcons.getInstance().findIcon("images/Sheet.gif");
+			folderIcon     = ProgramIcons.getInstance().findIcon("images/Folder.gif");
+			columnIcon     = ProgramIcons.getInstance().findIcon("images/Column.gif");
+			serverIcon     = ProgramIcons.getInstance().getServerIcon();
+			catalogIcon    = ProgramIcons.getInstance().getDatabaseIcon();
+			schemaIcon     = ProgramIcons.getInstance().findIcon("images/Data.gif");
+			loginsIcon     = ProgramIcons.getInstance().getLoginsIcon();
+			storedProcIcon = ProgramIcons.getInstance().getStoredProcIcon();
+			triggerIcon    = ProgramIcons.getInstance().getTriggerIcon();
+			expandIcon     = ProgramIcons.getInstance().getExpandIcon();
+			collapseIcon   = ProgramIcons.getInstance().getCollapseIcon();
+			usersIcon      = ProgramIcons.getInstance().findIcon("images/Users.gif");
+			userIcon      = ProgramIcons.getInstance().findIcon("images/User.gif");
+			setOpenIcon(expandIcon);
+			setClosedIcon(collapseIcon);
+
+		}
+
+		public Component getTreeCellRendererComponent(  JTree tree,   Object value,
+				boolean sel,  boolean expanded,
+	boolean leaf, int row, boolean hasFocus) {
+
+			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+
+			// Get this node.
+			TreeNode node = (TreeNode)value;
+			ImageIcon icon = null;
+			TreeNode parent = node.getParent();
+			icon = getIconfor(node);
+			if ( tree.getModel().getRoot() == value ) { icon = ProgramIcons.getInstance().getRootIcon(); }
+			if ( icon == null ) { System.out.println("[PanelIDEBrowser] Couldn't find icon for class "+node.getClass().getName()); }
+
+			// Still No icon?? Put a default on it.
+			if ( icon == null ) { icon = folderIcon; };
+			setIcon(icon);
+
+			return this;
+
+		}
+
+		protected ImageIcon getIconfor(TreeNode treeNode) {
+			Class nodeClass = treeNode.getClass();
+			ImageIcon icon = null;
+			if ( nodeClass == ItemCatalogNode.class
+				|| nodeClass == CategoryCatalogsNode.class ) { icon = catalogIcon; }
+			if ( nodeClass == ItemSchemaNode.class
+				|| nodeClass == CategorySchemaNode.class ) { icon = schemaIcon; }
+
+			if ( nodeClass == ItemTableNode.class  )    { icon = tableIcon; }
+			if ( nodeClass == CategoryTableNode.class ) { icon = folderIcon; }
+
+			if ( nodeClass == CategoryStoredProcedureNode.class ) { icon = storedProcIcon; }
+			if ( nodeClass == CategoryTriggerNode.class ) { icon = triggerIcon; }
+			if ( nodeClass == ItemIndexNode.class ) { icon = indexIcon; }
+			if ( nodeClass == ItemServerNode.class ) { icon = serverIcon; }
+			if ( nodeClass == CategoryIndexesNode.class ) { icon = indexIcon; }
+
+			if ( nodeClass == CategoryColumnsNode.class ) { icon = columnIcon; }
+			if ( nodeClass == ItemTableColumnNode.class ) { icon = columnIcon; }
+			if ( nodeClass == CategoryUsersNode.class ) { icon = usersIcon; }
+			if ( nodeClass == CategoryGeneralUsersNode.class ) { icon = usersIcon; }
+			if ( treeNode instanceof ItemUserNode ) { icon = userIcon; }
+			if ( nodeClass == CategoryDbUsersNode.class ) { icon = catalogIcon; }
+			if ( nodeClass == ItemStoredProcedureNode.class ) { icon = storedProcIcon; }
+
+			return icon;
+		}
+
 
 	}
 
-	public Component getTreeCellRendererComponent(  JTree tree,   Object value,
-							boolean sel,  boolean expanded,
-							boolean leaf, int row, boolean hasFocus) {
-
-		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-
-		// Get this node.
-		TreeNode node = (TreeNode)value;
-		ImageIcon icon = null;
-		TreeNode parent = node.getParent();
-		icon = getIconfor(node);
-		if ( tree.getModel().getRoot() == value ) { icon = ProgramIcons.getInstance().getRootIcon(); }
-		if ( icon == null ) { System.out.println("[PanelIDEBrowser] Couldn't find icon for class "+node.getClass().getName()); }
-
-		// Still No icon?? Put a default on it.
-		if ( icon == null ) { icon = folderIcon; };
-		setIcon(icon);
-
-		return this;
-
+	public boolean isActionPossible( String action ) {
+		boolean theResult = false;
+		if ( action.equals("Cut") ) {  };
+		if ( action.equals("Copy") ) {  };
+		if ( action.equals("Paste") ) {  };
+		return(theResult);
 	}
 
-	protected ImageIcon getIconfor(TreeNode treeNode) {
-		Class nodeClass = treeNode.getClass();
-		ImageIcon icon = null;
-		if ( nodeClass == ItemCatalogNode.class
-			|| nodeClass == CategoryCatalogsNode.class ) { icon = catalogIcon; }
-		if ( nodeClass == ItemSchemaNode.class
-			|| nodeClass == CategorySchemaNode.class ) { icon = schemaIcon; }
-
-		if ( nodeClass == ItemTableNode.class  )    { icon = tableIcon; }
-		if ( nodeClass == CategoryTableNode.class ) { icon = folderIcon; }
-
-		if ( nodeClass == CategoryStoredProcedureNode.class ) { icon = storedProcIcon; }
-		if ( nodeClass == CategoryTriggerNode.class ) { icon = triggerIcon; }
-		if ( nodeClass == ItemIndexNode.class ) { icon = indexIcon; }
-		if ( nodeClass == ItemServerNode.class ) { icon = serverIcon; }
-		if ( nodeClass == CategoryIndexesNode.class ) { icon = indexIcon; }
-
-		if ( nodeClass == CategoryColumnsNode.class ) { icon = columnIcon; }
-		if ( nodeClass == ItemTableColumnNode.class ) { icon = columnIcon; }
-		if ( nodeClass == CategoryUsersNode.class ) { icon = usersIcon; }
-		if ( nodeClass == CategoryGeneralUsersNode.class ) { icon = usersIcon; }
-		if ( treeNode instanceof ItemUserNode ) { icon = userIcon; }
-		if ( nodeClass == CategoryDbUsersNode.class ) { icon = catalogIcon; }
-		if ( nodeClass == ItemStoredProcedureNode.class ) { icon = storedProcIcon; }
-
-		return icon;
-	}
-
-
-}
-
-public boolean isActionPossible( String action ) {
-	boolean theResult = false;
-	if ( action.equals("Cut") ) {  };
-	if ( action.equals("Copy") ) {  };
-	if ( action.equals("Paste") ) {  };
-	return(theResult);
-}
-
-public boolean executeAction( String action ) {
+	public boolean executeAction( String action ) {
 		/** @todo Implement */
-	   return false;
-}
+		return false;
+	}
 
 	public void showAboutBox() {
 		GPLAboutDialog gpl = new GPLAboutDialog(this, "IDE Browser Panel",getPluginVersion(),
 				"A Tree-Based Multiple Database browser panel for SQLIDE.",
-				"(C) 1999 by David Martinez.");
+	"(C) 1999 by David Martinez.");
 		gpl.actionPerformed(null);
 	}
 
@@ -385,32 +385,32 @@ public boolean executeAction( String action ) {
 		createBrowserTree();
 	}
 
-   void browserTree_valueChanged(TreeSelectionEvent e) {
-	 TreePath tp = browserTree.getSelectionPath();
-	 if ( tp == null ) {
-		lblInfo.setText("");
-		return;
-	  }
-	 TreeNode tn = (DefaultMutableTreeNode)tp.getLastPathComponent();
-	 NodeIDEBase bn = null;
-	 if ( tn instanceof NodeIDEBase ) { bn = (NodeIDEBase)tn; }
-	 if ( bn != null ) lblInfo.setText(bn.getInfo());
+	void browserTree_valueChanged(TreeSelectionEvent e) {
+		TreePath tp = browserTree.getSelectionPath();
+		if ( tp == null ) {
+			lblInfo.setText("");
+			return;
+		}
+		TreeNode tn = (DefaultMutableTreeNode)tp.getLastPathComponent();
+		NodeIDEBase bn = null;
+		if ( tn instanceof NodeIDEBase ) { bn = (NodeIDEBase)tn; }
+		if ( bn != null ) lblInfo.setText(bn.getInfo());
 
-   }
+	}
 
 	public class BrowserTreePopupAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
-			browserTree_mouseClicked(e);
-		}
-
-		void browserTree_mouseClicked(MouseEvent e) {
 			try {
-				if ( e.getModifiers() == e.BUTTON3_MASK ) {
+				/** @todo This does not work on MacOS */
+				if ( e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK ) {
 					TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
 					NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
 					for ( int i=0; i<selectedPaths.length; i++ ) {
 						Object lastPathComponent = selectedPaths[i].getLastPathComponent();
-						selectedNodes[i] = (NodeIDEBase)lastPathComponent;
+						Object selectedNode = lastPathComponent;
+						if ( selectedNode instanceof NodeIDEBase ) {
+							selectedNodes[i] = (NodeIDEBase)selectedNode;
+						} else return;
 					}
 					Action[] actions = ide.getActionsFor(selectedNodes);
 					if ( actions == null || actions.length > 0 ) {
@@ -425,21 +425,21 @@ public boolean executeAction( String action ) {
 				}
 			}
 			catch (Exception ex) {
-
+				ex.printStackTrace();
 			}
-
 		}
+
 	}
 
 	public JPopupMenu getPopupMenuFor(NodeIDEBase node) { return null; }
 
 	public Action[] getActionsFor(NodeIDEBase node) {
-	  throw new UnsupportedOperationException("Not Implemented");
+		throw new UnsupportedOperationException("Not Implemented");
 	}
 
 	public Action[] getPossibleActions() {
-	  /** @todo Implement */
-	  throw new UnsupportedOperationException("Not Implemented");
+		/** @todo Implement */
+		throw new UnsupportedOperationException("Not Implemented");
 	}
 
 	public void receivePluginFocus() {
@@ -456,4 +456,3 @@ public boolean executeAction( String action ) {
 	}
 
 }
-

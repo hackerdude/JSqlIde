@@ -144,6 +144,7 @@ public class DlgPanelServersPage extends JPanel {
 				return;
 			}
 			DlgConnectionConfig.showConfigurationDialog( SqlIdeApplication.getFrame(), spec );
+			readFromModel();
 		}
 	}
 
@@ -159,7 +160,7 @@ public class DlgPanelServersPage extends JPanel {
 				ConnectionConfig spec = wiz.getDBSpec();
 				ConnectionConfigFactory.saveConnectionConfig(spec);
 				ProgramConfig.getInstance().addConnectionConfig(spec);
-				model.fireTableDataChanged();
+				readFromModel();
 			}
 		}
 	}
@@ -184,7 +185,7 @@ public class DlgPanelServersPage extends JPanel {
 				if ( ! f.delete() ) JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);
 				else {
 						ProgramConfig.getInstance().removeConnectionConfig(spec);
-						model.fireTableDataChanged();
+						readFromModel();
 				}
 			}
 
