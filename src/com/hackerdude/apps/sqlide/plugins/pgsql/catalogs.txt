@@ -1,0 +1,26 @@
+Catalog Name Purpose 
+pg_aggregate aggregate functions 
+pg_am index access methods 
+pg_amop access method operators 
+pg_amproc access method support procedures 
+pg_attrdef column default values 
+pg_attribute table columns ("attributes", "fields") 
+pg_class tables, indexes, sequences ("relations") 
+pg_database databases within this database cluster 
+pg_description descriptions or comments on database objects 
+pg_group groups of database users 
+pg_index additional index information 
+pg_inherits table inheritance hierarchy 
+pg_language languages for writing functions 
+pg_largeobject large objects 
+pg_listener asynchronous notification 
+pg_opclass index access method operator classes 
+pg_operator operators 
+pg_proc functions and procedures 
+pg_relcheck check constraints 
+pg_rewrite query rewriter rules 
+pg_shadow database users 
+pg_statistic optimizer statistics 
+pg_trigger triggers 
+pg_type data types 
+
