@@ -7,14 +7,8 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
+ * Node for database users.
  */
-
 public class CategoryDbUsersNode extends NodeIDECategory
  {
 

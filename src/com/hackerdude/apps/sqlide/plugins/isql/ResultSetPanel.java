@@ -1,13 +1,15 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
+import java.io.*;
+import java.sql.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import java.sql.*;
-import java.io.*;
-import com.hackerdude.apps.sqlide.components.*;
+
 import com.hackerdude.apps.sqlide.*;
+import com.hackerdude.apps.sqlide.components.*;
 
 /**
  * The panel with query results.
@@ -85,7 +87,7 @@ public class ResultSetPanel extends JPanel {
 		pnlResultsPanel.add(resultScroll, BorderLayout.CENTER);
 		pnlResultsPanel.add(pnlUpdateButtonBar, BorderLayout.EAST);
 		pnlUpdateButtonBar.add(btnDelete,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
 	  pnlUpdateButtonBar.add(btnInsert,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
 			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
 	  pnlUpdateButtonBar.add(btnCommit,          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0

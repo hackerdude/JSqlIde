@@ -6,14 +6,8 @@ import javax.swing.Icon;
 import com.hackerdude.apps.sqlide.ProgramIcons;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
+ * A file view for dialog boxes that only shows SQL files.
  */
-
 public class SQLIDEFileView extends FileView {
 
 	public SQLIDEFileView() {

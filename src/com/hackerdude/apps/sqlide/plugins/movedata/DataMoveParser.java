@@ -1,12 +1,11 @@
 package com.hackerdude.apps.sqlide.plugins.movedata;
 
-import org.xml.sax.*;
-import com.hackerdude.apps.sqlide.plugins.movedata.model.*;
-import org.w3c.dom.*;
-import org.apache.xerces.dom.*;
-import org.apache.xerces.jaxp.*;
-import org.apache.xml.serialize.*;
 import java.io.*;
+
+import org.apache.xerces.dom.*;
+import org.apache.xml.serialize.*;
+import org.w3c.dom.*;
+import com.hackerdude.apps.sqlide.plugins.movedata.model.*;
 
 /**
  * This is a two way parser for MoveDataModel. It both interpret and generate

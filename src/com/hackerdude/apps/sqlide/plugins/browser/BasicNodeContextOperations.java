@@ -1,8 +1,8 @@
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import java.awt.event.*;
 import java.util.*;
 
+import java.awt.event.*;
 import javax.swing.*;
 
 import com.hackerdude.apps.sqlide.*;
@@ -11,8 +11,8 @@ import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.nodes.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.plugins.isql.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.apps.sqlide.xml.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * This plugin returns all the basic Node Context Operations. It is the
@@ -20,10 +20,10 @@ import com.hackerdude.apps.sqlide.xml.*;
  */
 public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 
-    public BasicNodeContextOperations() {
-    }
+	public BasicNodeContextOperations() {
+	}
 
-    public Action[] getActionsFor(NodeIDEBase[] selectedNodes) {
+	public Action[] getActionsFor(NodeIDEBase[] selectedNodes) {
 		if ( selectedNodes.length != 1 ) { return NULL_ACTIONS; }
 		ArrayList actionsList = new ArrayList();
 
@@ -50,24 +50,24 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 		Action[] result = new Action[actionsList.size()];
 		result = (Action[])actionsList.toArray(result);
 		return result;
-    }
+	}
 
-    public void initPlugin() {
+	public void initPlugin() {
 
-    }
-    public String getPluginName() {
+	}
+	public String getPluginName() {
 		return "Basic Node Operations";
-    }
-    public String getPluginVersion() { return "";
-    }
-    public void freePlugin() {
-    }
-    public String getPluginShortName() {
-        return "Node Operations";
-    }
-    public Icon getPluginIcon() {
+	}
+	public String getPluginVersion() { return "";
+	}
+	public void freePlugin() {
+	}
+	public String getPluginShortName() {
+		return "Node Operations";
+	}
+	public Icon getPluginIcon() {
 		return ProgramIcons.getInstance().getDevicesIcon();
-    }
+	}
 
 
 	/**

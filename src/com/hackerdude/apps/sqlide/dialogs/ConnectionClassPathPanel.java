@@ -19,53 +19,53 @@ public class ConnectionClassPathPanel extends JPanel {
 	private SqlideHostConfig databaseSpec;
 	ClassPathListModel listModel = new ClassPathListModel();
 
-    private BorderLayout borderLayout1 = new BorderLayout();
-    private JPanel pnlCenter = new JPanel();
-    private JPanel pnlBottom = new JPanel();
-    private JPanel pnlTop = new JPanel();
-    private JButton btnRemove = new JButton(ACTION_REMOVE);
-    private JButton btnAdd = new JButton(ACTION_ADD);
-    private JScrollPane fileScroller = new JScrollPane();
-    private BorderLayout borderLayout2 = new BorderLayout();
-    private JList lstFileList = new JList();
-    private JLabel lblInstruction = new JLabel();
-    private BorderLayout borderLayout3 = new BorderLayout();
+	private BorderLayout borderLayout1 = new BorderLayout();
+	private JPanel pnlCenter = new JPanel();
+	private JPanel pnlBottom = new JPanel();
+	private JPanel pnlTop = new JPanel();
+	private JButton btnRemove = new JButton(ACTION_REMOVE);
+	private JButton btnAdd = new JButton(ACTION_ADD);
+	private JScrollPane fileScroller = new JScrollPane();
+	private BorderLayout borderLayout2 = new BorderLayout();
+	private JList lstFileList = new JList();
+	private JLabel lblInstruction = new JLabel();
+	private BorderLayout borderLayout3 = new BorderLayout();
 
-    public ConnectionClassPathPanel() {
-        try {
-            jbInit();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public ConnectionClassPathPanel() {
+		try {
+			jbInit();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    private void jbInit() throws Exception {
-        this.setLayout(borderLayout1);
-        btnRemove.setText("Remove");
-        btnAdd.setText("Add");
-        pnlCenter.setLayout(borderLayout2);
-        lblInstruction.setHorizontalAlignment(SwingConstants.CENTER);
-        lblInstruction.setText("Specify JAR Files for Classpath");
-        pnlTop.setLayout(borderLayout3);
-        this.add(pnlCenter, BorderLayout.CENTER);
-        this.add(pnlBottom,  BorderLayout.SOUTH);
-        this.add(pnlTop, BorderLayout.NORTH);
-        pnlBottom.add(btnAdd, null);
-        pnlBottom.add(btnRemove, null);
-        pnlCenter.add(fileScroller,  BorderLayout.CENTER);
-        fileScroller.getViewport().add(lstFileList, null);
-        pnlTop.add(lblInstruction, BorderLayout.CENTER);
-    }
-    public void setDatabaseSpec(SqlideHostConfig databaseSpec) {
-        this.databaseSpec = databaseSpec;
+	private void jbInit() throws Exception {
+		this.setLayout(borderLayout1);
+		btnRemove.setText("Remove");
+		btnAdd.setText("Add");
+		pnlCenter.setLayout(borderLayout2);
+		lblInstruction.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInstruction.setText("Specify JAR Files for Classpath");
+		pnlTop.setLayout(borderLayout3);
+		this.add(pnlCenter, BorderLayout.CENTER);
+		this.add(pnlBottom,  BorderLayout.SOUTH);
+		this.add(pnlTop, BorderLayout.NORTH);
+		pnlBottom.add(btnAdd, null);
+		pnlBottom.add(btnRemove, null);
+		pnlCenter.add(fileScroller,  BorderLayout.CENTER);
+		fileScroller.getViewport().add(lstFileList, null);
+		pnlTop.add(lblInstruction, BorderLayout.CENTER);
+	}
+	public void setDatabaseSpec(SqlideHostConfig databaseSpec) {
+		this.databaseSpec = databaseSpec;
 		readFromModel();
-    }
+	}
 
 
-    public SqlideHostConfig getDatabaseSpec() {
-        return databaseSpec;
-    }
+	public SqlideHostConfig getDatabaseSpec() {
+		return databaseSpec;
+	}
 
 	public void readFromModel() {
 		String[] jarFiles = databaseSpec.getJdbc().getClassPath().getPathelement();
@@ -168,7 +168,5 @@ public class ConnectionClassPathPanel extends JPanel {
 				return( bAccept );
 		}
 	}
-
-
 
 }

@@ -6,6 +6,7 @@ import java.io.*;
 import textarea.TextAreaDefaults;
 import textarea.syntax.TSQLTokenMarker;
 import javax.swing.*;
+import com.hackerdude.apps.sqlide.plugins.*;
 
 /**
  * Title:        JSqlIde
@@ -18,7 +19,7 @@ import javax.swing.*;
 
 public class SQLFilePreviewPanel extends JPanel {
 
-	public SyntaxTextArea sqlTextArea = new SyntaxTextArea(TextAreaDefaults.getDefaults());
+	public SyntaxTextArea sqlTextArea = SyntaxTextAreaFactory.createTextArea(); //TextAreaDefaults.getDefaults());
 
 	public final static int MAX_PREVIEW_LINES=10;
 
@@ -42,7 +43,7 @@ public class SQLFilePreviewPanel extends JPanel {
 		this.add(jPanel1, BorderLayout.NORTH);
 		jPanel1.add(lblCurrentContents, null);
 		sqlTextArea.setEditable(false);
-		sqlTextArea.setTokenMarker(new TSQLTokenMarker());
+//		sqlTextArea.setTokenMarker(new TSQLTokenMarker());
 		sqlTextArea.setText("SQL Preview Window");
 	}
 

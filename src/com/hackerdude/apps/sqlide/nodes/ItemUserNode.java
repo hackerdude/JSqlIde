@@ -5,15 +5,8 @@ import com.hackerdude.apps.sqlide.intf.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
+ * Users node.
  */
-
-
 public class ItemUserNode extends NodeIDEItem {
 
 	String userName;

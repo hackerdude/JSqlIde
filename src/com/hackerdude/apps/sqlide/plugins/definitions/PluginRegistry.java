@@ -1,9 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.definitions;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.util.*;
 import java.io.*;
-import javax.swing.Action;
+import java.util.*;
+
+import com.hackerdude.apps.sqlide.pluginapi.*;
 
 /**
  * Plug-in Registry.

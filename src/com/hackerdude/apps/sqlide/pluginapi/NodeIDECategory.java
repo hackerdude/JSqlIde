@@ -7,7 +7,6 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
  * category instead of a specific object. These are only used by
  * the Browser Panel to categorize things in the tree.
  */
-
 public abstract class NodeIDECategory extends NodeIDEBase {
 
 	public NodeIDECategory(String name, DatabaseProcess db ) { super(name, db); }

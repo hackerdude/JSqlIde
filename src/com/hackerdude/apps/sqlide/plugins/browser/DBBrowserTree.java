@@ -1,10 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import javax.swing.JTree;
-import javax.swing.tree.TreeNode;
 import java.awt.dnd.*;
-import java.awt.datatransfer.*;
-import com.hackerdude.apps.sqlide.nodes.*;
+import javax.swing.*;
+import javax.swing.tree.*;
+
 import com.hackerdude.apps.sqlide.pluginapi.*;
 
 /**

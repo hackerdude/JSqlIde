@@ -7,7 +7,6 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
  * represent an object on the database connection, as opposed to a
  * category.
  */
-
 public abstract class NodeIDEItem extends NodeIDEBase {
 
 	public NodeIDEItem(String name, DatabaseProcess db ) { super(name, db); }

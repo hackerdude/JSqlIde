@@ -22,26 +22,19 @@
  */
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.lib.GPLAboutDialog;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.plaf.basic.*;
 import javax.swing.plaf.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.io.*;
-import java.sql.*;
+import javax.swing.tree.*;
+
+import com.hackerdude.apps.sqlide.*;
+import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.nodes.*;
+import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
+import com.hackerdude.lib.*;
 
 /**
  *   Based on the sqlIDE Config, this browser

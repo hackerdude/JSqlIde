@@ -1,9 +1,12 @@
 package com.hackerdude.apps.sqlide.plugins.browser.browsejdbc;
+
+import java.sql.*;
+import java.util.*;
+
+import javax.swing.tree.*;
+
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.util.*;
-import javax.swing.tree.*;
-import java.sql.*;
 
 /**
  * A node for the Catalogs category.
