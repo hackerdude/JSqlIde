@@ -106,6 +106,9 @@ public class DatabaseSpecDOMParser {
 		NodeList children = jdbcNode.getChildNodes();
 		String driver = null;
 		String url    = null;
+		Node jarFileNode = jdbcNode.getAttributes().getNamedItem("jarfile");
+
+		String jarFile = jarFileNode!=null?jarFileNode.getNodeValue():null;
 		for ( int i=0; i<children.getLength(); i++ ) {
 			Node aNode = children.item(i);
 			if ( aNode.getNodeType() != Node.COMMENT_NODE ) {
@@ -123,6 +126,7 @@ public class DatabaseSpecDOMParser {
 		}
 		spec.setDriverName(driver);
 		spec.setURL(url);
+		spec.setJarFileName(jarFile);
 	}
 
 	private void parseSQLIDE(Node ideNode, DatabaseSpec spec) throws SAXException {
@@ -175,6 +179,7 @@ public class DatabaseSpecDOMParser {
 		Element jdbcNode    = xmlDatabaseSpec.createElement(XSPEC_JDBC_NODE);
 		Element connectionNode = xmlDatabaseSpec.createElement(XSPEC_CONNECTION_NODE);
 		connectionNode.setAttribute(specConnections, Integer.toString(spec.getConnections()));
+		jdbcNode.setAttribute("jarfile", spec.getJarFileName());
 		// Save the connection properties
 		Iterator propsIter = spec.getConnectionProperties().keySet().iterator();
 		while ( propsIter.hasNext() ) {

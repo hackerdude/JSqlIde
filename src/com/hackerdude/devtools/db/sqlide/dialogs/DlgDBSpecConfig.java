@@ -47,18 +47,26 @@ import javax.swing.event.*;
  */
 public class DlgDBSpecConfig extends JDialog {
 
+	public final Action ACTION_NEW_CONNECTION = new NewConnectionAction();
+	public final Action ACTION_DELETE_CONNECTION = new DeleteConnectionAction();
+
+	public final Action ACTION_JAR_BROWSE = new ActionBrowseForJar();
+
+	public final Action ACTION_OK = new OKAction();
+	public final Action ACTION_CANCEL = new CancelAction();
+
 	DatabaseSpec spec;
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel pnlOkCancel = new JPanel();
-	JButton btnCancel = new JButton();
-	JButton btnOk = new JButton();
+	JButton btnCancel = new JButton(ACTION_CANCEL);
+	JButton btnOk = new JButton(ACTION_OK);
 	JTabbedPane jTabbedPane1 = new JTabbedPane();
 	JPanel jPanel1 = new JPanel();
 	JPanel pnlJDBC = new JPanel();
 	JPanel pnlConnection = new JPanel();
 	GridBagLayout gbagJDBC = new GridBagLayout();
 	JPanel pnlJarFileName = new JPanel();
-	JButton btnJarBrowse = new JButton();
+	JButton btnJarBrowse = new JButton(ACTION_JAR_BROWSE);
 	JTextField fJarFile = new JTextField();
 	BorderLayout borderLayout2 = new BorderLayout();
 	JPanel pnlDriver = new JPanel();
@@ -80,7 +88,7 @@ public class DlgDBSpecConfig extends JDialog {
 	BorderLayout borderLayout8 = new BorderLayout();
 	ConnPropertiesTableModel connModel = null;
 	JPanel jPanel3 = new JPanel();
-	JButton btnNewConnection = new JButton();
+	JButton btnNewConnection = new JButton(ACTION_NEW_CONNECTION);
 	JButton btnDeleteConnection = new JButton();
 	JScrollPane jScrollPane1 = new JScrollPane();
 	JTable tblConnectionParams = new JTable();
@@ -148,17 +156,6 @@ public class DlgDBSpecConfig extends JDialog {
 				fFileName.setText(selectFileName(fFileName.getText(), DatabaseSpec.prop_db_configsuffix, "Database Properties File", false));
 		}
 		});
-		btnJarBrowse.addActionListener( new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				fJarFile.setText(selectFileName(fJarFile.getText(),".jar", "Java Archive File", true));
-				}
-		});
-		btnOk.addActionListener( new ActionListener() {
-				public void actionPerformed(ActionEvent e) { writeToSpec(); dispose(); }}
-		);
-		btnCancel.addActionListener( new ActionListener() {
-				public void actionPerformed(ActionEvent e) {  dispose(); }}
-		);
 	}
 
 	public void jbInit() {
@@ -168,12 +165,11 @@ public class DlgDBSpecConfig extends JDialog {
 		btnCancel.setActionCommand("cancel");
 		btnCancel.setMnemonic('C');
 		btnCancel.setText("Cancel");
-		btnOk.setNextFocusableComponent(btnCancel);
 		btnOk.setMnemonic('K');
 		btnOk.setText("Ok");
 		pnlJDBC.setLayout(gbagJDBC);
 		pnlConnection.setLayout(borderLayout7);
-		btnJarBrowse.setEnabled(false);
+		btnJarBrowse.setEnabled(true);
 		btnJarBrowse.setFont(new java.awt.Font("Dialog", 1, 9));
 		btnJarBrowse.setMnemonic('B');
 		btnJarBrowse.setText("Browse...");
@@ -203,22 +199,12 @@ public class DlgDBSpecConfig extends JDialog {
 		});
 		lblConnection.setText("Connection Parameters");
 		jPanel2.setLayout(borderLayout8);
-		pnlJarFileName.setEnabled(false);
+		pnlJarFileName.setEnabled(true);
 		btnNewConnection.setMnemonic('N');
 		btnNewConnection.setText("New");
-		btnNewConnection.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnNewConnection_actionPerformed(e);
-			}
-		});
 		jPanel3.setLayout(gridBagLayout1);
 		btnDeleteConnection.setMnemonic('D');
 		btnDeleteConnection.setText("Delete");
-		btnDeleteConnection.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnDeleteConnection_actionPerformed(e);
-				}
-		});
 
 		lblDriverMessage.setText("This driver is neat");
 		lblPoliteName.setLabelFor(fDisplayName);
@@ -362,14 +348,25 @@ public class DlgDBSpecConfig extends JDialog {
 		spec.setConnectionProperties(connModel.getProperties());
 	}
 
-	void btnNewConnection_actionPerformed(ActionEvent e) {
-		connModel.addRow();
+	class OKAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) { writeToSpec(); dispose(); }
 	}
 
-	void btnDeleteConnection_actionPerformed(ActionEvent e) {
-		connModel.removeRow(tblConnectionParams.getSelectedRow());
+	class CancelAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) { dispose(); }
 	}
 
+	class NewConnectionAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			connModel.addRow();
+		}
+	}
+
+	class DeleteConnectionAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			connModel.removeRow(tblConnectionParams.getSelectedRow());
+		}
+	}
 	void fDriver_focusLost(FocusEvent e) {
 		spec.setDriverName(fDriver.getText());
 		updateMessageLabel();
@@ -385,14 +382,22 @@ public class DlgDBSpecConfig extends JDialog {
 		}
 	}
 
+	class ActionBrowseForJar extends AbstractAction {
+		public void actionPerformed(ActionEvent evt) {
+			fJarFile.setText(selectFileName(fJarFile.getText(),".jar", "Java Archive File", true));
+		}
+	}
 
 }
 
 /*
 
   $Log$
-  Revision 1.1  2001/09/07 02:51:19  davidmartinez
-  Initial revision
+  Revision 1.2  2002/08/13 22:37:38  davidmartinez
+  Completely broke the JarClassloader :-)
+
+  Revision 1.1.1.1  2001/09/07 02:51:19  davidmartinez
+  Initial Checkin of the Alpha tree
 
   Revision 1.3  2000/05/08 22:25:15  david
   Tweaks so that Jar Packaging will work. Also new-user settings bug fixes.
