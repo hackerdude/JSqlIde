@@ -128,11 +128,13 @@ public class MainISQLPanel extends JPanel {
         resultSetPanel.setResultSetModel(newColumnModel, tableModel, queryResults.getResultSet());
         setClobEditors(queryResults, newColumnModel);
       }
-      resultSetPanel.addWarningText("Ran " + (asUpdate ? " update." : "query"));
+      resultSetPanel.addStatusText("Ran " + (asUpdate ? " update." : "query"));
 
     }
     catch (SQLException exc) {
-      JOptionPane.showMessageDialog(this, "SQL Exception: " + exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);
+		resultSetPanel.addWarningText(exc.toString());
+		resultSetPanel.clearResultSetModel();
+      //JOptionPane.showMessageDialog(this, "SQL Exception: " + exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);.
     }
     finally {
       setCursor(Cursor.getDefaultCursor());
