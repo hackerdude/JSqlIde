@@ -214,6 +214,7 @@ public class ProgramConfig extends Observable {
 
 	public void addConnectionConfig(ConnectionConfig spec) {
 		connectionConfigList.add(spec);
+		setChanged();
 		notifyObservers(spec);
 	}
 

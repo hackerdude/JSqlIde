@@ -25,6 +25,7 @@ public class ConnectionClassPathPanel extends JPanel {
     private BorderLayout borderLayout2 = new BorderLayout();
     private JList lstFileList = new JList();
     private JLabel lblInstruction = new JLabel();
+    private BorderLayout borderLayout3 = new BorderLayout();
 
     public ConnectionClassPathPanel() {
         try {
@@ -40,7 +41,9 @@ public class ConnectionClassPathPanel extends JPanel {
         btnRemove.setText("Remove");
         btnAdd.setText("Add");
         pnlCenter.setLayout(borderLayout2);
+        lblInstruction.setHorizontalAlignment(SwingConstants.CENTER);
         lblInstruction.setText("Specify JAR Files for Classpath");
+        pnlTop.setLayout(borderLayout3);
         this.add(pnlCenter, BorderLayout.CENTER);
         this.add(pnlBottom,  BorderLayout.SOUTH);
         this.add(pnlTop, BorderLayout.NORTH);
@@ -48,7 +51,7 @@ public class ConnectionClassPathPanel extends JPanel {
         pnlBottom.add(btnRemove, null);
         pnlCenter.add(fileScroller,  BorderLayout.CENTER);
         fileScroller.getViewport().add(lstFileList, null);
-        pnlTop.add(lblInstruction, null);
+        pnlTop.add(lblInstruction, BorderLayout.CENTER);
     }
     public void setDatabaseSpec(ConnectionConfig databaseSpec) {
         this.databaseSpec = databaseSpec;

@@ -143,7 +143,7 @@ public class DlgPanelServersPage extends JPanel {
 				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			DlgConnectionConfig.showConfigurationDialog( null, spec );
+			DlgConnectionConfig.showConfigurationDialog( sqlide.getFrame(), spec );
 		}
 	}
 
@@ -155,12 +155,12 @@ public class DlgPanelServersPage extends JPanel {
 		public ActionAddServer() { super("New", ProgramIcons.getInstance().findIcon("images/NewPlug.gif"));}
 		public void actionPerformed(ActionEvent ev) {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
-			ConnectionConfig spec = wiz.getDBSpec();
-			if ( wiz.result == wiz.OK || spec != null ) {
-					ConnectionConfigFactory.saveConnectionConfig(spec);
-					ProgramConfig.getInstance().addConnectionConfig(spec);
-					model.fireTableDataChanged();
-			} else { System.out.println("[DlgPanelServersPage] New Server Spec was null. Ignoring."); }
+			if ( wiz.result == wiz.OK ) {
+				ConnectionConfig spec = wiz.getDBSpec();
+				ConnectionConfigFactory.saveConnectionConfig(spec);
+				ProgramConfig.getInstance().addConnectionConfig(spec);
+				model.fireTableDataChanged();
+			}
 		}
 	}
 

@@ -15,6 +15,7 @@ import com.hackerdude.devtools.db.sqlide.*;
 import com.hackerdude.devtools.db.sqlide.dataaccess.*;
 import java.awt.Dimension;
 import java.io.File;
+import javax.swing.JFrame;
 
 
 /**
@@ -28,8 +29,8 @@ public class NewServerWizard extends Wizard {
 
 	ConnectionConfig databaseSpec;
 
-	public NewServerWizard(boolean modal) {
-		super("New Server Profile",
+	public NewServerWizard(JFrame owner, boolean modal) {
+		super(owner, "New Server Profile",
 			  "This wizard will guide you step by step on how to add a server profile "
 	 +"to your configuration.", modal );
 		databaseSpec = ConnectionConfigFactory.createConnectionConfig();
@@ -49,7 +50,7 @@ public class NewServerWizard extends Wizard {
 		File defaultFile = new File(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
 		if ( ! defaultFile.exists() ) {
 			setFileName(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
-			pageNewServer.disableFileSelection();
+			pageNewServer.setFileNameEnabled(false);
 		}
 		setPages(pages);
 	}
@@ -81,7 +82,10 @@ public class NewServerWizard extends Wizard {
 	}
 
 	public void doneWizard() {
-		databaseSpec.setFileName(pageNewServer.fFileName.getText());
+		/** @todo Resolve this correctly. fFileName is only a base filename. It no longer has a path or anything. */
+		String baseFileName = pageNewServer.fFileName.getText();
+		String fileName = ProgramConfig.getInstance().getUserProfilePath()+baseFileName+".db.xml";
+		databaseSpec.setFileName(fileName);
 		databaseSpec.setURL(pageNewServer.fURL.getText());
 		databaseSpec.setPoliteName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
 		databaseSpec.setDriverClassName(pageNewServer.fClassName.getText());
@@ -95,7 +99,7 @@ public class NewServerWizard extends Wizard {
 	}
 
 	public static NewServerWizard showWizard(boolean modal) {
-		NewServerWizard wiz = new NewServerWizard(modal);
+		NewServerWizard wiz = new NewServerWizard(sqlide.getFrame(), modal);
 		wiz.setEnabled(true);
 		wiz.pack();
 		Dimension screen = wiz.getToolkit().getScreenSize();
@@ -107,4 +111,5 @@ public class NewServerWizard extends Wizard {
 	public static void main(String[] args) {
 		showWizard(true);
 	}
+
 }
