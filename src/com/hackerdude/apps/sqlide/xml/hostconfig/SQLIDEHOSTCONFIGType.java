@@ -44,6 +44,8 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
 
     private Jdbc _jdbc;
 
+    private BrowserPlugin _browserPlugin;
+
     private java.util.Vector _pluginSpecificList;
 
 
@@ -90,6 +92,16 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     {
         return _pluginSpecificList.elements();
     } //-- java.util.Enumeration enumeratePluginSpecific() 
+
+    /**
+     * Returns the value of field 'browserPlugin'.
+     * 
+     * @return the value of field 'browserPlugin'.
+    **/
+    public BrowserPlugin getBrowserPlugin()
+    {
+        return this._browserPlugin;
+    } //-- BrowserPlugin getBrowserPlugin() 
 
     /**
      * Returns the value of field 'fileName'.
@@ -213,6 +225,16 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
         _pluginSpecificList.removeElementAt(index);
         return (PluginSpecific) obj;
     } //-- PluginSpecific removePluginSpecific(int) 
+
+    /**
+     * Sets the value of field 'browserPlugin'.
+     * 
+     * @param browserPlugin the value of field 'browserPlugin'.
+    **/
+    public void setBrowserPlugin(BrowserPlugin browserPlugin)
+    {
+        this._browserPlugin = browserPlugin;
+    } //-- void setBrowserPlugin(BrowserPlugin) 
 
     /**
      * Sets the value of field 'fileName'.

@@ -331,12 +331,11 @@ public class ProgramConfig extends Observable {
 			try {
 				dbSpec = HostConfigFactory.createHostConfig(fileName);
 				SqlideHostConfigList.add( dbSpec );
-				if ( dbPropFileNames[i].equals( defaultdbPropsFile ) ) {
+				if ( fileName.equals( defaultdbPropsFile ) ) {
 					defaultDatabaseSpec = dbSpec;
 				}
 			} catch ( IOException exc ) {
-				exc.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Could not parse Database spec "+fileName+" - "+exc.toString(), "Could not parse "+fileName, JOptionPane.ERROR_MESSAGE);
+				System.out.println("Error "+exc.toString()+" parsing "+fileName+"... Will not add to available configs list");
 			}
 		}
 		notifyObservers();

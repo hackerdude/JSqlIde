@@ -50,18 +50,31 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 	}
 
 
-	class ActionCommandTyper extends AbstractAction {
+	public static Action createCustomCommandTyper(String name, String statement, PluginInteractiveSQL interactiveSQL) {
+		Icon icon = ProgramIcons.getInstance().getUsersIcon();
+		return new ActionCommandTyper(name, statement, icon, interactiveSQL);
+	}
+
+	public static class ActionCommandTyper extends AbstractAction {
 
 		PluginInteractiveSQL interactiveSQL;
+		String sqlStatement;
 
 		public ActionCommandTyper(String statement, Icon icon, PluginInteractiveSQL interactiveSQL) {
 			super(statement, icon);
+			this.sqlStatement = statement;
+			this.interactiveSQL = interactiveSQL;
+		}
+
+		public ActionCommandTyper(String name, String statement, Icon icon, PluginInteractiveSQL interactiveSQL) {
+			super(name, icon);
+			this.sqlStatement = statement;
 			this.interactiveSQL = interactiveSQL;
 		}
 
 		public void actionPerformed(ActionEvent ae) {
 			String statement = ae.getActionCommand();
-			interactiveSQL.setQueryText(statement);
+			interactiveSQL.setQueryText(sqlStatement);
 			interactiveSQL.grabFocus();
 		}
 	}
