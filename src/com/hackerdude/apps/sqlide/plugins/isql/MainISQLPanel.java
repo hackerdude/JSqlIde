@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import javax.swing.table.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -16,6 +17,8 @@ import com.hackerdude.apps.sqlide.plugins.*;
 import textarea.*;
 
 public class MainISQLPanel extends JPanel {
+
+	public final JTextField editorTextField = new JTextField();
 
 	public final Action ACTION_RUN_COMMAND = new ActionCommandRunner();
 	private DatabaseProcess ideprocess;
@@ -84,9 +87,9 @@ public class MainISQLPanel extends JPanel {
 			sqlTextArea.setText(ideprocess.lastQuery);
 			Font theFont = ProgramConfig.getInstance().getResultSetFont();
 			ResultSetColumnModel newColumnModel = new ResultSetColumnModel(ideprocess.getLastQueryResults(), theFont, this);
+			setDefaultEditors(ideprocess.getTableModel(), newColumnModel);
 			TableModel tableModel = ideprocess.getTableModel();
 			resultSetPanel.setResultSetModel(newColumnModel,tableModel);
-//			pnlQueryResults.add(new JLabel("<HTML>"+theQuery.getText(), ProgramIcons.getInstance().findIcon("images/Check.gif"),JLabel.CENTER ), BorderLayout.NORTH);
 			resultSetPanel.setStatusText( "Ran Query." );
 		} catch ( SQLException exc ) {
 			JOptionPane.showMessageDialog(this, "SQL Exception: "+exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);
@@ -184,5 +187,31 @@ public class MainISQLPanel extends JPanel {
 		return exception;
 	}
 
+	public void setDefaultEditors(TableModel model, TableColumnModel columnModel) {
+		for ( int i=0; i<columnModel.getColumnCount(); i++ ) {
+			TableColumn column = columnModel.getColumn(i);
+			System.out.println(column);
+			System.out.println(model.getColumnClass(i));
+
+
+//			if ( java.sql.Clob.class.isAssignableFrom(model.getColumnClass(i)) ) {
+//				column.setCellEditor(new ClobCellEditor());
+//			}
+		}
+	}
+
+
+	class ClobCellEditor extends DefaultCellEditor {
+		Object cellEditorValue;
+
+		public ClobCellEditor() {
+			super(editorTextField);
+		}
+
+		public Object getCellEditorValue() {
+			return editorTextField.getText();
+		}
+
+	}
 
 }

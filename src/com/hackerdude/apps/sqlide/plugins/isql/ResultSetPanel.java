@@ -45,12 +45,13 @@ public class ResultSetPanel extends JPanel {
 		tblResults.setColumnModel(newColumnModel);
 		tblResults.updateUI();
 		resultScroll.validate();
-
 	}
 
 	public void setStatusText(String text) {
 		lblStatus.setText(text);
 	}
+
+
 
 
 }
