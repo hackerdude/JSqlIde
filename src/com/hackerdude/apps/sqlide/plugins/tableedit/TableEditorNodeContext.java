@@ -1,33 +1,36 @@
 package com.hackerdude.apps.sqlide.plugins.tableedit;
 
-import javax.swing.Action;
-import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
-import javax.swing.Icon;
-import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
-import com.hackerdude.apps.sqlide.ProgramIcons;
-import javax.swing.*;
-import java.awt.event.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 import java.sql.*;
+
+import java.awt.event.*;
+import javax.swing.*;
+
+import com.hackerdude.apps.sqlide.*;
+import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
 
 public class TableEditorNodeContext
 	  implements IDENodeContextPluginIF {
+
 	public TableEditorNodeContext() {
 	}
 
 	public Action[] getActionsFor(NodeIDEBase[] selectedNodes) {
 
 		if ( (selectedNodes != null) && (selectedNodes.length == 1)) {
+			if (selectedNodes[0] instanceof CategoryTableNode) {
+				Action[] ACTIONS = { new CreateTableAction(selectedNodes[0])};
+				return ACTIONS;
+			}
 			if (! (selectedNodes[0] instanceof ItemTableNode))
 				return NULL_ACTIONS;
 			ItemTableNode node = (ItemTableNode) selectedNodes[0];
 			EditTableAction editTable = new EditTableAction(node);
-			Action[] ACTION = {editTable};
+			CreateTableAction createTable = new CreateTableAction(node);
+			Action[] ACTION = { editTable, createTable };
 			return ACTION;
-		}
-		else {
+		} else {
 			return NULL_ACTIONS;
 		}
 
@@ -56,6 +59,23 @@ public class TableEditorNodeContext
 		return ProgramIcons.getInstance().getDevicesIcon();
 	}
 
+	class CreateTableAction extends AbstractAction {
+		NodeIDEBase tables;
+		public CreateTableAction(NodeIDEBase aNode) {
+			super("Create new table", ProgramIcons.getInstance().findIcon("images/NewColumn.gif"));
+			tables = aNode;
+		}
+
+		public void actionPerformed(ActionEvent evt) {
+			PluginTableEditor tableEditor = new PluginTableEditor();
+			tableEditor.initPlugin();
+			DatabaseProcess proc = tables.getDatabaseProcess();
+			tableEditor.setDatabaseProcess(proc);
+			SqlIdeApplication.getInstance().setRightPanel(tableEditor);
+
+		}
+	}
+
 	class EditTableAction extends AbstractAction {
 
 		ItemTableNode tableNode;
@@ -72,8 +92,7 @@ public class TableEditorNodeContext
 			tableEditor.setDatabaseProcess(proc);
 			try {
 				tableEditor.setTableNode(tableNode);
-			}
-			catch (SQLException ex) {
+			} catch (SQLException ex) {
 				JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), "Error while reading columns: " + ex.toString(), "Could not read columns", JOptionPane.ERROR_MESSAGE);
 			}
 			SqlIdeApplication.getInstance().setRightPanel(tableEditor);

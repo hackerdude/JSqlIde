@@ -530,6 +530,7 @@ public class SqlIdeApplication  {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, Event.CTRL_MASK, false));
 			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
 		}
+
 		public void actionPerformed(ActionEvent e) {
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
 			try {
