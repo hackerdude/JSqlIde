@@ -12,7 +12,7 @@ import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
 /**
  * A node for a schema category
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

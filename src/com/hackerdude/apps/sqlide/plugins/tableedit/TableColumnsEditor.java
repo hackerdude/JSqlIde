@@ -23,7 +23,7 @@ import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableColumnNode
 /**
  * Table Column Editor.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

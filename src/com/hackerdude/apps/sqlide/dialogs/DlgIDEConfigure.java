@@ -69,7 +69,8 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	/**
 	 * IDE Configuration Dialog constructor.
 	 *
-	 * @param theconfig The configuration object we want to change.
+	 * @param owner The parent frame
+	 * @param title The title.
 	 */
 	public DlgIDEConfigure(Frame owner, String title) {
 

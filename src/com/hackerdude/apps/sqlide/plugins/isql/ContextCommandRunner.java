@@ -30,7 +30,7 @@ import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableNode;
  * This non-visual node context plugin feeds to the interactive SQL commands
  * depending on the type of object that is selected.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

@@ -6,7 +6,7 @@ import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
 
 /**
  * A Schema Item
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

@@ -15,7 +15,7 @@ import com.hackerdude.apps.sqlide.plugins.movedata.model.MoveDataModel;
  * This is a two way parser for MoveDataModel. It both interpret and generate
  * XML for MoveDataInstructions.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

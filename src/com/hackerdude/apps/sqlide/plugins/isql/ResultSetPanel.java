@@ -32,7 +32,7 @@ import com.hackerdude.apps.sqlide.components.ScrollableResultSetTableModel;
 
 /**
  * The panel with query results.
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */

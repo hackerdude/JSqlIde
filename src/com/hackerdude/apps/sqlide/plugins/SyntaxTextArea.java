@@ -27,7 +27,7 @@ import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
 /**
  * Extension of JEditTextArea that supports dropping of Browser Node Items.
  *
- * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * 
  * @author David Martinez
  * @version 1.0
  */
