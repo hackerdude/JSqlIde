@@ -1,6 +1,5 @@
 package com.hackerdude.apps.sqlide.plugins.movedata;
 
-import com.hackerdude.apps.sqlide.intf.SqlIdePluginIF;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 import javax.swing.*;
@@ -8,6 +7,8 @@ import java.awt.*;
 import java.beans.*;
 import javax.swing.event.*;
 import com.hackerdude.apps.sqlide.nodes.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import java.awt.event.ActionEvent;
 
 /**
  * Data Mover plugin. The Data Mover can create a script
@@ -16,7 +17,7 @@ import com.hackerdude.apps.sqlide.nodes.*;
  * SQLIDE connection pools to execute the script generated
  * by this UI.
  */
-public class DataMoverPanel extends JPanel implements SqlIdePluginIF {
+public class DataMoverPanel extends AbstractVisualPlugin implements IDENodeContextPluginIF {
 
 	DatabaseProcess proc;
 	BorderLayout borderLayout4 = new BorderLayout();
@@ -54,7 +55,9 @@ public class DataMoverPanel extends JPanel implements SqlIdePluginIF {
 
 	public DatabaseProcess getDatabaseProcess() { return proc; }
 
-	public String getShortName() { return "DataMover"; }
+	public String getPluginName() { return "DataMover"; }
+
+	public String getPluginShortName() { return "DataMover"; }
 
 	public String getPluginVersion() { return "0.0.1"; }
 
@@ -70,11 +73,11 @@ public class DataMoverPanel extends JPanel implements SqlIdePluginIF {
 		return(theResult);
 	}
 
-	public boolean executeAction(String action) {
+	public boolean executeStandardAction(ActionEvent evt) {
 		boolean theResult = false;
-		if ( action.equals("Cut") ) {  };
-		if ( action.equals("Copy") ) {  };
-		if ( action.equals("Paste") ) {  };
+//		if ( action.equals("Cut") ) {  };
+//		if ( action.equals("Copy") ) {  };
+//		if ( action.equals("Paste") ) {  };
 		return(theResult);
 	}
 
@@ -103,17 +106,47 @@ public class DataMoverPanel extends JPanel implements SqlIdePluginIF {
 	}
 	public JPopupMenu getPopupMenuFor(NodeIDEBase node) { return null; }
 
-	public Action[] getActionsFor(NodeIDEBase node) {
-	  throw new UnsupportedOperationException("Not Implemented");
+	public Action[] getActionsFor(NodeIDEBase[] node) {
+		return null;
 	}
 
-	public Action[] getAvailableActions() {
-	  /** @todo Implement */
-	  throw new UnsupportedOperationException("Not Implemented");
+	public Action[] getPossibleActions() {
+	  return null;
 	}
 
-	public void requestIDEFocus() {
+	public void receivePluginFocus() {
 		dataMoverPages.requestFocus();
+	}
+
+	public Icon getPluginIcon() {
+		return ProgramIcons.getInstance().getDatabaseIcon();
+
+	}
+
+	public void freePlugin() {}
+
+	public void doCut() {
+
+	}
+
+	public void doCopy() {
+
+	}
+
+	public void doPaste() {
+
+	}
+
+	public void doSaveFileAs() {
+
+	}
+
+	public void doSaveFile() {
+
+	}
+
+	public void doOpenFile() {
+
 	}
 
 }
