@@ -388,6 +388,11 @@ public class SqlIdeApplication  {
 		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getConnectionConfig().getPoliteName()+")" );
 	}
 
+	public IDEVisualPluginIF getRightPanel() {
+		Component comp = jTabbedPane1.getSelectedComponent();
+		return (IDEVisualPluginIF)comp;
+	}
+
 	public void pack() {
 		if ( frame != null ) frame.pack();
 	}

@@ -45,11 +45,10 @@ import com.hackerdude.lib.*;
  *
  * @version $Id$
  */
-public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENodeContextPluginIF {
+public class PluginInteractiveSQL extends AbstractVisualPlugin {
 
 	ProgramConfig config;
-	DatabaseProcess ideprocess;
-//	JPanel       exceptionPanel;
+	DatabaseProcess databaseProcess;
 	Vector       menuItems;
 
 	MainISQLPanel mainSQLPanel = new MainISQLPanel();
@@ -109,7 +108,7 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENod
 	 * Returns the current DatabaseProcess
 	 */
 	public DatabaseProcess getDatabaseProcess() {
-		return(ideprocess);
+		return(databaseProcess);
 	}
 
 	/**
@@ -117,8 +116,8 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENod
 	*/
 	public void setDatabaseProcess( DatabaseProcess proc ) {
 		mainSQLPanel.setDatabaseProcess(proc);
-		ideprocess = proc;
-		mainSQLPanel.setQueryText(ideprocess.lastQuery);
+		databaseProcess = proc;
+		mainSQLPanel.setQueryText(databaseProcess.lastQuery);
 
 	}
 
@@ -293,17 +292,6 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENod
 		return flt;
 	}
 
-	class ActionCommandTyper extends AbstractAction {
-
-		public ActionCommandTyper(String statement, Icon icon) { super(statement, icon); }
-
-		public void actionPerformed(ActionEvent ae) {
-			String statement = ae.getActionCommand();
-			mainSQLPanel.setQueryText(statement);
-			receivePluginFocus();
-		}
-	}
-
 	public Action[] getPossibleActions() {
 		ArrayList al = new ArrayList();
 		al.add( mainSQLPanel.ACTION_RUN_COMMAND );
@@ -316,114 +304,14 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENod
 		mainSQLPanel.requestFocus();
 	}
 
-	public Action[] getActionsFor(NodeIDEBase[] nodes) {
-		return companion.getActionsFor(nodes);
-	}
-
 	/**
 	 * This is a companion Inner class to help implement the node context
 	 * stuff.
 	 */
 	protected class NodeContextCompanion {
 
-		public Action[] getActionsFor(NodeIDEBase[] nodes) {
-			if ( nodes.length != 1 ) return new Action [0];
-			NodeIDEBase node = nodes[0];
-			ArrayList al = new ArrayList();
-			if ( node.getDatabaseProcess() == ideprocess ) {
-
-				if ( node instanceof ItemTableNode ) {
-					ItemTableNode tableItem = (ItemTableNode)node;
-					String objectName;
-					if ( ideprocess.getConnectionConfig().isSupportsDotNotation() ) {
-						objectName = tableItem.getCatalogName()+"."+tableItem.toString();
-					} else {
-						objectName = tableItem.toString();
-					}
-					if ( objectName.indexOf(" ") > -1 ) objectName = "\""+objectName+"\"";
-
-					String statement = "SELECT * FROM "+objectName;
-					ActionCommandTyper typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/Sheet.gif"));
-					al.add(typer);
-
-					statement = "SELECT COUNT(*) FROM "+objectName;
-					ActionCommandTyper countTyper = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/Gauge.gif"));
-					al.add(countTyper);
-
-					statement = "INSERT INTO "+objectName+" VALUES ";
-					ActionCommandTyper ins = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/NewRow.gif"));
-					al.add(ins);
-
-					statement = "DELETE FROM "+objectName+" WHERE ";
-					ActionCommandTyper del = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/DeleteRow.gif"));
-					al.add(del);
-
-				}
-				if ( node instanceof ItemCatalogNode ) {
-					ActionCatalogChanger changer = new ActionCatalogChanger("Change to "+node.toString(), node.toString(), ProgramIcons.getInstance().getDatabaseIcon());
-					al.add(changer);
-				}
-
-
-				if ( node instanceof ItemTableColumnNode ) {
-					ItemTableColumnNode columnItem = (ItemTableColumnNode)node;
-					String objectName;
-
-					if ( columnItem.getCatalogName() == null || columnItem.getCatalogName().equals("") ) {
-						objectName = columnItem.getTableName();
-					}
-					else objectName = columnItem.getCatalogName()+"."+columnItem.getTableName();
-
-					//				String objectName = columnItem.getCatalogName()+"."+columnItem.getTableName();
-					String columnName = columnItem.getColumnName();
-
-					String statement;
-					ActionCommandTyper typer;
-
-					statement = "SELECT MIN("+columnName+") FROM "+objectName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/minus.gif"));
-					al.add(typer);
-
-					statement = "SELECT MAX("+columnName+") FROM "+objectName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/plus.gif"));
-					al.add(typer);
-
-					statement = "SELECT COUNT("+columnName+") , MIN("+columnName+") , MAX("+columnName+")  FROM "+objectName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/List.gif"));
-					al.add(typer);
-
-
-					statement = "SELECT "+columnName+" FROM "+objectName+"  GROUP BY "+columnName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/Column.gif"));
-					al.add(typer);
-
-					statement = "SELECT * FROM "+objectName+" WHERE "+columnName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/Binocular.gif"));
-					al.add(typer);
-
-					statement = "SELECT * FROM "+objectName+" ORDER BY "+columnName;
-					typer = new ActionCommandTyper(statement, ProgramIcons.getInstance().findIcon("images/Sheet.gif"));
-					al.add(typer);
-
-
-				}
-			}
-
-			Action[] actions = new Action[al.size()];
-			actions = (Action[])al.toArray(actions);
-			return actions;
-		}
 	}
 
-
-	class ActionCatalogChanger extends AbstractAction {
-		String catalogName;
-		public ActionCatalogChanger(String label, String catalogName, Icon icon) { super(label, icon); this.catalogName = catalogName; }
-
-		public void actionPerformed(ActionEvent ae) {
-			mainSQLPanel.selectCatalog(catalogName);
-		}
-	}
 
 	public boolean executeStandardAction(ActionEvent e) {
 		if ( e.getActionCommand().equalsIgnoreCase("Cut") ) {	doCut();	return true; }
@@ -442,4 +330,10 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin implements IDENod
 
 	}
 
+	public void setQueryText(String newText) {
+		mainSQLPanel.setQueryText(newText);
+	}
+	public void selectCatalog(String catalogName) {
+		mainSQLPanel.selectCatalog(catalogName);
+	}
 }
