@@ -5,6 +5,7 @@ import java.util.*;
 import java.io.*;
 import org.exolab.castor.xml.*;
 import org.exolab.castor.xml.*;
+import org.apache.xml.serialize.*;
 
 /**
  * This class creates properly-initialized Host Configuration objects.
@@ -70,8 +71,13 @@ public class HostConfigFactory {
 	public static void saveSqlideHostConfig(SqlideHostConfig config) throws IOException {
 		String fileName = config.getFileName();
 		FileWriter writer = new FileWriter(fileName);
+		OutputFormat of = new OutputFormat();
+		of.setIndenting( true );
+		of.setIndent( 2 );  // 2-space indention
+		of.setLineWidth( 16384 );
+		XMLSerializer serializer = new XMLSerializer(writer, of);
 		try {
-			config.marshal(writer);
+			config.marshal(serializer.asContentHandler());
 		}
 		catch (MarshalException ex) {
 			throw new IOException(ex.toString());
