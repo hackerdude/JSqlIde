@@ -28,9 +28,13 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 	public final static String ITEM_COLUMN_PREFIX = "ItemTableColumnNode";
 
 	public final static String ICON_SUFFIX = ".icon";
-
+	public final static Action[] NULL_ACTION = new Action [0];
+	public final static Action[] NOT_SAME_PROCESS = new Action[1];
 
     public ContextCommandRunner() {
+		NOT_SAME_PROCESS[0] = new AbstractAction("Active iSQL is not for this connection", ProgramIcons.getInstance().getStopIcon()) {
+			public void actionPerformed(ActionEvent evt) {}
+		};
     }
 
 
@@ -88,14 +92,14 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 		PluginInteractiveSQL isqlPlugin = (PluginInteractiveSQL)activePlugin;
 
 		DatabaseProcess databaseProcess = activePlugin.getDatabaseProcess();
-		if ( nodes.length != 1 ) return new Action [0];
+		if ( nodes.length != 1 ) return NULL_ACTION;
 		NodeIDEBase node = nodes[0];
 		ArrayList al = new ArrayList();
 
 		String tableName = determineTableName(node);
 		String columnName = null;
 
-		if ( ! ( node.getDatabaseProcess() == databaseProcess ) )  { return null; }
+		if ( ! ( node.getDatabaseProcess() == databaseProcess ) )  { return NOT_SAME_PROCESS; }
 
 		if ( node instanceof ItemCatalogNode ) {
 			ActionCatalogChanger changer = new ActionCatalogChanger(isqlPlugin, "Change to "+node.toString(), node.toString(), ProgramIcons.getInstance().getDatabaseIcon());

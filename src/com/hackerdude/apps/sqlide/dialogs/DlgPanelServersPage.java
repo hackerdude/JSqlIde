@@ -33,7 +33,9 @@ import javax.swing.*;
 import javax.swing.UIManager.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
+import javax.swing.event.*;
 import java.util.*;
+
 import java.lang.Object.*;
 import java.lang.Exception.*;
 import java.io.*;
@@ -65,6 +67,11 @@ public class DlgPanelServersPage extends JPanel {
 			setLayout(new BorderLayout());
 
 			model = new ConfigServersTableModel();
+			model.addTableModelListener(new TableModelListener() {
+				public void tableChanged(TableModelEvent evt) {
+					SqlIdeApplication.getInstance().refreshPanels();
+				}
+			});
 
 			tbServers = new JTable(model);
 			svrAdd    = new JButton(SERVER_ADD);
@@ -99,11 +106,11 @@ public class DlgPanelServersPage extends JPanel {
 	 */
 	public class ConfigServersTableModel extends AbstractTableModel {
 
-			Vector serverSpecs;
+			Vector hostConfigurations;
 
 			public ConfigServersTableModel( ) {
 					super();
-					serverSpecs = new Vector();
+					hostConfigurations = new Vector();
 			}
 
 			public int getRowCount() {
@@ -142,10 +149,16 @@ public class DlgPanelServersPage extends JPanel {
 			SqlideHostConfig spec = null;
 			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getSqlideHostConfig(itemNo); }
 			if ( spec == null ) {
-				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "You have no connection selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			DlgConnectionConfig.showConfigurationDialog( SqlIdeApplication.getFrame(), spec );
+			try {
+				HostConfigFactory.saveSqlideHostConfig(spec);
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(null, "Could not save configuration "+spec.getName()+":\n"+"Could not write to "+spec.getFileName()+ex.toString(), "Error while saving", JOptionPane.ERROR_MESSAGE);
+			}
 			readFromModel();
 		}
 	}
@@ -156,11 +169,13 @@ public class DlgPanelServersPage extends JPanel {
 	 */
 	class ActionAddServer extends AbstractAction {
 		public ActionAddServer() { super("New", ProgramIcons.getInstance().findIcon("images/NewPlug.gif"));}
+
 		public void actionPerformed(ActionEvent ev) {
 			try {
 				NewServerWizard wiz = NewServerWizard.showWizard(true);
 				if ( wiz.result == wiz.OK ) {
 					SqlideHostConfig spec = wiz.getDBSpec();
+					spec.setFileName(createUniqueFileName(spec));
 					HostConfigFactory.saveSqlideHostConfig(spec);
 					ProgramConfig.getInstance().addSqlideHostConfig(spec);
 					readFromModel();
@@ -170,6 +185,35 @@ public class DlgPanelServersPage extends JPanel {
 				JOptionPane.showMessageDialog(DlgPanelServersPage.this, ex.toString(), "Error saving server", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+
+	private String createUniqueFileName(SqlideHostConfig hostConfig) {
+		String fileName = hostConfig.getName();
+		fileName = removeIllegalChars(fileName);
+		String directory = ProgramConfig.getInstance().getUserProfilePath();
+
+		String proposedFileName = directory+File.separator+fileName;
+		boolean alreadyExists = new File(proposedFileName+HostConfigFactory.PROP_DB_CONFIG_SUFFIX).exists();
+
+		if ( alreadyExists ) {
+			proposedFileName = proposedFileName+"1";
+			alreadyExists = new File(proposedFileName+HostConfigFactory.PROP_DB_CONFIG_SUFFIX).exists();
+		}
+		int i=1;
+		while ( alreadyExists ) {
+			proposedFileName = proposedFileName.substring(0,proposedFileName.length()-1)+ ++i;
+			alreadyExists = new File(proposedFileName+HostConfigFactory.PROP_DB_CONFIG_SUFFIX).exists();
+		}
+		return proposedFileName+HostConfigFactory.PROP_DB_CONFIG_SUFFIX;
+	}
+
+	private String removeIllegalChars(String fileName) {
+		String result = fileName;
+		result = result.replace('?', '_');
+		result = result.replace('/', '_');
+		result = result.replace('\\', '_');
+		result = result.replace(' ', '_');
+		return result;
 	}
 
 	/**
@@ -189,10 +233,11 @@ public class DlgPanelServersPage extends JPanel {
 									"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE )
 							== JOptionPane.YES_OPTION ) {
 				File f = new File(spec.getFileName());
-				if ( ! f.delete() ) JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);
-				else {
-						ProgramConfig.getInstance().removeSqlideHostConfig(spec);
-						readFromModel();
+				if ( f.delete() ) {
+					ProgramConfig.getInstance().removeSqlideHostConfig(spec);
+					readFromModel();
+				} else {
+					JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 

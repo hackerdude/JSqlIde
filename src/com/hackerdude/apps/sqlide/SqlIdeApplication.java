@@ -370,11 +370,9 @@ public class SqlIdeApplication  {
 	}
 
 	public void refreshPanels() {
-	/** @todo Figure out if it's still needed, then reimplement. */
-/*		if ( rightIdePanel != null ) rightIdePanel.refreshPanel();
-		runningPlugins.refreshPlugins();
 		idebrowser.refreshPanel();
-*/
+//		if ( rightIdePanel != null ) rightIdePanel.refreshPanel();
+		runningPlugins.refreshPlugins();
 	}
 
 	/**

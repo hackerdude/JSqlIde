@@ -330,6 +330,8 @@ public class ProgramConfig extends Observable {
 			fileName = getUserProfilePath()+dbPropFileNames[i];
 			try {
 				dbSpec = HostConfigFactory.createHostConfig(fileName);
+				// Just in case they renamed it from the outside.
+				dbSpec.setFileName(fileName);
 				SqlideHostConfigList.add( dbSpec );
 				if ( fileName.equals( defaultdbPropsFile ) ) {
 					defaultDatabaseSpec = dbSpec;

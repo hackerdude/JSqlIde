@@ -127,6 +127,7 @@ Our root element.
 	<xsd:element name="browserPlugin" type="BROWSERPLUGINType" minOccurs="0" maxOccurs="1"/>
 	<xsd:element name="plugin-specific" type="PLUGINSPECIFICType" minOccurs="0" maxOccurs="unbounded"/>
  </xsd:sequence>
+ <xsd:attribute name="version" type="xsd:string" use="required"/>
 
 </xsd:complexType>
 
