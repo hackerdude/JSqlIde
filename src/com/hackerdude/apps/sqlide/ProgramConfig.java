@@ -65,7 +65,6 @@ public class ProgramConfig extends Observable {
 	public static final String PROP_ISQL_BY_DEFAULT      = "general.panel.isql.default";
 
 	public static final String propertiesFile = "sqlIDE.properties"; // Main Properties file
-	static String defaultdbPropsFile;  // Default DB properties file
 
 	protected Properties userinterface;  // The user interface properties.
 	protected Properties panels;         // The panel registry.
@@ -73,9 +72,6 @@ public class ProgramConfig extends Observable {
 	protected boolean iSQLbyDefault; // Open an interactive SQL by default?
 
 	protected String saveDirectory = System.getProperty("user.home")+File.separator+"sqlide";
-
-	protected SqlideHostConfig defaultDatabaseSpec;
-	protected ArrayList SqlideHostConfigList;
 
 	private static ProgramConfig instance;
 
@@ -195,10 +191,9 @@ public class ProgramConfig extends Observable {
 			setDefaults(userinterface);
 		}
 
-//		defaultdbPropsFile = userinterface.getProperty(SqlideHostConfig.PROP_DEFAULT_CATALOG)+SqlideHostConfig.PROP_DB_CONFIG_SUFFIX;
 		iSQLbyDefault = userinterface.getProperty(PROP_ISQL_BY_DEFAULT).equals(new String("yes"));
 
-		readSqlideHostConfigs();
+//		readSqlideHostConfigs();
 
 	}
 
@@ -219,23 +214,14 @@ public class ProgramConfig extends Observable {
 
 	}
 
-	public void removeSqlideHostConfig(SqlideHostConfig spec) {
-		SqlideHostConfigList.remove(spec);
-	}
-
-	public void addSqlideHostConfig(SqlideHostConfig spec) {
-		SqlideHostConfigList.add(spec);
-		setChanged();
-		notifyObservers(spec);
-	}
-
 	/**
 	 * Saves the configuration to a file.
 	 */
 	public void saveConfiguration() {
 		saveDefaults(userinterface);
 		try {
-			saveSqlideHostConfigs();
+			//TODO: Save the host configs.
+//			saveSqlideHostConfigs();
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -278,85 +264,6 @@ public class ProgramConfig extends Observable {
 	}
 
 	/**
-	 * Get the Database Configuration Name.
-	 * @param index The number of database configuration we want to retrieve.
-	 * @return The "Polite Name" of the database configuration item
-	 */
-	public String getDbConfigName( int index ) {
-		return( ((SqlideHostConfig)SqlideHostConfigList.get(index)).getName());
-	}
-
-	/**
-	 * Get the DB Configuration index for a specific name
-	 * Not implemented Yet.
-	 */
-	public int getDbConfigIndex( String name ) { return(1); };  // TODO: Implement
-
-	/**
-	 * Get the default database specification.
-	 * @return A DatabaseSpec object with the database specification that
-	 * will be used for the default server.
-	 */
-	public SqlideHostConfig getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
-
-	public void setDefaultDatabaseSpec(SqlideHostConfig config) { defaultDatabaseSpec = config; };
-
-	/**
-	 * Get a database spec by number
-	 * @param index The number of database spec we want to retrieve
-	 * @return A reference to the DatabaseSpec object with order in index.
-	 */
-	public SqlideHostConfig getSqlideHostConfig( int index ) { return((SqlideHostConfig)SqlideHostConfigList.get(index)); }
-
-	/**
-	 * Returns the number of database specs.
-	 */
-	public int getConnectionCount() { return SqlideHostConfigList.size(); }
-
-
-	/**
-	 * Read all the database configurations for this user.
-	 *
-	 */
-	public synchronized void readSqlideHostConfigs() {
-
-		File findFiles = new File(getUserProfilePath());
-		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(HostConfigFactory.PROP_DB_CONFIG_SUFFIX));
-		String fileName;
-		SqlideHostConfig dbSpec;
-
-		SqlideHostConfigList = new ArrayList();
-
-		for ( int i=0; i<dbPropFileNames.length; i++) {
-
-			fileName = getUserProfilePath()+dbPropFileNames[i];
-			try {
-				dbSpec = HostConfigFactory.createHostConfig(fileName);
-				// Just in case they renamed it from the outside.
-				dbSpec.setFileName(fileName);
-				SqlideHostConfigList.add( dbSpec );
-				if ( fileName.equals( defaultdbPropsFile ) ) {
-					defaultDatabaseSpec = dbSpec;
-				}
-			} catch ( IOException exc ) {
-				System.out.println("Error "+exc.toString()+" parsing "+fileName+"... Will not add to available configs list");
-			}
-		}
-		notifyObservers();
-
-	}
-
-	/**
-	 * Save all the database specifications.
-	 */
-	public void saveSqlideHostConfigs() throws IOException {
-		for (int i=0; i<SqlideHostConfigList.size(); i++) {
-			SqlideHostConfig currentSpec = ((SqlideHostConfig)SqlideHostConfigList.get(i));
-			HostConfigFactory.saveSqlideHostConfig(currentSpec);
-		}
-	}
-
-	/**
 	 * Returns the singleton instance of this configuration object.
 	 * @return The singleton instance
 	 */
@@ -383,21 +290,6 @@ public class ProgramConfig extends Observable {
 	public String getSaveDirectory() {
 		return saveDirectory;
 	}
-
-	/*
-	 * fileSuffixChecker a fileName filter that checks for a
-	 * specific file suffix
-	 */
-	private class FileSuffixChecker implements FilenameFilter {
-		String matching;
-		public FileSuffixChecker( String suffix ) {
-			matching = suffix;
-		}
-		public boolean accept( File dir, String name) {
-			return( name.endsWith(matching) );
-		}
-	}
-
 
 	/**
 	 * Determines the current version of SQL-IDE

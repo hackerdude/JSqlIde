@@ -41,6 +41,7 @@ import com.hackerdude.apps.sqlide.wizards.*;
 import com.hackerdude.apps.sqlide.xml.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.swing.*;
+import com.hackerdude.apps.sqlide.dataaccess.*;
 
 /**
  * Main class for the sql ide program.
@@ -303,7 +304,7 @@ public class SqlIdeApplication  {
 
 		// If after this the vector is empty, show the wizard
 		// for DBSpecs and save it (this will be useful to new users).
-		if ( ProgramConfig.getInstance().getConnectionCount() == 0 ) {
+		if ( HostConfigRegistry.getInstance().getConnectionCount() == 0 ) {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
 			if ( wiz.result != NewServerWizard.OK ) System.exit(0);
 			SqlideHostConfig config = wiz.getDBSpec();
@@ -315,8 +316,7 @@ public class SqlIdeApplication  {
 				ex.printStackTrace();
 			}
 
-//			ProgramConfig.getInstance().setDefaultDatabaseSpec(config);
-			ProgramConfig.getInstance().addSqlideHostConfig(config);
+			HostConfigRegistry.getInstance().addSqlideHostConfig(config);
 		}
 
 		getInstance();

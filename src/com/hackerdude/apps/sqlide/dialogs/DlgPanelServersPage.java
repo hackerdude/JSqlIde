@@ -114,7 +114,7 @@ public class DlgPanelServersPage extends JPanel {
 			}
 
 			public int getRowCount() {
-					return ProgramConfig.getInstance().getConnectionCount();
+					return HostConfigRegistry.getInstance().getConnectionCount();
 			};
 
 			public int getColumnCount() { return(1); };
@@ -127,7 +127,7 @@ public class DlgPanelServersPage extends JPanel {
 			public void setValueAt( Object aValue, int row, int col ) {};
 
 			public Object getValueAt( int row, int column ) {
-					return ProgramConfig.getInstance().getDbConfigName(row);
+					return HostConfigRegistry.getInstance().getDbConfigName(row);
 			};
 
 			public String getColumnName( int column ) {
@@ -147,7 +147,7 @@ public class DlgPanelServersPage extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
 			SqlideHostConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getSqlideHostConfig(itemNo); }
+			if ( itemNo >= 0 ) { spec  = HostConfigRegistry.getInstance().getSqlideHostConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no connection selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -177,7 +177,7 @@ public class DlgPanelServersPage extends JPanel {
 					SqlideHostConfig spec = wiz.getDBSpec();
 					spec.setFileName(createUniqueFileName(spec));
 					HostConfigFactory.saveSqlideHostConfig(spec);
-					ProgramConfig.getInstance().addSqlideHostConfig(spec);
+					HostConfigRegistry.getInstance().addSqlideHostConfig(spec);
 					readFromModel();
 				}
 			}
@@ -224,7 +224,7 @@ public class DlgPanelServersPage extends JPanel {
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
 			SqlideHostConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getSqlideHostConfig(itemNo); }
+			if ( itemNo >= 0 ) { spec  = HostConfigRegistry.getInstance().getSqlideHostConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no database selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -234,7 +234,7 @@ public class DlgPanelServersPage extends JPanel {
 							== JOptionPane.YES_OPTION ) {
 				File f = new File(spec.getFileName());
 				if ( f.delete() ) {
-					ProgramConfig.getInstance().removeSqlideHostConfig(spec);
+					HostConfigRegistry.getInstance().removeSqlideHostConfig(spec);
 					readFromModel();
 				} else {
 					JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);

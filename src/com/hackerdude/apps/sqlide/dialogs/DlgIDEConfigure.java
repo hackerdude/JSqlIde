@@ -38,6 +38,7 @@ import java.lang.Object.*;
 import java.lang.Exception.*;
 import java.io.*;
 import javax.swing.event.*;
+import com.hackerdude.apps.sqlide.dataaccess.*;
 
 /**
  * This is a dialog that allows us to configure the
@@ -138,7 +139,7 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 		// Since the config of this box has not changed, but the one
 		// on the DatabaseSpecs might have, I need to reload the db specs
 		// in order to cancel the configuration.
-		ProgramConfig.getInstance().readSqlideHostConfigs();
+		HostConfigRegistry.getInstance().readSqlideHostConfigs();
 	};
 
 	/**

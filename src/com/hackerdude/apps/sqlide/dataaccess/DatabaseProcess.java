@@ -82,7 +82,7 @@ public class DatabaseProcess {
 		return lastQueryResults;
 	}
 
-	public DatabaseProcess(SqlideHostConfig hostConfiguration) {
+	protected DatabaseProcess(SqlideHostConfig hostConfiguration) {
 		this.hostConfiguration = hostConfiguration;
 	}
 
