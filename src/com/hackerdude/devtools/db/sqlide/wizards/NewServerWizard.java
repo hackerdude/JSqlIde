@@ -22,83 +22,89 @@ import java.io.File;
  */
 public class NewServerWizard extends Wizard {
 
-   NewServerWizSelectServerType pageNewServer;
-   ServerDetailsWizardPage      pageServerDetails;
-   DatabaseSpec spec;
+	NewServerWizSelectServerType pageNewServer;
+	ServerDetailsWizardPage      pageServerDetails;
+	SelectClassPathWizardPage    pageSelectClassPath;
 
-   public NewServerWizard(boolean modal) {
-	  super("New Server Profile",
-		"This wizard will guide you step by step on how to add a server profile "
-	   +"to your configuration.", modal
-		 );
-	  pageNewServer = new NewServerWizSelectServerType();
-	  pageServerDetails = new ServerDetailsWizardPage();
-	  pageNewServer.setWizard(this);
-	  pageServerDetails.setWizard(this);
-	  WizardPage[] pages = new WizardPage[2];
-	  pages[0] = pageNewServer;
-	  pages[1] = pageServerDetails;
-	File defaultFile = new File(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
-	if ( ! defaultFile.exists() ) {
-		setFileName(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
-		pageNewServer.disableFileSelection();
+	DatabaseSpec databaseSpec;
+
+	public NewServerWizard(boolean modal) {
+		super("New Server Profile",
+			  "This wizard will guide you step by step on how to add a server profile "
+	 +"to your configuration.", modal );
+		databaseSpec = DatabaseSpecFactory.createDatabaseSpec();
+		pageNewServer = new NewServerWizSelectServerType();
+		pageServerDetails = new ServerDetailsWizardPage();
+		pageSelectClassPath = new SelectClassPathWizardPage();
+		pageServerDetails.setWizard(this);
+		pageSelectClassPath.setWizard(this);
+		pageNewServer.setWizard(this);
+		pageNewServer.setDatabaseSpec(databaseSpec);
+		pageNewServer.cmbServerType.setSelectedIndex(0);
+		pageSelectClassPath.setDatabaseSpec(databaseSpec);
+		WizardPage[] pages = new WizardPage[3];
+		pages[0] = pageSelectClassPath;
+		pages[1] = pageNewServer;
+		pages[2] = pageServerDetails;
+		File defaultFile = new File(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
+		if ( ! defaultFile.exists() ) {
+			setFileName(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
+			pageNewServer.disableFileSelection();
+		}
+		setPages(pages);
 	}
-	  setPages(pages);
 
-   }
+	public DatabaseSpec getDBSpec() { return databaseSpec; }
 
-   public DatabaseSpec getDBSpec() { return spec; }
+	public void setFileName(String fileName) {
+		pageNewServer.fFileName.setText(fileName);
+	}
 
-   public void setFileName(String fileName) {
-	  pageNewServer.fFileName.setText(fileName);
-   }
+	public void setServerType(String serverType) {
+		pageServerDetails.setServerType(serverType);
+	}
 
-   public void setServerType(String serverType) {
-	  pageServerDetails.setServerType(serverType);
-   }
+	public void setJDBCURL(String URL) {
+		pageNewServer.setURL(URL);
+	}
 
-   public void setJDBCURL(String URL) {
-	  pageNewServer.setURL(URL);
-   }
+	public void setClassName(String className) {
+		pageNewServer.setClassName(className);
+	}
 
-   public void setClassName(String className) {
-	  pageNewServer.setClassName(className);
-   }
+	public void setProperties(HashMap properties) {
+		pageServerDetails.setServerProperties(properties);
+	}
 
-   public void setProperties(HashMap properties) {
-	  pageServerDetails.setServerProperties(properties);
-   }
+	public void setServerTitle(String title) {
+		pageNewServer.setServerTitle(title);
+	}
 
-   public void setServerTitle(String title) {
-	pageNewServer.setServerTitle(title);
-   }
+	public void doneWizard() {
+		databaseSpec.setFileName(pageNewServer.fFileName.getText());
+		databaseSpec.setURL(pageNewServer.fURL.getText());
+		databaseSpec.setPoliteName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
+		databaseSpec.setDriverClassName(pageNewServer.fClassName.getText());
+		databaseSpec.setConnectionProperties(pageServerDetails.propertiesModel.getProperties());
+		databaseSpec.setDefaultCatalog(pageNewServer.fCatalogName.getText());
+		setVisible(false);
+	}
 
-   public void doneWizard() {
-	  spec = DatabaseSpecFactory.createDatabaseSpec();
-	  spec.setFileName(pageNewServer.fFileName.getText());
-	  spec.setURL(pageNewServer.fURL.getText());
-	  spec.setPoliteName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
-	  spec.setDriverName(pageNewServer.fClassName.getText());
-	  spec.setConnectionProperties(pageServerDetails.propertiesModel.getProperties());
-	  spec.setDefaultCatalog(pageNewServer.fCatalogName.getText());
-	  setVisible(false);
-   }
+	public String getFileName() {
+		return pageNewServer.fFileName.getText();
+	}
 
-   public String getFileName() {
-	  return pageNewServer.fFileName.getText();
-   }
+	public static NewServerWizard showWizard(boolean modal) {
+		NewServerWizard wiz = new NewServerWizard(modal);
+		wiz.setEnabled(true);
+		wiz.pack();
+		Dimension screen = wiz.getToolkit().getScreenSize();
+		wiz.setLocation( ( screen.getSize().width - wiz.getSize().width) / 2,(screen.getSize().height - wiz.getSize().height) / 2);
+		wiz.show();
+		return wiz;
+	}
 
-   public static NewServerWizard showWizard(boolean modal) {
-	  NewServerWizard wiz = new NewServerWizard(modal);
-	  wiz.setEnabled(true);
-	  wiz.pack();
-	Dimension screen = wiz.getToolkit().getScreenSize();
-	wiz.setLocation( ( screen.getSize().width - wiz.getSize().width) / 2,(screen.getSize().height - wiz.getSize().height) / 2);
-	  wiz.show();
-	  return wiz;
-   }
-
-   public static void main(String[] args) {
-	  showWizard(true);
-   }
+	public static void main(String[] args) {
+		showWizard(true);
+	}
 }

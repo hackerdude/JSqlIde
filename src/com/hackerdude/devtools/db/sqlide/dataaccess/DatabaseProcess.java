@@ -391,22 +391,9 @@ public class DatabaseProcess {
 	public synchronized void loadDriver() {
 		if ( currentDriver == null ) {
 			try {
-				Class theClass;
-				String driverClassName = databaseSpec.getDriverName();
-				String driverJarFile   = databaseSpec.getJarFileName();
-				if ( driverJarFile == null ) {
-					theClass = Class.forName(databaseSpec.getDriverName());
-				} else {
-					System.out.println("Trying to open JAR "+driverJarFile+" to retrieve class "+driverClassName);
-					JdbcJarClassLoader ldr = new JdbcJarClassLoader(driverJarFile);
-					theClass = ldr.loadClass(driverClassName);
-				}
-
-				System.setProperty("java.class.path", System.getProperty("java.class.path",".")+System.getProperty("path.separator")+databaseSpec.getJarFileName());
-				System.out.println("[DatabaseProcess] Loaded driver class "+databaseSpec.getDriverName());
+				Class theClass = databaseSpec.resolveDriverClass();
 				currentDriver = (Driver)theClass.newInstance();
 				DriverManager.registerDriver( currentDriver );
-
 			} catch(Exception exc) {
 				exc.printStackTrace();
 				JOptionPane.showMessageDialog(null, exc, "The Driver was Loaded, but had a Problem",
@@ -414,6 +401,7 @@ public class DatabaseProcess {
 			}
 		}
 	}
+
 
 	/**
 	 * Connects to the server.

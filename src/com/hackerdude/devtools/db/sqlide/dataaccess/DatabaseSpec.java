@@ -68,8 +68,8 @@ public class DatabaseSpec {
 	protected String hostName;
 	protected int maxConnections;
 	protected String urlString;
-	protected String driverName;
-	protected String jarFile;
+	protected String driverClassName;
+	protected String[] jarFiles;
 	protected String dbIntfClassName = "Database_MSQL";
 	protected boolean jdbcCompliant;
 	protected String userMessage;
@@ -102,12 +102,12 @@ public class DatabaseSpec {
 	/**
 	 * Retrieves the file name of the driver jar file.
 	 */
-	public String getJarFileName() { return jarFile; };
+	public String[] getJarFileNames() { return jarFiles; };
 
 	/**
 	 * Sets the file name of the driver jar file.
 	 */
-	public void setJarFileName( String jarFile ) { this.jarFile = jarFile; }
+	public void setJarFileName( String[] jarFiles ) { this.jarFiles = jarFiles; }
 
 	/**
 	 * Retrieves the file name of the properties file.
@@ -117,22 +117,25 @@ public class DatabaseSpec {
 	// Getters and setters for the database configuration.
 
 	/**
-	 * Returns the driver (JDBC) name.
+	 * Returns the driver (JDBC) class name.
 	 */
-	public String getDriverName() { return(driverName);  }
+	public String getDriverClassName() {
+		return(driverClassName);
+	}
 
 
 	/**
 	 * Changes the driver name.
 	 */
-	public void   setDriverName( String aValue ) {
-	   driverName = aValue;
+	public void setDriverClassName( String aValue ) {
+	   driverClassName = aValue;
 	   driverDiscovery();
 	}
 
 	private void driverDiscovery() {
 	   try {
-		  Class drv = Class.forName(driverName);
+
+		  Class drv = resolveDriverClass();
 		  Driver d = (Driver)drv.newInstance();
 		  jdbcCompliant = d.jdbcCompliant();
 		  String driverVersion = "V."+d.getMajorVersion()+"."+d.getMinorVersion();
@@ -143,9 +146,9 @@ public class DatabaseSpec {
 			 userMessage = "Warning: This driver is not fully JDBC compliant. Driver "+driverVersion;
 		  }
 	   } catch ( ClassNotFoundException exc ) {
-		  userMessage = "Warning: class "+driverName+" not found. Cannot do driver discovery";
+		  userMessage = "Warning: class "+driverClassName+" not found. Cannot do driver discovery";
 	   } catch ( Exception exc2 ) {
-		  userMessage = "Warning: class "+driverName+" cannot be instantiated. Cannot do driver discovery";
+		  userMessage = "Warning: class "+driverClassName+" cannot be instantiated. Cannot do driver discovery";
 	   }
 	}
 
@@ -244,5 +247,27 @@ public class DatabaseSpec {
 
 	public String getHostName() { return hostName; }
 
-};
 
+	public Class resolveDriverClass() throws ClassNotFoundException, MalformedURLException {
+		Class theClass;
+		if ( (jarFiles == null) || ( jarFiles.length ==0 ) ) {
+			theClass = Class.forName(driverClassName);
+		} else {
+			ArrayList al = new ArrayList();
+			for ( int i=0; i<jarFiles.length; i++ ) {
+				String jarFile = jarFiles[i];
+				File file = new File(jarFile);
+				URL url = file.toURL();
+				al.add(url);
+			}
+			URL[] urls = new URL[al.size()];
+			urls = (URL[])al.toArray(urls);
+			URLClassLoader urlClassLoader = new URLClassLoader(urls);
+			theClass = urlClassLoader.loadClass(driverClassName);
+			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
+		}
+		System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
+		return theClass;
+	}
+
+}
