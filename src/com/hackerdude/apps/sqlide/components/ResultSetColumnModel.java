@@ -31,6 +31,7 @@ public class ResultSetColumnModel extends DefaultTableColumnModel {
 		this.renderComponent = renderComponent;
 		addResultSetColumns();
 		recalculateWidths();
+
 	}
 
 
@@ -43,10 +44,16 @@ public class ResultSetColumnModel extends DefaultTableColumnModel {
 		for ( int i=0; i<queryResults.getColumnCount(); i++) {
 			TableColumn newColumn = new TableColumn(i);
 			newColumn.setHeaderValue(queryResults.getColumnName(i));
-			addColumn(newColumn);
-		}
+			boolean shouldShowClobEditor = queryResults.getColumnSQLTypes()[i] == java.sql.Types.CLOB;
+			if  ( shouldShowClobEditor ) {
+				/** @todo add clob editor!! */
+				System.out.println("ResultSetColumnModel:50: Add clob  editor!");
 
+			}
+			addColumn(newColumn);
+	   }
 	}
+
 
 	private void recalculateWidths() {
 		aggregatedWidths = 0;

@@ -16,6 +16,7 @@ import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.plugins.*;
 import textarea.*;
+import com.hackerdude.swing.table.ModalButtonCellEditor;
 
 /**
  * The main Interactive SQL Panel.
@@ -23,7 +24,7 @@ import textarea.*;
  * @author David Martinez
  * @version 1.0
  */
-public class MainISQLPanel extends JPanel {
+public class MainISQLPanel extends JPanel  {
 
 	public final Action ACTION_RUN_COMMAND = new ActionCommandRunner();
 	public final Action ACTION_VIEW_CLOB   = new ActionViewText();
@@ -33,6 +34,8 @@ public class MainISQLPanel extends JPanel {
 
 	private ResultSetPanel resultSetPanel = new ResultSetPanel();
 	private SyntaxTextArea sqlTextArea    = new SyntaxTextArea(TextAreaDefaults.getDefaults());
+
+	ModalButtonCellEditor buttonCellEditor = new ModalButtonCellEditor(ACTION_VIEW_CLOB);
 
     private BorderLayout blMainLayout = new BorderLayout();
     private JPanel pnlBottomPanel = new JPanel();
@@ -50,6 +53,7 @@ public class MainISQLPanel extends JPanel {
         try {
             jbInit();
 			cbCatalogs.addActionListener(cbListener);
+			resultSetPanel.setViewClobAction(ACTION_VIEW_CLOB);
         }
         catch(Exception ex) {
             ex.printStackTrace();
@@ -98,12 +102,27 @@ public class MainISQLPanel extends JPanel {
 			TableModel tableModel = ideprocess.getTableModel();
 			resultSetPanel.setResultSetModel(newColumnModel,tableModel);
 			resultSetPanel.addWarningText( "Ran Query." );
+			setClobEditors(queryResults,newColumnModel);
 		} catch ( SQLException exc ) {
 			JOptionPane.showMessageDialog(this, "SQL Exception: "+exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);
 		} finally {
 			setCursor(Cursor.getDefaultCursor());
 		}
 	}
+
+
+	private void setClobEditors(QueryResults queryResults,ResultSetColumnModel columnModel) {
+
+		for ( int i=0; i<queryResults.getColumnSQLTypes().length; i++) {
+			if ( queryResults.getColumnSQLTypes()[i] == java.sql.Types.CLOB ) {
+				columnModel.getColumn(i).setCellEditor(buttonCellEditor);
+			}
+		}
+
+	}
+
+
+
 
 	class ActionCommandRunner extends AbstractAction {
 		public ActionCommandRunner() {
@@ -210,15 +229,11 @@ public class MainISQLPanel extends JPanel {
 
 
 	class ClobCellRenderer implements TableCellRenderer {
-		JLabel editLabel = new JLabel("Text",ProgramIcons.getInstance().getServerIcon(), JLabel.LEFT);
+		JButton viewButton = new JButton("Text",ProgramIcons.getInstance().getServerIcon());//, JLabel.LEFT);
 
 		public ClobCellRenderer() {
 			super();
-			editLabel.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent evt) {
-					ACTION_VIEW_CLOB.actionPerformed(new ActionEvent(this,1, "") );
-				}
-			});
+			viewButton.setAction(ACTION_VIEW_CLOB);
 		}
 
 		public Component getTableCellRendererComponent(JTable table,
@@ -227,7 +242,7 @@ public class MainISQLPanel extends JPanel {
 													   boolean hasFocus,
 													   int row,
                                                int column) {
-			return editLabel;
+			return viewButton;
 		}
 
 	}
@@ -238,9 +253,18 @@ public class MainISQLPanel extends JPanel {
 			super("(Text) ", ProgramIcons.getInstance().getServerIcon());
 		}
 		public void actionPerformed(ActionEvent evt) {
+			int column = resultSetPanel.tblResults.getSelectedColumn();
+			int row = resultSetPanel.tblResults.getSelectedRow();
+			Object object = resultSetPanel.tblResults.getModel().getValueAt(row, column);
+			String fieldName = resultSetPanel.tblResults.getModel().getColumnName(column);
+			if ( object instanceof Clob ) {
+				Clob clob = (Clob) object;
+				editorDialog.showClobEditor(SqlIdeApplication.getFrame(), "Clob View for "+fieldName, fieldName,clob );
+			}
 
-			editorDialog.showClobEditor(SqlIdeApplication.getFrame(), "Sample!",null );
 		}
 	}
+
+
 
 }

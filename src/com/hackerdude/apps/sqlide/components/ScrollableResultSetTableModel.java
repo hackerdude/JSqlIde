@@ -50,6 +50,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 		Object result = null;
 
 		try {
+			if ( resultSet == null ) return null;
 			resultSet.absolute(row+1);
 			result = resultSet.getObject(column+1);
 			if ( result == null ) result = resultSet.getString(column+1);

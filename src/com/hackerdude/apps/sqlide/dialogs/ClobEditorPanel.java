@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 import java.io.*;
+import com.hackerdude.apps.sqlide.ProgramConfig;
 
 public class ClobEditorPanel  extends JPanel {
 
@@ -31,9 +32,11 @@ public class ClobEditorPanel  extends JPanel {
         spScroller.getViewport().add(edtEditor, null);
     }
 
-	public void setClob(Clob clob) {
+	public void setClob(String fieldName, Clob clob) {
+		edtEditor.setFont(ProgramConfig.getInstance().getResultSetFont());
 		this.clob = clob;
 		final Clob ourClob = clob;
+		lblFieldName.setText("Field: "+fieldName);
 		edtEditor.setText("Reading CLOB. Please wait...");
 		Thread clobReader = new Thread() {
 			public void run() {
@@ -49,6 +52,8 @@ public class ClobEditorPanel  extends JPanel {
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							edtEditor.setText(text);
+							edtEditor.setSelectionStart(0);
+							edtEditor.setSelectionEnd(0);
 						}
 					});
 				}
@@ -65,8 +70,7 @@ public class ClobEditorPanel  extends JPanel {
 		String line = null;
 		StringBuffer buffer = new StringBuffer( (int)(clob.length()*1.5) );
 		while ( ( line = reader.readLine()  )!=null ) {
-
-
+			buffer.append(line);
 		}
 		return buffer.toString();
 

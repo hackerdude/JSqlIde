@@ -1,6 +1,7 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.sql.*;
@@ -16,11 +17,13 @@ public class ResultSetPanel extends JPanel {
     private JPanel jPanel2 = new JPanel();
     private JLabel lblStatement = new JLabel();
     private BorderLayout borderLayout4 = new BorderLayout();
-    private JTable tblResults = new JTable();
+    public JTable tblResults = new JTable();
     private JSplitPane splitTableAndLog = new JSplitPane();
     private JEditorPane statusLog = new JEditorPane();
     private JScrollPane spStatus = new JScrollPane();
     private JScrollPane resultScroll = new JScrollPane(tblResults);
+
+	Action viewClobAction;
 
     public ResultSetPanel() {
         try {
@@ -30,6 +33,10 @@ public class ResultSetPanel extends JPanel {
             ex.printStackTrace();
         }
     }
+
+	public void setViewClobAction(Action action) {
+		viewClobAction = action;
+	}
 
     void jbInit() throws Exception {
 		tblResults.setToolTipText("This is the result table.");
@@ -46,12 +53,22 @@ public class ResultSetPanel extends JPanel {
         splitTableAndLog.add(resultScroll, JSplitPane.TOP);
 		splitTableAndLog.add(spStatus, JSplitPane.BOTTOM);
 		this.add(splitTableAndLog,  BorderLayout.CENTER);
+		tblResults.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if ( e.getClickCount() == 2 ) {
+					viewClobAction.actionPerformed(null);
+				}
+			}
+
+		});
+
     }
 
 
 	public void setResultSetModel(TableColumnModel newColumnModel, TableModel newTableModel) {
 		tblResults.setModel(newTableModel);
 		tblResults.setColumnModel(newColumnModel);
+
 		tblResults.updateUI();
 		resultScroll.validate();
 
