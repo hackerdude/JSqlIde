@@ -12,15 +12,17 @@ import javax.swing.table.*;
 
 import com.hackerdude.apps.sqlide.*;
 import com.hackerdude.apps.sqlide.components.*;
+import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.plugins.*;
 import textarea.*;
 
 public class MainISQLPanel extends JPanel {
 
-	public final JTextField editorTextField = new JTextField();
 
 	public final Action ACTION_RUN_COMMAND = new ActionCommandRunner();
+	public final Action ACTION_VIEW_CLOB   = new ActionViewText();
+
 	private DatabaseProcess ideprocess;
 	final DBChangeListener cbListener = new DBChangeListener();
 
@@ -193,25 +195,47 @@ public class MainISQLPanel extends JPanel {
 			System.out.println(column);
 			System.out.println(model.getColumnClass(i));
 
-
-//			if ( java.sql.Clob.class.isAssignableFrom(model.getColumnClass(i)) ) {
-//				column.setCellEditor(new ClobCellEditor());
-//			}
+			if ( java.sql.Clob.class.isAssignableFrom(model.getColumnClass(i)) ) {
+				column.setCellRenderer(new ClobCellRenderer());
+				/** @todo Come up with a cell editor using the Clob editor dialog. */
+				// column.setCellEditor(new ClobCellEditor());
+			}
 		}
 	}
 
 
-	class ClobCellEditor extends DefaultCellEditor {
-		Object cellEditorValue;
+	class ClobCellRenderer implements TableCellRenderer {
+		JLabel editLabel = new JLabel("Text",ProgramIcons.getInstance().getServerIcon(), JLabel.LEFT);
 
-		public ClobCellEditor() {
-			super(editorTextField);
+		public ClobCellRenderer() {
+			super();
+			editLabel.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent evt) {
+					ACTION_VIEW_CLOB.actionPerformed(new ActionEvent(this,1, "") );
+				}
+			});
 		}
 
-		public Object getCellEditorValue() {
-			return editorTextField.getText();
+		public Component getTableCellRendererComponent(JTable table,
+													   Object value,
+													   boolean isSelected,
+													   boolean hasFocus,
+													   int row,
+                                               int column) {
+			return editLabel;
 		}
 
+	}
+
+	class ActionViewText extends AbstractAction {
+		ClobEditorDialog editorDialog = new ClobEditorDialog();
+		public ActionViewText() {
+			super("(Text) ", ProgramIcons.getInstance().getServerIcon());
+		}
+		public void actionPerformed(ActionEvent evt) {
+
+			editorDialog.showClobEditor(SqlIdeApplication.getFrame(), "Sample!",null );
+		}
 	}
 
 }
