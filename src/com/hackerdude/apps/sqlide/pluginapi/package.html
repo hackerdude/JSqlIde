@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head><!--
+  Copyright (c) 2003 
+  All Rights Reserved.
+-->
+<title>JSLIDE Plugin API Package</title></head>
+
+<body bgcolor="white">This package contains the plugin API for JSQLIDE.
+
+<P>The JSLQIDE Plugin API allows you to add your own functionality to the 
+SQLIDE application. All the functionality of the plugin API is written 
+using this API and the standard java packages.
+
+<H2>JSQLIDE Design Basics</H2>
+
+<P>The design of jsqlide is centered around the context of a browser interface, 
+where on the left you can find browser nodes and on the right the editors for 
+those nodes. Depending on the type of node and the editor that is active on 
+the right-hand side, the actions you can effect on the node (which appear when
+you right-click on the node itself) can change.
+
+<PRE>
+  +------------------+-----------------------------------------+
+  |                  |                                         |
+  |   Browser        |            Editors                      |
+  |                  |                                         |
+  |                  |                                         |
+  |      +----------+|                                         |
+  |      |Context   ||                                         |
+  |      | Menu     ||                                         |
+  |      +----------+|                                         |
+  |                  |                                         |
+  |                  |                                         |
+  +------------------+-----------------------------------------+
+
+</PRE>
+
+
+<H2>Implementing your own plugins</H2>
+
+<P>There are several ways you can extend SQLIDE by implementing your own 
+plugins:
+</P>
+
+<UL>
+  <LI><B>Extend the Browser:</B> You can add your own browser nodes, which 
+  can in turn expand to reveal other nodes. For this you can use the 
+  BrowserExtensionPluginIF interface.</LI>
+
+  <LI><B>Implement your own editor for the right-hand pane</B>. These are 
+called "Visual plugins" in the context of SQLIDE. You can either implement 
+IDEVisualPluginIF directly or extend AbstractVisualPluginIF.</LI>
+
+  <LI><B>Create a set of actions for when a person right-clicks on a specific node</B>. 
+  You add actions that can be different depending on the type of node. For this 
+  you need to implement the IDENodeContextPluginIF interface.</LI>
+
+  <LI><B>Something completely different</B>. If you just want a separate plugin 
+  that happens to run along SQLIDE (like a daemon that monitors connections or 
+  something that displays its own separate window), you can implement 
+  IDENonVisualPluginIF which can be started and run semi-independently 
+  from the application.</LI>
+
+</UL>
+
+
+<H2>Plugin Implementation Checklist</H2>
+
+<OL>
+  <LI>Create your plugin class</LI>
+  <LI>Add your plugin to the registry on com/hackerdude/apps/sqlide/plugins.registry.properties</LI>
+  <LI>If you want a plugin to start as SQLIDE itself starts, add it to com/hackerdude/apps/sqlide/autoexec.plugins.properties.
+  typically you want to do this for Node Context, Node Extension and Nonvisual plugins. Don't do this for visual plugins, it won't work :-)</LI>
+  <LI>Start coding!</LI>
+</OL></body>
+</html>
