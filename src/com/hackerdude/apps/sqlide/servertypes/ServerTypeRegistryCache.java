@@ -13,15 +13,20 @@ import java.io.*;
  */
 public class ServerTypeRegistryCache {
 
-	static final String cacheFile = "servertypes.cache";
+	static final String SERVERTYPES_PROPERTIES = "servertypes.list.properties";
 	static final String COMMENT = "#";
 	private Collection serverTypes;
-	private ClassPathIntrospector cip = new ClassPathIntrospector();
 
 	private static ServerTypeRegistryCache instance;
 
 	private ServerTypeRegistryCache() {
-		initializeCache();
+		try {
+			initializeCache();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 	}
 
 	public static synchronized ServerTypeRegistryCache getInstance() {
@@ -29,15 +34,6 @@ public class ServerTypeRegistryCache {
 			instance = new ServerTypeRegistryCache();
 		}
 		return instance;
-	}
-
-	/**
-	 * This method uses the introspector to figure out all the classes that can
-	 * be used as server type entries for sqlide. It may take a little while.
-	 */
-	public synchronized void refreshCache() {
-		ClassPathIntrospector cip = new ClassPathIntrospector();
-		serverTypes = cip.getClassNamesFor(ServerType.class, ServerType.class.getPackage());
 	}
 
 	/**
@@ -50,29 +46,16 @@ public class ServerTypeRegistryCache {
 	/**
 	 * Initializes the server types cache.
 	 */
-	private void initializeCache() {
-		File cache = getCacheFile();
-		if ( cache.exists() ) {
-			try {
-				loadCache(cache);
-			} catch ( IOException exc ) {
-				refreshCache();
-			}
-		} else {
-			refreshCache();
-			try {
-				saveCache(cache);
-			} catch ( IOException exc ) {
-				System.out.println("[ServerTypeRegistryCache] Warning: Could not save Server type cache file to "+cache.toString());
-			}
-		}
+	private void initializeCache() throws IOException {
+		InputStream inputStream = ServerTypeRegistryCache.class.getResourceAsStream(SERVERTYPES_PROPERTIES);
+		loadCache(inputStream);
 	}
 
 	/**
 	 * Loads the cache from a file instance.
 	 */
-	private void loadCache(File cache) throws FileNotFoundException, IOException {
-		BufferedReader br = new BufferedReader(new FileReader(cache));
+	private void loadCache(InputStream is) throws FileNotFoundException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		serverTypes = new ArrayList();
 		String theLine = br.readLine();
 		while ( theLine != null ) {
@@ -80,27 +63,6 @@ public class ServerTypeRegistryCache {
 			theLine = br.readLine();
 		}
 
-	}
-
-	/**
-	 * Saves the existing cache to a file instance.
-	 */
-	private void saveCache(File cache) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(cache));
-		bw.write("# Server Types Registry Cache.\n");
-		bw.write("#   This cache is automatically Generated. To refresh, simply remove this file.\n");
-		Iterator it = serverTypes.iterator();
-		while (it.hasNext() ) {
-			bw.write((String)it.next());
-			bw.write('\n');
-		}
-		bw.close();
-	}
-
-	public File getCacheFile() {
-		String cacheFileName = ProgramConfig.getUserProfilePath()+File.separator+cacheFile;
-		File cache = new File(cacheFileName);
-		return cache;
 	}
 
 }
