@@ -60,24 +60,22 @@ public class ShowDocumentDialog extends JDialog {
 	/**
 	 * OLoads text from an input stream.
 	 */
-	void loadText(InputStream is) {
-		try {
-			if ( is != null ) {
-				BufferedReader br = new BufferedReader(new InputStreamReader(is));
-				StringBuffer sb = new StringBuffer();
-				String thisLine = null;
+	void loadText(InputStream is) throws IOException {
+		if ( is != null ) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			StringBuffer sb = new StringBuffer();
+			String thisLine = null;
+			thisLine = br.readLine();
+			while ( thisLine != null ) {
+				sb.append(thisLine).append(" \n");
 				thisLine = br.readLine();
-				while ( thisLine != null ) {
-					sb.append(thisLine).append(" \n");
-					thisLine = br.readLine();
-				}
-				documentContents.setText(sb.toString());
-				documentContents.setEditorKit(new HTMLEditorKit());
-				documentContents.setText(sb.toString());
-				documentContents.setSelectionStart(1);
-				documentContents.setSelectionEnd(1);
 			}
-		} catch ( IOException exc ) {  exc.printStackTrace(); }
+			documentContents.setText(sb.toString());
+			documentContents.setEditorKit(new HTMLEditorKit());
+			documentContents.setText(sb.toString());
+			documentContents.setSelectionStart(1);
+			documentContents.setSelectionEnd(1);
+		}
 
 	}
 
@@ -86,7 +84,7 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show "Paying for SQLIDE" dialog.
 	 */
 	public void showPayDialog() {
-		showDialog("Paying for SQLIDE", "com.hackerdude.apps.sqlide.paying.html", "../src/com/hackerdude/devtools/db/sqlide/paying.html");
+		showDialog("Paying for SQLIDE", ShowDocumentDialog.class.getResourceAsStream("paying.html"));
 	}
 
 
@@ -94,7 +92,7 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show the TODO.HTML dialog.
 	 */
 	public void showTodoDialog() {
-		showDialog("To do List for Project", "com.hackerdude.apps.sqlide.todo.html", "../docs/TODO.html");
+		showDialog("To do List for Project", ShowDocumentDialog.class.getResourceAsStream("todo.html"));
 	}
 
 
@@ -102,14 +100,14 @@ public class ShowDocumentDialog extends JDialog {
 	 * Show the readme dialog.
 	 */
 	public void showReadmeDialog() {
-		showDialog("Project README", "com.hackerdude.apps.sqlide.readme.html", "../docs/README.html");
+		showDialog("Project README", ShowDocumentDialog.class.getResourceAsStream("readme.html"));
 	}
 
 	/**
 	 * Show the Known Bugs dialog.
 	 */
 	public void showKnownBugsDialog() {
-		showDialog("Known Bugs in SQLIDE", "com.hackerdude.apps.sqlide.readme.html", "../docs/BUGS.html");
+		showDialog("Known Bugs in SQLIDE", ShowDocumentDialog.class.getResourceAsStream("knownbugs.html"));
 	}
 
 
@@ -117,7 +115,8 @@ public class ShowDocumentDialog extends JDialog {
 	 * Shows the dialog with the specified title, the resource name and the
 	 * failover filename.
 	 */
-	public void showDialog(String title, String resourceName, String fileName) {
+	public void showDialog(String title, InputStream inputStream) {
+		if ( inputStream == null ) return;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setTitle(title);
 		this.setSize(500, 300);
@@ -129,12 +128,7 @@ public class ShowDocumentDialog extends JDialog {
 		this.setModal(true);
 		this.documentContents.setEditable(false);
 		try {
-			InputStream is = this.getClass().getResourceAsStream(resourceName);
-			if ( is == null ) {
-				System.out.println("[ShowDocumentDialog] Installation error - couldn't find html file");
-				is = new FileInputStream(fileName);
-			}
-			loadText(is);
+			loadText(inputStream);
 		} catch ( IOException exc ) {
 			exc.printStackTrace();
 		}
@@ -143,7 +137,7 @@ public class ShowDocumentDialog extends JDialog {
 	}
 
 	public void showLicenseDialog() {
-		showDialog("SQLIDE License Agreement", "com.hackerdude.apps.sqlide.license.html", "../docs/LICENSE.html");
+		showDialog("SQLIDE License Agreement", ShowDocumentDialog.class.getResourceAsStream("license.html"));
 	}
 
 	void jButton1_actionPerformed(ActionEvent e) {
