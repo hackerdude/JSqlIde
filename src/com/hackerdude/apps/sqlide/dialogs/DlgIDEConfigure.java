@@ -138,7 +138,7 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 		// Since the config of this box has not changed, but the one
 		// on the DatabaseSpecs might have, I need to reload the db specs
 		// in order to cancel the configuration.
-		ProgramConfig.getInstance().readConnectionConfigs();
+		ProgramConfig.getInstance().readSqlideHostConfigs();
 	};
 
 	/**

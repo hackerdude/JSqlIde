@@ -47,6 +47,8 @@ import javax.swing.event.*;
 import java.util.*;
 import java.lang.Object.*;
 import java.io.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 /**
  * Main class for the sql ide program.
@@ -181,9 +183,9 @@ public class SqlIdeApplication  {
 			exc.printStackTrace();
 		}
 
-		mainProgress.changeMessage("Creating Default Interactive SQL");
-		DatabaseProcess ideserver = new DatabaseProcess(ProgramConfig.getInstance().getDefaultDatabaseSpec());
-		mainProgress.setValue(++mainProgressValue);
+//		mainProgress.changeMessage("Creating Default Interactive SQL");
+//		DatabaseProcess ideserver = new DatabaseProcess(ProgramConfig.getInstance().getDefaultDatabaseSpec());
+//		mainProgress.setValue(++mainProgressValue);
 
 //
 //		if ( idebrowser.getDatabaseProcess().doConnect() ) {
@@ -301,10 +303,17 @@ public class SqlIdeApplication  {
 		if ( ProgramConfig.getInstance().getConnectionCount() == 0 ) {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
 			if ( wiz.result != NewServerWizard.OK ) System.exit(0);
-			ConnectionConfig config = wiz.getDBSpec();
-			ConnectionConfigFactory.saveConnectionConfig(config);
-			ProgramConfig.getInstance().setDefaultDatabaseSpec(config);
-			ProgramConfig.getInstance().addConnectionConfig(config);
+			SqlideHostConfig config = wiz.getDBSpec();
+			try {
+				HostConfigFactory.saveSqlideHostConfig(config);
+
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+//			ProgramConfig.getInstance().setDefaultDatabaseSpec(config);
+			ProgramConfig.getInstance().addSqlideHostConfig(config);
 		}
 
 		getInstance();
@@ -407,7 +416,7 @@ public class SqlIdeApplication  {
 	public void setRightPanel(IDEVisualPluginIF plugin) {
 		rightIdePanel = plugin;
 		createPanelMenu(plugin);
-		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getConnectionConfig().getPoliteName()+")" );
+		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getHostConfiguration().getName()+")" );
 	}
 
 	public IDEVisualPluginIF getRightPanel() {

@@ -10,12 +10,15 @@
 package com.hackerdude.apps.sqlide.wizards;
 
 import com.hackerdude.lib.ui.*;
-import java.util.HashMap;
+import java.util.*;
 import com.hackerdude.apps.sqlide.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JFrame;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
+
 
 
 /**
@@ -27,13 +30,13 @@ public class NewServerWizard extends Wizard {
 	ServerDetailsWizardPage      pageServerDetails;
 	SelectClassPathWizardPage    pageSelectClassPath;
 
-	ConnectionConfig databaseSpec;
+	SqlideHostConfig databaseSpec;
 
 	public NewServerWizard(JFrame owner, boolean modal) {
 		super(owner, "New Server Profile",
 			  "This wizard will guide you step by step on how to add a server profile "
 	 +"to your configuration.", modal );
-		databaseSpec = ConnectionConfigFactory.createConnectionConfig();
+		databaseSpec = HostConfigFactory.createHostConfig();
 		pageNewServer = new NewServerWizSelectServerType();
 		pageServerDetails = new ServerDetailsWizardPage();
 		pageSelectClassPath = new SelectClassPathWizardPage();
@@ -47,15 +50,15 @@ public class NewServerWizard extends Wizard {
 		pages[0] = pageSelectClassPath;
 		pages[1] = pageNewServer;
 		pages[2] = pageServerDetails;
-		File defaultFile = new File(ConnectionConfig.DEFAULT_DBSPEC);
+		File defaultFile = new File(HostConfigFactory.DEFAULT_DBSPEC);
 		if ( ! defaultFile.exists() ) {
-			setFileName(ConnectionConfig.DEFAULT_DBSPEC);
+			setFileName(HostConfigFactory.DEFAULT_DBSPEC);
 			pageNewServer.setFileNameEnabled(false);
 		}
 		setPages(pages);
 	}
 
-	public ConnectionConfig getDBSpec() { return databaseSpec; }
+	public SqlideHostConfig getDBSpec() { return databaseSpec; }
 
 	public void setFileName(String fileName) {
 		pageNewServer.fFileName.setText(fileName);
@@ -86,14 +89,13 @@ public class NewServerWizard extends Wizard {
 		String baseFileName = pageNewServer.fFileName.getText();
 		String fileName = ProgramConfig.getInstance().getUserProfilePath()+baseFileName+".db.xml";
 		databaseSpec.setFileName(fileName);
-		databaseSpec.setJDBCURL(pageNewServer.fURL.getText());
-		databaseSpec.setPoliteName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
-		databaseSpec.setDriverClassName(pageNewServer.fClassName.getText());
-		databaseSpec.setConnectionProperties(pageServerDetails.propertiesModel.getProperties());
-		databaseSpec.setDefaultCatalog(pageNewServer.fCatalogName.getText());
+		databaseSpec.getJdbc().setUrl(pageNewServer.fURL.getText());
+		databaseSpec.setName(pageNewServer.cmbServerType.getSelectedItem().toString()+" on "+pageNewServer.fHostName.getText());
+		databaseSpec.getJdbc().setDriver(pageNewServer.fClassName.getText());
+		databaseSpec.getJdbc().setConnectionProperties(HostConfigFactory.mapToConnectionProperties(pageServerDetails.propertiesModel.getProperties()));
+//		databaseSpec.setDefaultCatalog(pageNewServer.fCatalogName.getText());
 		setVisible(false);
 	}
-
 	public String getFileName() {
 		return pageNewServer.fFileName.getText();
 	}

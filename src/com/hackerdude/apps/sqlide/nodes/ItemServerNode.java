@@ -13,16 +13,17 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 import javax.swing.tree.*;
 import java.util.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * This node represents a specific Server Connection.
  */
 public class ItemServerNode extends NodeIDEBase {
 
-	ConnectionConfig spec;
+	SqlideHostConfig spec;
 
-	public ItemServerNode(ConnectionConfig spec) {
-		super(spec.getPoliteName(), new DatabaseProcess(spec));
+	public ItemServerNode(SqlideHostConfig spec) {
+		super(spec.getName(), new DatabaseProcess(spec));
 		this.spec = spec;
 	}
 
@@ -34,8 +35,8 @@ public class ItemServerNode extends NodeIDEBase {
 
 	public String getInfo() {
 		StringBuffer info = new StringBuffer();
-		info.append("<HTML><P><B>UserName:</B> "+spec.getUserName());
-		info.append("<P><B>Driver:</B> ").append(spec.getDriverClassName());
+		info.append("<HTML><P><B>UserName:</B> "+spec.getJdbc().getUserName());
+		info.append("<P><B>Driver:</B> ").append(spec.getJdbc().getDriver());
 		return info.toString();
 	}
 

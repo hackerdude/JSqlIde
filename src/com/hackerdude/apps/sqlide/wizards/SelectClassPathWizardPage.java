@@ -3,7 +3,7 @@ package com.hackerdude.apps.sqlide.wizards;
 import com.hackerdude.lib.ui.WizardPage;
 import com.hackerdude.apps.sqlide.dialogs.*;
 import java.awt.*;
-import com.hackerdude.apps.sqlide.dataaccess.ConnectionConfig;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import javax.swing.*;
 
 public class SelectClassPathWizardPage extends WizardPage {
@@ -30,8 +30,7 @@ public class SelectClassPathWizardPage extends WizardPage {
         this.add(lblExplanation, BorderLayout.NORTH);
     }
 
-
-	public void setDatabaseSpec(ConnectionConfig spec) {
+	public void setDatabaseSpec(SqlideHostConfig spec) {
 		classpathPanel.setDatabaseSpec(spec);
 	}
 

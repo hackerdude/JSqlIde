@@ -34,7 +34,7 @@ public class ConnectionPool {
   public static final ConnectionPool defaultpool = new ConnectionPool("default", new Properties());
 
   private Vector pooledConnections = new Vector();
-  private Properties connectionConfig;
+  private Properties SqlideHostConfig;
   private int maxConnections = 10;
 
   public String poolName;
@@ -56,7 +56,7 @@ public class ConnectionPool {
    */
   public ConnectionPool(String name, Properties config) {
 	poolName = name;
-	connectionConfig = config;
+	SqlideHostConfig = config;
   }
 
   /** Use this methods to add connections to the list manually.
@@ -88,7 +88,7 @@ public class ConnectionPool {
 	}
 	// Create more connections as needed, until maxConnections hit.
 //    if ( p == null && elements < maxConnections ) {
-//      Connection c = DBPropertiesParser.getConnection( connectionConfig );
+//      Connection c = DBPropertiesParser.getConnection( SqlideHostConfig );
 //      p = addConnection( c );
 //    }
 	if ( p==null ) return null;

@@ -22,13 +22,16 @@ import java.util.*;
 import java.io.*;
 import java.sql.Driver;
 import java.beans.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 /**
  * New Server wizard - Select server type page.
  */
 public class NewServerWizSelectServerType extends WizardPage {
 
-	ConnectionConfig databaseSpec;
+//	SqlideHostConfig databaseSpec;
+	SqlideHostConfig hostConfig;
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel jPanel1 = new JPanel();
@@ -223,11 +226,11 @@ public class NewServerWizSelectServerType extends WizardPage {
 	}
 
 	public void updateDriverInfo() {
-		if ( databaseSpec == null ) return;
-		databaseSpec.setDriverClassName(fClassName.getText());
+		if ( hostConfig == null ) return;
+		hostConfig.getJdbc().setDriver(fClassName.getText());
 		if ( fFileName.isEnabled() ) setFileNameDefault();
 		try {
-			Driver drv = (Driver)databaseSpec.resolveDriverClass().newInstance();
+			Driver drv = (Driver)DatabaseProcess.resolveDriverClass(hostConfig).newInstance();
 			String driverVersion = "Driver V"+drv.getMajorVersion()+"."+drv.getMinorVersion();
 			if ( ! drv.jdbcCompliant() ) {
 				driverVersion = driverVersion+" WARNING: Not fully JDBC compliant";
@@ -262,7 +265,8 @@ public class NewServerWizSelectServerType extends WizardPage {
 			if ( ( ! selectedFile.exists() ) && selectedFile.getName().indexOf(".") < 0 ) { selectedFile = new File(selectedFile.getAbsolutePath()+".db.xml"); }
 			fFileName.setText(selectedFile.getAbsolutePath());
 			if ( wizard != null ) wizard.updateControlState();
-			databaseSpec.setFileName(fFileName.getText());
+			/** @todo Do the filename thing. */
+//			hostConfig.setFileName(fFileName.getText());
 			updateDriverInfo();
 		}
 
@@ -281,7 +285,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 
 	public javax.swing.filechooser.FileFilter getFileFilter() {
 
-		String exFFSuffix = ConnectionConfig.PROP_DB_CONFIG_SUFFIX;
+		String exFFSuffix = HostConfigFactory.PROP_DB_CONFIG_SUFFIX;
 		if ( exFFSuffix.startsWith(".") ) exFFSuffix = exFFSuffix.substring(1);
 		String[] filters = { exFFSuffix };
 		String description = "SQLIDE Configuration Files";
@@ -301,11 +305,12 @@ public class NewServerWizSelectServerType extends WizardPage {
 	public boolean isFileSelectionEnabled() { return fFileName.isEnabled(); }
 
 	void fClassName_propertyChange(PropertyChangeEvent e) {
-		databaseSpec.setDriverClassName(fClassName.getText());
+		hostConfig.getJdbc().setDriver(fClassName.getText());
 		updateDriverInfo();
 	}
-	public void setDatabaseSpec(ConnectionConfig newSpec) {
-		databaseSpec = newSpec;
+
+	public void setDatabaseSpec(SqlideHostConfig newSpec) {
+		hostConfig = newSpec;
 	}
 
 	public void setFileNameDefault() {
