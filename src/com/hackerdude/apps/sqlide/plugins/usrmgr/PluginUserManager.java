@@ -2,15 +2,16 @@ package com.hackerdude.apps.sqlide.plugins.usrmgr;
 
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.intf.SqlIdePluginIF;
 import java.awt.*;
 import javax.swing.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import java.awt.event.ActionEvent;
 
 /**
  * A User Manager Panel
  */
 
-public class PluginUserManager extends JPanel implements SqlIdePluginIF {
+public class PluginUserManager extends AbstractVisualPlugin {
 	/**
 	 * BorderLayout borderLayout1
 	 */
@@ -66,12 +67,16 @@ public class PluginUserManager extends JPanel implements SqlIdePluginIF {
 		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
 		throw new java.lang.UnsupportedOperationException("Method getDatabaseProcess() not yet implemented.");
 	}
+
+	public String getPluginName()  {
+		return "User Manager";
+	}
 	/**
 	 * getShortName
 	 *
 	 * @return the returned String
 	 */
-	public String getShortName() {
+	public String getPluginShortName() {
 		return "UserMgr";
 	}
 	/**
@@ -105,7 +110,7 @@ public class PluginUserManager extends JPanel implements SqlIdePluginIF {
 	 * @param actionName parameter for executeAction
 	 * @return the returned boolean
 	 */
-	public boolean executeAction(String actionName) {
+	public boolean executeStandardAction(ActionEvent evt) {
 		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
 		throw new java.lang.UnsupportedOperationException("Method executeAction() not yet implemented.");
 	}
@@ -129,9 +134,8 @@ public class PluginUserManager extends JPanel implements SqlIdePluginIF {
 	 *
 	 * @return the returned Action[]
 	 */
-	public Action[] getAvailableActions() {
-		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
-		throw new java.lang.UnsupportedOperationException("Method getAvailableActions() not yet implemented.");
+	public Action[] getPossibleActions() {
+		return null;
 	}
 	/**
 	 * getActionsFor
@@ -139,7 +143,7 @@ public class PluginUserManager extends JPanel implements SqlIdePluginIF {
 	 * @param node parameter for getActionsFor
 	 * @return the returned Action[]
 	 */
-	public Action[] getActionsFor(NodeIDEBase node) {
+	public Action[] getActionsFor(NodeIDEBase[] node) {
 		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
 		throw new java.lang.UnsupportedOperationException("Method getActionsFor() not yet implemented.");
 	}
@@ -164,9 +168,40 @@ public class PluginUserManager extends JPanel implements SqlIdePluginIF {
 	 * requestIDEFocus
 	 *
 	 */
-	public void requestIDEFocus() {
+	public void receivePluginFocus() {
 		throw new java.lang.UnsupportedOperationException("Method requestIDEFocus() not yet implemented.");
 	}
 
+	public void freePlugin() {
+
+	}
+
+	public Icon getPluginIcon() {
+		return ProgramIcons.getInstance().getDatabaseIcon();
+
+	}
+	public void doCut() {
+
+	}
+
+	public void doCopy() {
+
+	}
+
+	public void doPaste() {
+
+	}
+
+	public void doSaveFileAs() {
+
+	}
+
+	public void doSaveFile() {
+
+	}
+
+	public void doOpenFile() {
+
+	}
 
 }

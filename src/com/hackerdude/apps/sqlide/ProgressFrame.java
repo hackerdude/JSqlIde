@@ -63,7 +63,7 @@ public class ProgressFrame extends JFrame {
 	  super(title);
 	  progressPanel = new JPanel();
 	  progressPanel.setLayout( new BoxLayout(progressPanel, BoxLayout.Y_AXIS));
-	  JButton jb = new JButton(icon ); // new ImageIcon(url) );
+	  JLabel jb = new JLabel(icon); // new ImageIcon(url) );
 	  jb.setAlignmentX(CENTER_ALIGNMENT);
 	  progressPanel.add( jb );
 
