@@ -34,11 +34,21 @@ public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 		 * not exist, the node should not be there because that item type
 		 * is not supported (for catalogs & schemas).
 		 */
-		NodeIDEBase theNode = new CategoryCatalogsNode(db);
-		if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
 
-		theNode = new CategorySchemaNode(db); //  devicesNodes.elementAt(i);
-		if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
+		try {
+			NodeIDEBase theNode = new CategoryCatalogsNode(db);
+			if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
+			theNode = new CategorySchemaNode(db); //  devicesNodes.elementAt(i);
+			if ( theNode.toString() != null && ! theNode.toString().equals("") ) parentNode.add( theNode );
+		}
+		catch (Exception ex) {
+		}
+		if ( parentNode.getChildCount() == 0 ) {
+			/** @todo We need to add the list of objects that are outside catalogs/schemas,
+			for the benefit of those who don't have such concepts. */
+		   parentNode.add(new CategoryTableNode(null, null, db));
+		}
+
 
 
 	}

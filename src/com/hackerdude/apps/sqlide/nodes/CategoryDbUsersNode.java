@@ -19,7 +19,7 @@ public class CategoryDbUsersNode extends NodeIDECategory
  {
 
 	public CategoryDbUsersNode(DatabaseProcess db) {
-		super(db.getCatalogTitle(), db);
+		super("Users", db);
 	}
 
 	public void readChildren() {
@@ -48,7 +48,7 @@ public class CategoryDbUsersNode extends NodeIDECategory
 	}
 
 	public String getInfo() {
-		return "<HTML><P>Users per "+db.getCatalogTitle();
+		return "<HTML><P>Users";
 	}
 
 
