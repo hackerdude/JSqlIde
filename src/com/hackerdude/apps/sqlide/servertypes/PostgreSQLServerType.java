@@ -16,7 +16,7 @@ public class PostgreSQLServerType extends ServerType {
 	  }
 	  public String toString() { return "PostgreSQL JDBC Driver"; }
 	  public String getURL() { return "jdbc:postgresql://localhost:5432/"+System.getProperty("user.name"); }
-	  public String getClassName() { return "postgresql.Driver"; }
+	  public String getClassName() { return "org.postgresql.Driver"; }
 	  public String getServerTitle() { return "PostgreSQL on LocalHost"; }
 	  public String getDefaultCatalog() { return "test"; }
 	  public boolean supportsSQLDotNotation() { return true; }

@@ -59,6 +59,44 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         FieldValidator          fieldValidator = null;
         //-- initialize attribute descriptors
         
+        //-- _version
+        desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_version", "version", NodeType.Attribute);
+        desc.setImmutable(true);
+        handler = (new XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                return target.getVersion();
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                    target.setVersion( (java.lang.String) value);
+                }
+                catch (Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return null;
+            }
+        } );
+        desc.setHandler(handler);
+        desc.setRequired(true);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _version
+        fieldValidator = new FieldValidator();
+        fieldValidator.setMinOccurs(1);
+        { //-- local scope
+            StringValidator typeValidator = new StringValidator();
+            typeValidator.setWhiteSpace("preserve");
+            fieldValidator.setValidator(typeValidator);
+        }
+        desc.setValidator(fieldValidator);
         //-- initialize element descriptors
         
         //-- _fileName

@@ -52,11 +52,11 @@ DatabaseSpec * @author David Martinez
 public class DatabaseProcess {
 
 	public String currentCatalog;
-	public String userName;
 	public Vector dbList;
 
 	public String lastQuery;
 	private TableModel lastResultTable;
+	String userName;
 
 	private Connection lastConnection;
 	private QueryResults lastQueryResults;
@@ -322,7 +322,7 @@ public class DatabaseProcess {
 	 */
 	public synchronized boolean doConnect() {
 		String theurl = new String();
-		boolean TryAgain = true;
+		boolean keepTrying = true;
 		Connection conn = null;
 		Connection poolConn = null;
 
@@ -335,9 +335,9 @@ public class DatabaseProcess {
 
 		// Otherwise, try to start a new connection
 		try {
-			while (TryAgain) {
-				TryAgain = showLoginBox();
-				if (TryAgain) {
+			while (keepTrying) {
+				keepTrying = showLoginBox();
+				if (keepTrying) {
 					theurl = hostConfiguration.getJdbc().getUrl();
 					loadDriver();
 					connProps = new Properties(HostConfigFactory.connectionPropertiesToMap(hostConfiguration.getJdbc().getConnectionProperties()));
@@ -350,7 +350,7 @@ public class DatabaseProcess {
 					// TODO: Create the maxconnections here. Later I'll have to refactor this entire class so the it automatically grows new connections.
 					if ( conn !=null ) {
 						getPool().addConnection(conn);
-						TryAgain = false;
+						keepTrying = false;
 					}
 				}  // if tryagain
 			} // while
@@ -377,7 +377,7 @@ public class DatabaseProcess {
 		boolean bresult = false;
 
 		Object[]      message = new Object[5];
-
+		userName = hostConfiguration.getJdbc().getUserName();
 		JTextField name = new JTextField(userName);
 		JPasswordField password = new JPasswordField();
 		JLabel lUserName = new JLabel("User Name:");
@@ -389,8 +389,7 @@ public class DatabaseProcess {
 
 		JOptionPane pane = new JOptionPane();
 		pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
-		message[0] = hostConfiguration.getName()
-			 +"\nDatabase: "+currentCatalog;
+		message[0] = hostConfiguration.getName();
 		message[1] = lUserName;
 		message[2] = name;
 		message[3] = lPassword;

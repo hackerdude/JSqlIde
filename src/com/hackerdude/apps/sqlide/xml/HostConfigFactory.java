@@ -6,6 +6,7 @@ import java.io.*;
 import org.exolab.castor.xml.*;
 import org.exolab.castor.xml.*;
 import org.apache.xml.serialize.*;
+import com.hackerdude.apps.sqlide.*;
 
 /**
  * This class creates properly-initialized Host Configuration objects.
@@ -24,6 +25,7 @@ public class HostConfigFactory {
 		result.setName("New Configuration");
 		result.getJdbc().setClassPath(new ClassPath());
 		result.getJdbc().setConnectionProperties(new ConnectionProperties());
+		result.setVersion(ProgramConfig.getInstance().getVersionNumber());
 		return result;
 	}
 
