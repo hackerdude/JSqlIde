@@ -42,7 +42,10 @@ import java.sql.*;
  * A Database Process is the db access backend for all the sqlIDE
  * functions. Just instantiate one of these (using the DatabaseSpec
  * db profile you want to use for the connection) and call its methods!
- * @version $Id$
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
  */
 public class DatabaseProcess {
 
@@ -152,8 +155,10 @@ public class DatabaseProcess {
 			conn=getPool().getConnection();
 			ResultSet rs = conn.getMetaData().getCatalogs();
 			while(rs.next()) { al.add( rs.getString(1) ); }
-			} finally { getPool().releaseConnection(conn); };
-			return(al);
+		} finally {
+			getPool().releaseConnection(conn);
+		}
+		return(al);
 	}
 
 	public Vector getSQLTypes( String database ) {
@@ -190,7 +195,7 @@ public class DatabaseProcess {
 			sqle.printStackTrace();
 			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), sqle,"SQL Error while getting tables",JOptionPane.ERROR_MESSAGE);
 		} finally {
-				returnConnection(conn);
+			returnConnection(conn);
 		}
 		return(tbls);
 	}
@@ -217,7 +222,7 @@ public class DatabaseProcess {
 			try {
 				s = conn.getMetaData().getSchemaTerm();
 			} finally {
-					getPool().releaseConnection(conn);
+				getPool().releaseConnection(conn);
 			}
 
 			} catch ( SQLException exc ) {}

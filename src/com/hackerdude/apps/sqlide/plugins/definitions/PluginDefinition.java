@@ -6,7 +6,6 @@ import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
  *
  * <P>This class encapsulates the description of a plugin.
  *
- *
  * <P>A plugin is defined as <B>a visual piece of functionality that can be standardized
  * and placed as a container component on on the SQLIDE right-hand panel, and that
  * acts relation to a DatabaseProcess.</B>
@@ -16,9 +15,9 @@ import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
  */
 public class PluginDefinition implements Comparable {
 
-   public IDEPluginIF pluginInstance;
-   public char panelMnemonic;
-   public char panelKey;
+	public IDEPluginIF pluginInstance;
+	public char panelMnemonic;
+	public char panelKey;
 
 
 	public boolean equals(Object o) {
@@ -28,11 +27,11 @@ public class PluginDefinition implements Comparable {
 	}
 
 
-    public int compareTo(Object o) {
+	public int compareTo(Object o) {
 		/** @todo Add error checking */
 		PluginDefinition compareDef = (PluginDefinition)o;
-        return pluginInstance.getPluginName().compareTo(compareDef.pluginInstance.getPluginName());
-    }
+		return pluginInstance.getPluginName().compareTo(compareDef.pluginInstance.getPluginName());
+	}
 
 
 

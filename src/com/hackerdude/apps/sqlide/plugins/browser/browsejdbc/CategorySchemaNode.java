@@ -1,4 +1,3 @@
-
 /**
  * Title:        JSqlIde<p>
  * Description:  A Java SQL Integrated Development Environment
@@ -15,6 +14,13 @@ import javax.swing.tree.*;
 import java.util.*;
 import java.sql.*;
 
+/**
+ * A node for a schema category
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class CategorySchemaNode extends NodeIDECategory {
 
    public CategorySchemaNode(DatabaseProcess proc) { super(proc.getSchemaTitle(), proc); };
@@ -24,7 +30,7 @@ public class CategorySchemaNode extends NodeIDECategory {
 		try {
 			Vector vc = db.getSchemas();
 			for(int i=0;i<vc.size();i++) {
-				dbItem = new ItemSchemaNode(vc.elementAt(i).toString(), db);//vc.elementAt(i).toString());
+				dbItem = new ItemSchemaNode(vc.elementAt(i).toString(), db);
 				add(dbItem);
 			}
 		} catch ( Throwable exc ) {

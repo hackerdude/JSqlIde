@@ -10,6 +10,10 @@ import textarea.TextAreaDefaults;
 
 /**
  * Extension of JEditTextArea that supports dropping of Browser Node Items.
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
  */
 public class SyntaxTextArea extends JEditTextArea implements DropTargetListener {
 
@@ -22,85 +26,85 @@ public class SyntaxTextArea extends JEditTextArea implements DropTargetListener 
 	}
 
 
-  /**
-   * a drop has occurred
-   *
-   */
-  public void drop (DropTargetDropEvent event) {
-	/** @todo Accept targets by inserting at cursor location instead of replacing the whole text. */
-	String dropped = null;
-	try {
-		Transferable transferable = event.getTransferable();
-		// we accept Strings and local objects
-		if ( transferable.isDataFlavorSupported(NodeIDEItem.localDataFlavor()) ){
-			event.acceptDrop(DnDConstants.ACTION_MOVE);
-			NodeIDEItem item = (NodeIDEItem)transferable.getTransferData(NodeIDEItem.localDataFlavor());
-			System.out.println("[SyntaxTextArea] Got Item "+item.toString());
-			dropped = item.toString();
-			event.getDropTargetContext().dropComplete(true);
-			this.grabFocus();
-		} else if ( transferable.isDataFlavorSupported(DataFlavor.stringFlavor) ){
-			event.acceptDrop(DnDConstants.ACTION_MOVE);
-			dropped = (String)transferable.getTransferData (DataFlavor.stringFlavor);
-			System.out.println("[SyntaxTextArea] Got String "+dropped);
-		}
-		else{
+	/**
+	 * a drop has occurred
+	 *
+	 */
+	public void drop (DropTargetDropEvent event) {
+		/** @todo Accept targets by inserting at cursor location instead of replacing the whole text. */
+		String dropped = null;
+		try {
+			Transferable transferable = event.getTransferable();
+			// we accept Strings and local objects
+			if ( transferable.isDataFlavorSupported(NodeIDEItem.localDataFlavor()) ){
+				event.acceptDrop(DnDConstants.ACTION_MOVE);
+				NodeIDEItem item = (NodeIDEItem)transferable.getTransferData(NodeIDEItem.localDataFlavor());
+				System.out.println("[SyntaxTextArea] Got Item "+item.toString());
+				dropped = item.toString();
+				event.getDropTargetContext().dropComplete(true);
+				this.grabFocus();
+			} else if ( transferable.isDataFlavorSupported(DataFlavor.stringFlavor) ){
+				event.acceptDrop(DnDConstants.ACTION_MOVE);
+				dropped = (String)transferable.getTransferData (DataFlavor.stringFlavor);
+				System.out.println("[SyntaxTextArea] Got String "+dropped);
+			}
+			else{
+				event.rejectDrop();
+			}
+		} catch (IOException exception) {
+			exception.printStackTrace();
+			System.err.println( "Exception" + exception.getMessage());
 			event.rejectDrop();
 		}
-	} catch (IOException exception) {
-		exception.printStackTrace();
-		System.err.println( "Exception" + exception.getMessage());
-		event.rejectDrop();
+		catch (UnsupportedFlavorException ufException ) {
+			ufException.printStackTrace();
+			System.err.println( "Exception" + ufException.getMessage());
+			event.rejectDrop();
+		}
+		if ( dropped != null ) setText(getText()+dropped);
+
 	}
-	catch (UnsupportedFlavorException ufException ) {
-	  ufException.printStackTrace();
-	  System.err.println( "Exception" + ufException.getMessage());
-	  event.rejectDrop();
-	}
-	if ( dropped != null ) setText(getText()+dropped);
-
-  }
 
 
-  /**
-   * is invoked when you are exit the DropSite without dropping
-   *
-   */
+	/**
+	 * is invoked when you are exit the DropSite without dropping
+	 *
+	 */
 
-  public void dragExit (DropTargetEvent event) {
+	public void dragExit (DropTargetEvent event) {
 //    System.out.println( "dragExit");
 
-  }
+	}
 
-  /**
-   * is invoked if the use modifies the current drop gesture
-   *
-   */
+	/**
+	 * is invoked if the use modifies the current drop gesture
+	 *
+	 */
 
 
-  public void dropActionChanged ( DropTargetDragEvent event ) {
-  }
+	public void dropActionChanged ( DropTargetDragEvent event ) {
+	}
 
-  /**
-   * is invoked when a drag operation is going on
-   *
-   */
+	/**
+	 * is invoked when a drag operation is going on
+	 *
+	 */
 
-  public void dragOver (DropTargetDragEvent event) {
+	public void dragOver (DropTargetDragEvent event) {
 //    System.out.println( "dragOver");
-  }
+	}
 
-  /**
-   * is invoked when you are dragging over the DropSite
-   *
-   */
+	/**
+	 * is invoked when you are dragging over the DropSite
+	 *
+	 */
 
-  public void dragEnter (DropTargetDragEvent event) {
+	public void dragEnter (DropTargetDragEvent event) {
 
-	// debug messages for diagnostics
+		// debug messages for diagnostics
 //    System.out.println( "dragEnter");
-	event.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-  }
+		event.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+	}
 
 
 }

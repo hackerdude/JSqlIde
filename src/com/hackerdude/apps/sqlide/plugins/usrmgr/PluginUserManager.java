@@ -9,8 +9,11 @@ import java.awt.event.ActionEvent;
 
 /**
  * A User Manager Panel
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
  */
-
 public class PluginUserManager extends AbstractVisualPlugin {
 	/**
 	 * BorderLayout borderLayout1

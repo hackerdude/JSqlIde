@@ -13,21 +13,21 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 
 
-  public class ItemCatalogNode extends NodeIDEItem {
+public class ItemCatalogNode extends NodeIDEItem {
 
-	 String catalogName;
+	String catalogName;
 
-	 public ItemCatalogNode(String containerName, DatabaseProcess proc) {
+	public ItemCatalogNode(String containerName, DatabaseProcess proc) {
 		super(containerName, proc);
 		catalogName = containerName;
 	};
 
-	  public void readChildren() {
+	public void readChildren() {
 		add( new CategoryTableNode(null, catalogName, db));
-	 }
+	}
 
-	 public boolean canHaveChildren() { return true; }
+	public boolean canHaveChildren() { return true; }
 
-	 public String getInfo() { return "<HTML><P><B>"+db.getCatalogTitle()+" name</B>:"+catalogName; }
+	public String getInfo() { return "<HTML><P><B>"+db.getCatalogTitle()+" name</B>:"+catalogName; }
 
-  };
+}

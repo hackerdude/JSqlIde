@@ -5,6 +5,12 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.sql.*;
 
+/**
+ * The panel with query results.
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class ResultSetPanel extends JPanel {
     private BorderLayout borderLayout1 = new BorderLayout();
     private JPanel jPanel2 = new JPanel();

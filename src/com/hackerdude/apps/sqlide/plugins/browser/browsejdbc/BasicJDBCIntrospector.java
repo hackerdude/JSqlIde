@@ -11,16 +11,15 @@ import javax.swing.Icon;
  * <P>Basically anything about the database you can find out through straight
  * JDBC calls can be added here.
  *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */
-
 public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 
-/**
- *
- */
-
+	/**
+	 * Creates a basic introspector
+	 */
 	public BasicJDBCIntrospector() {
 
 	}
