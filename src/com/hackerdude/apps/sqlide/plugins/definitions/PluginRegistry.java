@@ -40,7 +40,7 @@ public class PluginRegistry {
 
 
 	public void readRegistry() throws java.io.IOException {
-		InputStream registryIS = com.hackerdude.apps.sqlide.sqlide.class.getResourceAsStream(REGISTRY_NAME);
+		InputStream registryIS = com.hackerdude.apps.sqlide.SqlIdeApplication.class.getResourceAsStream(REGISTRY_NAME);
 		if ( registryIS == null ) throw new IllegalStateException("SQL-IDE is not installed correctly. Plugin registry not found.");
 		ArrayList lines = new ArrayList();
 		BufferedReader br  = new BufferedReader(new InputStreamReader(registryIS));

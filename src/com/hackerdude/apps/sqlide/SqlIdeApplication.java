@@ -63,12 +63,12 @@ import java.io.*;
  *  </ul>
  * @version $Id$
  */
-public class sqlide  {
+public class SqlIdeApplication  {
 
 	private final static JFrame frame = new JFrame("sqlide Main Window");
 
 	JMenuBar  menubar;
-	private static sqlide instance;
+	private static SqlIdeApplication instance;
 
 	private final ImageIcon sqlideIcon = ProgramIcons.getInstance().getAppIcon();
 
@@ -149,7 +149,7 @@ public class sqlide  {
 	/**
 	 * Contructor
 	 */
-	public sqlide() {
+	public SqlIdeApplication() {
 
 		mainProgress = ProgressFrame.createProgressFrame("SQLIDE Loading...", 0, 6);
 		mainProgressValue = 0;
@@ -292,7 +292,7 @@ public class sqlide  {
 	public static void main(String s[]) {
 
 		initializeUI();
-		instance = new sqlide();
+		instance = new SqlIdeApplication();
 		// Create the sqlide and put it on a frame.
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) { System.exit(0); }
@@ -325,7 +325,7 @@ public class sqlide  {
 
 	}
 
-	public static sqlide getInstance() { return instance; }
+	public static SqlIdeApplication getInstance() { return instance; }
 
 	private class TabChangeListener implements ChangeListener{
 
@@ -514,8 +514,8 @@ public class sqlide  {
 					String newLF = ProgramConfig.getInstance().getUILookandFeel();
 					if (  ! currentLF.equals(newLF) ) {
 						try {
-							LookAndFeel newLookAndFeel = sqlide.changeLookAndFeel(newLF);
-							SwingUtilities.updateComponentTreeUI(sqlide.getFrame());
+							LookAndFeel newLookAndFeel = SqlIdeApplication.changeLookAndFeel(newLF);
+							SwingUtilities.updateComponentTreeUI(SqlIdeApplication.getFrame());
 						} catch ( UnsupportedLookAndFeelException exc ) {
 							exc.printStackTrace();
 						}
@@ -717,7 +717,7 @@ public class sqlide  {
 
 	private void bootstrapPlugins() throws IOException {
 
-		InputStream is = sqlide.class.getResourceAsStream("autoexec.plugins.properties");
+		InputStream is = SqlIdeApplication.class.getResourceAsStream("autoexec.plugins.properties");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		String newPlugin = reader.readLine();
 		while ( newPlugin != null ) {
@@ -758,7 +758,7 @@ public class sqlide  {
 					UIManager.setLookAndFeel(className);
 					break;
 				} catch ( Throwable err ) {
-					JOptionPane.showMessageDialog(sqlide.getFrame(), "Could not change the look and feel due to the following error: "+err.getMessage(), "Could not change look and feel", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), "Could not change the look and feel due to the following error: "+err.getMessage(), "Could not change look and feel", JOptionPane.ERROR_MESSAGE);
 					err.printStackTrace();
 				}
 			}

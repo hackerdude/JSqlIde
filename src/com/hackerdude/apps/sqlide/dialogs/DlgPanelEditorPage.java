@@ -148,7 +148,7 @@ public class DlgPanelEditorPage extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change SQL Editor Font", "Compose a new Font for the SQL Editor", currentSQLFont);
+			Font newFont = FontPickListDialog.showFontSelectionDialog(SqlIdeApplication.getFrame(), "Change SQL Editor Font", "Compose a new Font for the SQL Editor", currentSQLFont);
 			if ( newFont != null ) {
 				currentSQLFont = newFont;
 				lblSqlFontDescription.setFontToDescribe(newFont);
@@ -162,7 +162,7 @@ public class DlgPanelEditorPage extends JPanel {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			Font newFont = FontPickListDialog.showFontSelectionDialog(sqlide.getFrame(), "Change ResultSet Font", "Compose a new font for the ResultSet", currentResultSetFont);
+			Font newFont = FontPickListDialog.showFontSelectionDialog(SqlIdeApplication.getFrame(), "Change ResultSet Font", "Compose a new font for the ResultSet", currentResultSetFont);
 			if ( newFont != null ) {
 				currentResultSetFont = newFont;
 				lblResultSetFontDescription.setFontToDescribe(newFont);

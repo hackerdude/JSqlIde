@@ -223,7 +223,7 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
    public void showPreview() {
 
 	  frm = new JFrame("Preview/Create");
-	  frm.setIconImage(sqlide.getFrame().getIconImage());
+	  frm.setIconImage(SqlIdeApplication.getFrame().getIconImage());
 	  SyntaxDocument sd = new SyntaxDocument();
 	  sd.setTokenMarker(new TSQLTokenMarker());
 	  theStatement.setDocument(sd);
