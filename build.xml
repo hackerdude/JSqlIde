@@ -151,22 +151,15 @@
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile,prepare_unjar_cache">
 		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**">
-		    <fileset dir="${lib.dir}">
+		    <!--<fileset dir="${lib.dir}">
 			    <include name="*.jar"/>
-			</fileset>
+			</fileset>-->
 			<fileset dir="${unjar.cache}"/>
 			<manifest>
 				<attribute name="Main-Class" value="com.hackerdude.apps.sqlide.SqlIdeApplication" />
-				<attribute name="Class-Path" value="/xerces.jar" />
-				<attribute name="Built-By" value="${user.name}"/>
-				<section name="common">
-					<attribute name="Specification-Title" value="Java SQL-IDE" />
-					<attribute name="Specification-Version" value="${version}" />
-					<attribute name="Specification-Vendor" value="Hackerdude" />
-					<attribute name="Implementation-Title" value="jsqlide" />
-					<attribute name="Implementation-Version" value="${version} ${TODAY}" />
-					<attribute name="Implementation-Vendor" value="Hackerdude.com" />
-				</section>
+				<attribute name="Implementation-Title" value="jsqlide" />
+				<attribute name="Implementation-Version" value="${version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="Hackerdude.com" />
 			</manifest>
 		</jar>
 
