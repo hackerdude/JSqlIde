@@ -5,18 +5,17 @@ import java.awt.event.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import javax.swing.table.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
 
 import com.hackerdude.apps.sqlide.*;
 import com.hackerdude.apps.sqlide.components.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.plugins.*;
+import com.hackerdude.swing.table.*;
 import textarea.*;
-import com.hackerdude.swing.table.ModalButtonCellEditor;
 
 /**
  * The main Interactive SQL Panel.

@@ -36,6 +36,8 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
      //- Class/Member Variables -/
     //--------------------------/
 
+    private java.lang.String _version;
+
     private java.lang.String _fileName;
 
     private java.lang.String _name;
@@ -179,6 +181,16 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     } //-- int getPluginSpecificCount() 
 
     /**
+     * Returns the value of field 'version'.
+     * 
+     * @return the value of field 'version'.
+    **/
+    public java.lang.String getVersion()
+    {
+        return this._version;
+    } //-- java.lang.String getVersion() 
+
+    /**
     **/
     public boolean isValid()
     {
@@ -305,6 +317,16 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
             _pluginSpecificList.addElement(pluginSpecificArray[i]);
         }
     } //-- void setPluginSpecific(PluginSpecific) 
+
+    /**
+     * Sets the value of field 'version'.
+     * 
+     * @param version the value of field 'version'.
+    **/
+    public void setVersion(java.lang.String version)
+    {
+        this._version = version;
+    } //-- void setVersion(java.lang.String) 
 
     /**
     **/
