@@ -52,7 +52,8 @@ public class ClobEditorDialog extends JDialog {
 
 	public void showClobEditor(Frame owner, String title, String fieldName, Clob clob) {
 		ClobEditorDialog dialog = new ClobEditorDialog(owner, title, true);
-		dialog.pnlClobEditor.setClob(fieldName, clob);
+		dialog.pnlClobEditor.setFieldName(fieldName);
+		dialog.pnlClobEditor.setClob(clob);
 		Dimension appDimension = SqlIdeApplication.getInstance().getFrame().getSize();
 
 		dialog.setSize((int)appDimension.getWidth()/2, (int)appDimension.getHeight() / 2);
@@ -60,4 +61,17 @@ public class ClobEditorDialog extends JDialog {
 		dialog.setLocation(center);
 		dialog.show();
 	}
+
+	public void showBlobEditor(Frame owner, String title, String fieldName, Blob blob) {
+		ClobEditorDialog dialog = new ClobEditorDialog(owner, title, true);
+		dialog.pnlClobEditor.setFieldName(fieldName);
+		dialog.pnlClobEditor.setBlob(blob);
+		Dimension appDimension = SqlIdeApplication.getInstance().getFrame().getSize();
+
+		dialog.setSize((int)appDimension.getWidth()/2, (int)appDimension.getHeight() / 2);
+		Point center = SwingUtils.getCenteredWindowPoint(this);
+		dialog.setLocation(center);
+		dialog.show();
+	}
+
 }

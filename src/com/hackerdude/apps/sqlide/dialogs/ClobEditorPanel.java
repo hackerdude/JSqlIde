@@ -12,6 +12,7 @@ import com.hackerdude.apps.sqlide.ProgramConfig;
 public class ClobEditorPanel  extends JPanel {
 
 	private Clob clob;
+	private Blob blob;
 
     private BorderLayout borderLayout1 = new BorderLayout();
     private JLabel lblFieldName = new JLabel();
@@ -35,11 +36,70 @@ public class ClobEditorPanel  extends JPanel {
         spScroller.getViewport().add(edtEditor, null);
     }
 
-	public void setClob(String fieldName, Clob clob) {
+	public void setFieldName(String fieldName) {
+		lblFieldName.setText("Field: "+fieldName);
+	}
+
+	/**
+	 * Tries to read the blob as a string.
+	 * @param blob The blob to set.
+	 */
+	public void setBlob(Blob blob) {
+		edtEditor.setFont(ProgramConfig.getInstance().getResultSetFont());
+		this.clob = clob;
+		final Blob ourBlob = blob;
+		edtEditor.setText("Reading CLOB. Please wait...");
+		Thread clobReader = new Thread() {
+			public void run() {
+				String result = "";
+				try {
+					result = readBlob(ourBlob);
+				}
+				catch (Exception ex) {
+					result = ex.toString();
+				}
+				finally {
+					final String text = result;
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							edtEditor.setText(text);
+							edtEditor.setSelectionStart(0);
+							edtEditor.setSelectionEnd(0);
+						}
+					});
+				}
+
+			}
+		};
+		clobReader.start();
+
+	}
+
+	/**
+	 * Tries to read a blob into a Stringbuffer
+	 * @param blob The blob to read
+	 * @return The string with the contents
+	 * @throws SQLException If a SQL error ocurrs
+	 * @throws IOException If an i/o error ocurrs
+	 */
+	public static String readBlob(Blob blob) throws SQLException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(blob.getBinaryStream()));
+		String line = null;
+		StringBuffer buffer = new StringBuffer( (int)(blob.length()*1.5) );
+		while ( ( line = reader.readLine()  )!=null ) {
+			buffer.append(line);
+		}
+		return buffer.toString();
+	}
+
+	/**
+	 * Reads the clob into the field.
+	 * @param clob The clob to read.
+	 */
+	public void setClob(Clob clob) {
 		edtEditor.setFont(ProgramConfig.getInstance().getResultSetFont());
 		this.clob = clob;
 		final Clob ourClob = clob;
-		lblFieldName.setText("Field: "+fieldName);
 		edtEditor.setText("Reading CLOB. Please wait...");
 		Thread clobReader = new Thread() {
 			public void run() {
@@ -64,9 +124,16 @@ public class ClobEditorPanel  extends JPanel {
 			}
 		};
 		clobReader.start();
-
 	}
 
+	/**
+	 * Tries to read a blob into a Stringbuffer
+	 *
+	 * @param clob The clob field to read.
+	 * @return The string with the contents
+	 * @throws SQLException If a SQL error ocurrs
+	 * @throws IOException If an i/o error ocurrs
+	 */
 	public static String readClob(Clob clob) throws SQLException, IOException {
 
 		BufferedReader reader = new BufferedReader(clob.getCharacterStream());
