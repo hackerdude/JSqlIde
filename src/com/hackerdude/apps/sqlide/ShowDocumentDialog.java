@@ -28,15 +28,17 @@ public class ShowDocumentDialog extends JDialog {
 		try {
 			jbInit();
 			pack();
+			positionDialog();
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public ShowDocumentDialog() {
-		this(null, "", false);
+	public ShowDocumentDialog(JFrame owner) {
+		this(owner, "", false);
 	}
+
 	void jbInit() throws Exception {
 		panel1.setLayout(borderLayout1);
 		jPanel1.setLayout(borderLayout2);
@@ -58,7 +60,7 @@ public class ShowDocumentDialog extends JDialog {
 	}
 
 	/**
-	 * OLoads text from an input stream.
+	 * Loads text from an input stream.
 	 */
 	void loadText(InputStream is) throws IOException {
 		if ( is != null ) {
@@ -83,32 +85,32 @@ public class ShowDocumentDialog extends JDialog {
 	/**
 	 * Show "Paying for SQLIDE" dialog.
 	 */
-	public void showPayDialog() {
-		showDialog("Paying for SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/paying.html"));
-	}
+//	public void showPayDialog() {
+//		showDialog("Paying for SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/paying.html"));
+//	}
 
 
 	/**
 	 * Show the TODO.HTML dialog.
 	 */
-	public void showTodoDialog() {
-		showDialog("To do List for Project", ShowDocumentDialog.class.getResourceAsStream("/docs/TODO.html"));
-	}
-
+//	public void showTodoDialog() {
+//		showDialog("To do List for Project", ShowDocumentDialog.class.getResourceAsStream("/docs/TODO.html"));
+//	}
+//
 
 	/**
 	 * Show the readme dialog.
 	 */
-	public void showReadmeDialog() {
-		showDialog("Project README", ShowDocumentDialog.class.getResourceAsStream("/docs/README.html"));
-	}
+//	public void showReadmeDialog() {
+//		showDialog("Project README", ShowDocumentDialog.class.getResourceAsStream("/docs/README.html"));
+//	}
 
 	/**
 	 * Show the Known Bugs dialog.
 	 */
-	public void showKnownBugsDialog() {
-		showDialog("Known Bugs in SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/BUGS.html"));
-	}
+//	public void showKnownBugsDialog() {
+//		showDialog("Known Bugs in SQLIDE", ShowDocumentDialog.class.getResourceAsStream("/docs/BUGS.html"));
+//	}
 
 
 	/**
@@ -117,14 +119,8 @@ public class ShowDocumentDialog extends JDialog {
 	 */
 	public void showDialog(String title, InputStream inputStream) {
 		if ( inputStream == null ) return;
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setTitle(title);
-		this.setSize(500, 300);
-		Dimension dim = this.getSize();
 
-		Double xPos = new Double((screenSize.getWidth()-dim.getWidth())/2);
-		Double yPos = new Double((screenSize.getHeight()-dim.getHeight())/2);
-		this.setBounds(xPos.intValue(), yPos.intValue(), new Double(dim.getWidth()).intValue(),new Double(dim.getHeight()).intValue());
 		this.setModal(true);
 		this.documentContents.setEditable(false);
 		try {
@@ -136,9 +132,19 @@ public class ShowDocumentDialog extends JDialog {
 		this.show();
 	}
 
-	public void showLicenseDialog() {
-		showDialog("SQLIDE License Agreement", ShowDocumentDialog.class.getResourceAsStream("/docs/LICENSE.html"));
+	private void positionDialog() throws HeadlessException {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			  this.setSize(500, 300);
+			  Dimension dim = this.getSize();
+
+			  Double xPos = new Double((screenSize.getWidth()-dim.getWidth())/2);
+			  Double yPos = new Double((screenSize.getHeight()-dim.getHeight())/2);
+			  this.setBounds(xPos.intValue(), yPos.intValue(), new Double(dim.getWidth()).intValue(),new Double(dim.getHeight()).intValue());
 	}
+
+//	public void showLicenseDialog() {
+//		showDialog("SQLIDE License Agreement", ShowDocumentDialog.class.getResourceAsStream("/docs/LICENSE.html"));
+//	}
 
 	void jButton1_actionPerformed(ActionEvent e) {
 		this.setVisible(false);

@@ -69,11 +69,16 @@ public class PluginIDEBrowser extends JPanel
 	JLabel lblInfo = new JLabel();
 
 	SqlIdeApplication ide;
+
 	BorderLayout borderLayout3 = new BorderLayout();
 
 	private final BrowserRenderer BROWSER_RENDERER = new BrowserRenderer();
 	private final TreeSelectionListener BROWSER_SELECTION_LISTENER = new IDEBrowserSelectionListener();
 	private final TreeWillExpandListener BROWSER_WILL_EXPAND_LISTENER = new BrowserWillExpandListener();
+
+	private Action[] contextActions = NULL_ACTIONS;
+
+	public static final String PROPERTY_ELEMENT_SELECTED = "nodeSelected";
 
 	/**
 	 * JBuilder likes this
@@ -126,6 +131,8 @@ public class PluginIDEBrowser extends JPanel
 	 */
 	class IDEBrowserSelectionListener implements TreeSelectionListener {
 		public void valueChanged(TreeSelectionEvent e) {
+			determineContextActions();
+
 			TreePath leadSelectionPath = e.getNewLeadSelectionPath();
 			Object[] objs;
 			if (leadSelectionPath == null)
@@ -145,9 +152,11 @@ public class PluginIDEBrowser extends JPanel
 				return;
 			}
 			TreeNode tn = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+
 			NodeIDEBase bn = null;
 			if (tn instanceof NodeIDEBase) {
 				bn = (NodeIDEBase) tn;
+				firePropertyChange(PROPERTY_ELEMENT_SELECTED, null, bn);
 			}
 			if (bn != null)
 				lblInfo.setText(bn.getInfo());
@@ -454,24 +463,10 @@ public class PluginIDEBrowser extends JPanel
 			try {
 				/** @todo This does not work on MacOS */
 				if (e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK) {
-					TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
-					if (selectedPaths == null)
-						return;
-					NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
-					for (int i = 0; i < selectedPaths.length; i++) {
-						Object lastPathComponent = selectedPaths[i].getLastPathComponent();
-						Object selectedNode = lastPathComponent;
-						if (selectedNode instanceof NodeIDEBase) {
-							selectedNodes[i] = (NodeIDEBase) selectedNode;
-						}
-						else
-							return;
-					}
-					Action[] actions = ide.getActionsFor(selectedNodes);
-					if (actions == null || actions.length > 0) {
+					if (contextActions == null || contextActions.length > 0) {
 						JPopupMenu thisMenu = new JPopupMenu("Actions");
-						for (int i = 0; i < actions.length; i++)
-							thisMenu.add(actions[i]);
+						for (int i = 0; i < contextActions.length; i++)
+							thisMenu.add(contextActions[i]);
 						if (thisMenu != null) {
 							Double theX = new Double(e.getPoint().getX());
 							Double theY = new Double(e.getPoint().getY());
@@ -487,13 +482,32 @@ public class PluginIDEBrowser extends JPanel
 
 	}
 
+	/**
+	 * Determines the available context actions for this panel. These actions
+	 * change when the current selection changes on the browser.
+	 */
+	public void determineContextActions() {
+		TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
+		if (selectedPaths == null) return;
+		NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
+		for (int i = 0; i < selectedPaths.length; i++) {
+			Object lastPathComponent = selectedPaths[i].getLastPathComponent();
+			Object selectedNode = lastPathComponent;
+			if (selectedNode instanceof NodeIDEBase) {
+				selectedNodes[i] = (NodeIDEBase) selectedNode;
+			}
+			else return;
+		}
+		contextActions = ide.getActionsFor(selectedNodes);
+	}
+
 	public JPopupMenu getPopupMenuFor(NodeIDEBase node) {
 		return null;
 	}
 
 
 	public Action[] getPossibleActions() {
-		return NULL_ACTIONS;
+		return contextActions;
 	}
 
 	public void receivePluginFocus() {

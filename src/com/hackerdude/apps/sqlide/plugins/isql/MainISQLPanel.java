@@ -119,22 +119,57 @@ public class MainISQLPanel extends JPanel {
 	 * This executes the current query for this interactive SQL Window.
 	 */
 	public void executeCurrentQuery() {
+
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		resultSetPanel.addStatusText("Executing Query...");
-		String queryText = sqlTextArea.getText();
+		resultSetPanel.addStatusText("Executing Query. Please Wait...");
+		final String queryText = sqlTextArea.getText();
 		Object db = cbCatalogs.getSelectedItem();
-		if (db != null)
-			ideprocess.changeCatalog(db.toString());
+		if (db != null) ideprocess.changeCatalog(db.toString());
+		final boolean asUpdate = cbAsUpdate.isSelected();
+		final boolean updatable = cbUpdatable.isSelected();
+		ACTION_RUN_COMMAND.setEnabled(false);
+		new Thread() {
+			public void run() {
+				try {
+					final QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, updatable);
+					sqlTextArea.setText(ideprocess.lastQuery);
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							addToHistoryIfNeeded(queryText);
+							displayResults(asUpdate, updatable, queryResults);
+						}
+					});
+
+				} catch (final SQLException exc) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							resultSetPanel.logSQLException(exc);
+							resultSetPanel.clearResultSetModel();
+						}
+					});
+					//JOptionPane.showMessageDialog(this, "SQL Exception: " + exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);.
+				} finally {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							setCursor(Cursor.getDefaultCursor());
+							ACTION_RUN_COMMAND.setEnabled(true);
+						}
+					});
+				}
+			}
+		}.start();
+	}
+
+	/**
+	 * This function displays the QueryResults in the results table.
+	 * If it cannot do it, it clears the current results and logs a message.
+	 * @param asUpdate True if this was an update.
+	 * @param updatable True if the query was updatable.
+	 * @param queryResults The results of the query.
+	 */
+	private void displayResults(boolean asUpdate, boolean updatable, QueryResults queryResults)  {
 		try {
-			boolean asUpdate = cbAsUpdate.isSelected();
-			boolean updatable = cbUpdatable.isSelected();
-
-			QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, updatable);
-			sqlTextArea.setText(ideprocess.lastQuery);
-
-			addToHistoryIfNeeded(queryText);
-
-			if (queryResults!=null && queryResults.getResultSet() != null) {
+			if (queryResults != null && queryResults.getResultSet() != null) {
 				Font theFont = ProgramConfig.getInstance().getResultSetFont();
 				ResultSetColumnModel newColumnModel = new ResultSetColumnModel(
 					  queryResults, theFont, this);
@@ -146,16 +181,15 @@ public class MainISQLPanel extends JPanel {
 				setClobEditors(queryResults, newColumnModel);
 			}
 			String message = "Ran " + (asUpdate ? " update" : "query ") + (updatable ? " (<B>updatable result obtained</B>)" : "");
-			if ( queryResults!=null) message = message+". Elapsed time "+formatElapsedTime(queryResults.getElapsedTime());
+			if (queryResults != null)
+				message = message + ". Elapsed time " + formatElapsedTime(queryResults.getElapsedTime());
 			resultSetPanel.addStatusText(message);
-			if ( queryResults!=null) if ( asUpdate ) resultSetPanel.addStatusText("Rows updated: "+queryResults.getRowsAffected());
-
+			if (queryResults != null)
+				if (asUpdate)
+					resultSetPanel.addStatusText("Rows updated: " + queryResults.getRowsAffected());
 		} catch (SQLException exc) {
 			resultSetPanel.logSQLException(exc);
 			resultSetPanel.clearResultSetModel();
-			//JOptionPane.showMessageDialog(this, "SQL Exception: " + exc, "SQL Exception", JOptionPane.ERROR_MESSAGE);.
-		} finally {
-			setCursor(Cursor.getDefaultCursor());
 		}
 	}
 
@@ -307,8 +341,8 @@ public class MainISQLPanel extends JPanel {
 	public void setDefaultEditors(TableModel model, TableColumnModel columnModel) {
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			TableColumn column = columnModel.getColumn(i);
-			System.out.println(column);
-			System.out.println(model.getColumnClass(i));
+//			System.out.println(column);
+//			System.out.println(model.getColumnClass(i));
 
 			if (java.sql.Clob.class.isAssignableFrom(model.getColumnClass(i))) {
 				column.setCellRenderer(new ClobCellRenderer());

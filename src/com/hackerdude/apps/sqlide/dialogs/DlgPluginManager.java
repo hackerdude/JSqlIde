@@ -21,6 +21,7 @@ public class DlgPluginManager extends JDialog {
 		super(owner);
 		try {
 			jbInit();
+			runningPluginsPanel.addListSelectionListener(LIST_SELECTION_LISTENER);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

@@ -40,6 +40,7 @@ import com.hackerdude.apps.sqlide.wizards.*;
 import com.hackerdude.apps.sqlide.xml.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.swing.*;
+import java.beans.*;
 
 /**
  * Main class for the sql ide program.
@@ -61,12 +62,16 @@ public class SqlIdeApplication  {
 
 	private final static JFrame frame = new JFrame("sqlide Main Window");
 
-	JMenuBar  menubar;
+	JMenuBar  menuBar;
 	private static SqlIdeApplication instance;
 
 	private final ImageIcon sqlideIcon = ProgramIcons.getInstance().getAppIcon();
 
 	private IDEVisualPluginIF rightIdePanel;
+
+	public final static Action SEPARATOR_ACTION = new AbstractAction() {
+		public void actionPerformed(ActionEvent evt) {}
+	};
 
 	public final Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
 	public final Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
@@ -82,25 +87,26 @@ public class SqlIdeApplication  {
 	public final Action SELECT_RIGHT = new ActionSelectRightPanel();
 
 	public final Action HELP_ABOUT     = new ActionHelpAbout();
-	public final Action HELP_README    = new ActionHelpReadme();
-	public final Action HELP_PAYING    = new ActionHelpPaying();
-	public final Action HELP_TO_DO     = new ActionHelpTodo();
-	public final Action HELP_KNOWNBUGS = new ActionHelpBugs();
-	public final Action PLUGIN_CONTROL = new ActionPluginControl();
+	public final Action HELP_README    = new ActionHelpShowDocument("Read Me First!", ActionHelpShowDocument.DOCUMENT_README, ProgramIcons.getInstance().findIcon("images/Document.gif") );
+	public final Action HELP_PAYING    = new ActionHelpShowDocument("Paying for SQLIDE", ActionHelpShowDocument.DOCUMENT_PAYING, ProgramIcons.getInstance().findIcon("images/Favorite.gif"));
+	public final Action HELP_TO_DO     = new ActionHelpShowDocument("To Do List", ActionHelpShowDocument.DOUCMENT_TODO, ProgramIcons.getInstance().findIcon("images/List.gif"));
+	public final Action HELP_KNOWNBUGS = new ActionHelpShowDocument("Known Bugs", ActionHelpShowDocument.DOCUMENT_BUGS, ProgramIcons.getInstance().findIcon("images/Error.gif"));
 
-	public final Action HELP_LICENSE = new ActionHelpLicense();
+	public final Action HELP_LICENSE = new ActionHelpShowDocument("License Agreement", ActionHelpShowDocument.DOCUMENT_LICENSE, ProgramIcons.getInstance().findIcon("images/List.gif"));
 
-	JMenu mnuPluginControl = new JMenu(PLUGIN_CONTROL);
+	public final BrowserPropertyChangeListener BROWSER_LISTENER = new BrowserPropertyChangeListener();
+
+	final JMenu mnuTasks = new JMenu("Tasks");
 	AboutDialog about = null;
 
 	private ProgressFrame mainProgress;
 	private int mainProgressValue;
 	JPanel mainPanel = new JPanel();
 	BorderLayout mainBorderLayout = new BorderLayout();
-	JTabbedPane jTabbedPane1 = new JTabbedPane();
+	JTabbedPane pluginsTabbedPane = new JTabbedPane();
 	PluginIDEBrowser idebrowser;
 	JSplitPane jSplitPane1 = new JSplitPane();
-	JPopupMenu jPopupMenu1 = new JPopupMenu();
+	JPopupMenu pluginPopupMenu = new JPopupMenu();
 
 	private RunningPlugins runningPlugins = new RunningPlugins();
     private JButton btnSave = new JButton(FILE_SAVE);
@@ -109,29 +115,29 @@ public class SqlIdeApplication  {
 
 
 	/**
-	 * JBuilder likes to see a "jbInit" method and
-	 * runs this method to show the program in
-	 * design-time. Since I use JBuilder ocasionally,
-	 * I have this code to make it happy.
+	 * JBuilder likes to see a "jbInit" method and runs this method to show
+	 * the program in design-time. Since I use JBuilder, I have this code to
+	 * make it happy.
 	 */
 	public void jbInit() {
 
 		idebrowser = new PluginIDEBrowser();
+		idebrowser.addPropertyChangeListener(PluginIDEBrowser.PROPERTY_ELEMENT_SELECTED, BROWSER_LISTENER);
 		idebrowser.setSQLIDE(this);
 
 		mainPanel.setLayout(mainBorderLayout);
-		jTabbedPane1.setTabPlacement(JTabbedPane.BOTTOM);
-		jTabbedPane1.setToolTipText("");
-		jTabbedPane1.addChangeListener(new TabChangeListener());
-		jTabbedPane1.addMouseListener(new PluginPagesPopupAdapter());
-		jPopupMenu1.setInvoker(jTabbedPane1);
-		frame.getContentPane().add(menubar, BorderLayout.NORTH);
+		pluginsTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
+		pluginsTabbedPane.setToolTipText("");
+		pluginsTabbedPane.addChangeListener(new TabChangeListener());
+		pluginsTabbedPane.addMouseListener(new PluginPagesPopupAdapter());
+		pluginPopupMenu.setInvoker(pluginsTabbedPane);
+		frame.getContentPane().add(menuBar, BorderLayout.NORTH);
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.add(jSplitPane1, BorderLayout.CENTER);
-		jSplitPane1.add(jTabbedPane1, "right");
+		jSplitPane1.add(pluginsTabbedPane, "right");
 		jSplitPane1.add(idebrowser, "left");
         mainPanel.add(tbToolbar,  BorderLayout.NORTH);
-		JMenuItem mnuClosePlugin = jPopupMenu1.add( PLUGIN_CLOSE );
+		JMenuItem mnuClosePlugin = pluginPopupMenu.add( PLUGIN_CLOSE );
 		KeyStroke theAccel = (KeyStroke)PLUGIN_CLOSE.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
         tbToolbar.add(btnOpen, null);
@@ -194,6 +200,10 @@ public class SqlIdeApplication  {
 	 * workaround makes sure it gets set using the action's accel key.
 	 */
 	private void _addMenu(JMenu menu, Action theAction) {
+		if ( theAction == SEPARATOR_ACTION ) {
+			menu.addSeparator();
+			return;
+		}
 		JMenuItem newItem = menu.add( theAction );
 		KeyStroke theAccel = (KeyStroke)theAction.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) newItem.setAccelerator(theAccel);
@@ -204,8 +214,10 @@ public class SqlIdeApplication  {
 		JMenu editMenu;
 		JMenu toolsMenu;
 		JMenu pluginMenu;
+		JMenu activityMenu;
 		JMenu helpMenu;
-		menubar = new JMenuBar();
+
+		menuBar = new JMenuBar();
 		fileMenu = new JMenu("File");
 		editMenu = new JMenu("Edit");;
 		toolsMenu = new JMenu("Tools");;
@@ -216,6 +228,7 @@ public class SqlIdeApplication  {
 		toolsMenu.setMnemonic('T');
 		pluginMenu.setMnemonic('P');
 		helpMenu.setMnemonic('H');
+		mnuTasks.setMnemonic('K');
 
 		_addMenu(fileMenu, FILE_OPEN );
 		_addMenu(fileMenu, FILE_SAVE );
@@ -228,11 +241,10 @@ public class SqlIdeApplication  {
 		_addMenu(toolsMenu, TOOLS_CONFIGURE);
 		_addMenu(toolsMenu, TOOLS_PLUGINS);
 
+
 		_addMenu(pluginMenu, PLUGIN_CLOSE);
 		_addMenu(pluginMenu,SELECT_LEFT);
 		_addMenu(pluginMenu,SELECT_RIGHT);
-		pluginMenu.addSeparator();
-		pluginMenu.add(mnuPluginControl);
 		pluginMenu.addSeparator();
 
 		// Add all the visual plugins to the plugin menu.
@@ -249,12 +261,13 @@ public class SqlIdeApplication  {
 		_addMenu(helpMenu,HELP_TO_DO);
 //		_addMenu(helpMenu,HELP_CHANGES);
 
-		menubar.add( fileMenu   );
-		menubar.add( editMenu   );
-		menubar.add( toolsMenu  );
-		menubar.add( pluginMenu );
-		menubar.add(Box.createHorizontalGlue());
-		menubar.add( helpMenu );
+		menuBar.add( fileMenu   );
+		menuBar.add( editMenu   );
+		menuBar.add( toolsMenu  );
+		menuBar.add( mnuTasks );
+		menuBar.add( pluginMenu );
+		menuBar.add(Box.createHorizontalGlue());
+		menuBar.add( helpMenu );
 
 	}
 
@@ -352,7 +365,7 @@ public class SqlIdeApplication  {
 			/** @todo Ask panels to hide their menus when this event fires. */
 			  if ( rightIdePanel != null ) {
 				//rightIdsePanel.setVisibleMenus(false, mnuPluginControl );
-				rightIdePanel = (IDEVisualPluginIF)jTabbedPane1.getSelectedComponent();
+				rightIdePanel = (IDEVisualPluginIF)pluginsTabbedPane.getSelectedComponent();
 //				if ( rightIdePanel != null ) rightIdePanel.setVisibleMenus(true, mnuPluginControl);
 			  }
 		};
@@ -378,20 +391,37 @@ public class SqlIdeApplication  {
 		return runningPlugins.getActionsFor(nodes);
 	}
 
-	private void createPanelMenu(IDEVisualPluginIF plugin) {
-		mnuPluginControl.removeAll();
-		Action[] actions = plugin.getPossibleActions();
-		if ( (actions != null) && (actions.length > 0) ) {
-			for ( int i=0; i<actions.length; i++) { _addMenu(mnuPluginControl,actions[i]); }
+	public void createTasksMenu() {
+		IDEVisualPluginIF plugin = getRightPanel();
+		mnuTasks.removeAll();
+		Action[] actions = null;
+		if ( plugin != null ) {
+			actions = plugin.getPossibleActions();
+			if ( (actions != null) && (actions.length > 0)) {
+				if (mnuTasks.getItemCount() > 0)
+					mnuTasks.addSeparator();
+				for (int i = 0; i < actions.length; i++) {
+					_addMenu(mnuTasks, actions[i]);
+				}
+			}
 		}
+		actions = idebrowser.getPossibleActions();
+		if ( (actions != null) && (actions.length > 0) ) {
+			if ( mnuTasks.getItemCount() > 0 ) mnuTasks.addSeparator();
+			for ( int i=0; i<actions.length; i++) { _addMenu(mnuTasks,actions[i]); }
+		}
+	}
+
+	private void createPanelMenu(IDEVisualPluginIF plugin) {
+		Action[] actions = plugin.getPossibleActions();
 		// Now re-compose the popup menu with all the actions.
-		jPopupMenu1.removeAll();
-		JMenuItem mnuClosePlugin = jPopupMenu1.add( PLUGIN_CLOSE );
+		pluginPopupMenu.removeAll();
+		JMenuItem mnuClosePlugin = pluginPopupMenu.add( PLUGIN_CLOSE );
 		KeyStroke theAccel = (KeyStroke)PLUGIN_CLOSE.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
-		jPopupMenu1.addSeparator();
+		pluginPopupMenu.addSeparator();
 		for ( int i=0; i<actions.length; i++) {
-			JMenuItem newMenu = jPopupMenu1.add( actions[i] );
+			JMenuItem newMenu = pluginPopupMenu.add( actions[i] );
 			KeyStroke newAccel = (KeyStroke)actions[i].getValue(Action.ACCELERATOR_KEY);
 			if ( newAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
 		}
@@ -403,13 +433,16 @@ public class SqlIdeApplication  {
 	 */
 	public void setRightPanel(IDEVisualPluginIF plugin) {
 		rightIdePanel = plugin;
+		createTasksMenu();
 		createPanelMenu(plugin);
-		jTabbedPane1.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getHostConfiguration().getName()+")" );
+		pluginsTabbedPane.add((Component)plugin, plugin.getPluginShortName()+" ("+plugin.getDatabaseProcess().getHostConfiguration().getName()+")" );
 	}
 
 	public IDEVisualPluginIF getRightPanel() {
-		Component comp = jTabbedPane1.getSelectedComponent();
-		return (IDEVisualPluginIF)comp;
+		Component comp = pluginsTabbedPane.getSelectedComponent();
+		IDEVisualPluginIF result = (IDEVisualPluginIF)comp;
+		if ( result == null ) result = rightIdePanel;
+		return result;
 	}
 
 	public void pack() {
@@ -426,7 +459,7 @@ public class SqlIdeApplication  {
 			if ( e.getModifiers() == e.BUTTON3_MASK ) {
 					Double theX = new Double(e.getPoint().getX());
 					Double theY = new Double(e.getPoint().getY());
-					jPopupMenu1.show(jTabbedPane1, theX.intValue(), theY.intValue());
+					pluginPopupMenu.show(pluginsTabbedPane, theX.intValue(), theY.intValue());
 			}
 		}
 	}
@@ -441,7 +474,6 @@ public class SqlIdeApplication  {
 		for ( int i=0; i<actions.length; i++) result.add(actions[i]);
 		actions = rightIdePanel.getPossibleActions();
 		for ( int i=0; i<actions.length; i++) result.add(actions[i]);
-
 		return result;
 
 	}
@@ -476,12 +508,6 @@ public class SqlIdeApplication  {
 			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
 		}
 		public void actionPerformed(ActionEvent e) {
-/*			GPLAboutDialog gpl = new GPLAboutDialog(frame, "sqlide",
-											ProgramConfig.getVersionNumber(),
-											"A SQL Integrated Development Environment written in Java.",
-											"(C) 1999-2001 by David Martinez.");
-			//gpl.getContentPane().
-			gpl.actionPerformed(null);*/
 			if ( about == null ) {
 				about = new AboutDialog(frame);
 				about.pack();
@@ -494,20 +520,6 @@ public class SqlIdeApplication  {
 		}
 	}
 
-	public class ActionPluginControl extends AbstractAction {
-
-		public ActionPluginControl() {
-		super("Control Plugin", ProgramIcons.getInstance().findIcon("images/server.gif"));
-		}
-		public void actionPerformed(ActionEvent e) {
-			Component comp = jTabbedPane1.getSelectedComponent();
-			IDEPluginIF plugin = (IDEPluginIF)comp;
-			jTabbedPane1.remove(comp);
-			runningPlugins.endPlugin(plugin);
-		}
-
-	}
-
 	public class ActionPluginClose extends AbstractAction {
 
 		public ActionPluginClose() {
@@ -515,11 +527,13 @@ public class SqlIdeApplication  {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.CTRL_MASK, false));
 			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
 		}
+
 		public void actionPerformed(ActionEvent e) {
-			Component comp = jTabbedPane1.getSelectedComponent();
+			Component comp = pluginsTabbedPane.getSelectedComponent();
 			IDEPluginIF plugin = (IDEPluginIF)comp;
-			jTabbedPane1.remove(comp);
+			pluginsTabbedPane.remove(comp);
 			runningPlugins.endPlugin(plugin);
+			createTasksMenu();
 		}
 
 	}
@@ -576,95 +590,33 @@ public class SqlIdeApplication  {
 		}
 	}
 
+	public class ActionHelpShowDocument extends AbstractAction {
 
-	public class ActionHelpPaying extends AbstractAction {
-		public ActionHelpPaying() {
-			super("Paying for SQLIDE", ProgramIcons.getInstance().findIcon("images/Favorite.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
-		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showPayDialog();
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
-		}
-	}
+		public final static String DOCUMENT_PAYING = "/docs/paying.html";
+		public final static String DOCUMENT_README = "/docs/README.html";
+		public final static String DOUCMENT_TODO   = "/docs/TODO.html";
+		public final static String DOCUMENT_BUGS   = "/docs/BUGS.html";
+		public final static String DOCUMENT_LICENSE = "/docs/LICENSE.html";
 
-	public class ActionHelpLicense extends AbstractAction {
-		public ActionHelpLicense() {
-			super("License", ProgramIcons.getInstance().findIcon("images/List.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_T));
-		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showLicenseDialog();
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
-		}
-	}
+		public ShowDocumentDialog documentDialog = null;
 
-	public class ActionHelpTodo extends AbstractAction {
-		public ActionHelpTodo() {
-			super("To-Do List", ProgramIcons.getInstance().findIcon("images/List.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_T));
+		String documentName;
+		String title;
+
+		public ActionHelpShowDocument(String title, String documentName, Icon icon) {
+			super(title,icon);
+			this.documentName = documentName;
+			this.title = title;
 		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showTodoDialog();
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
+
+		public void actionPerformed(ActionEvent evt) {
+			synchronized ( ActionHelpShowDocument.class ) {
+				if ( documentDialog == null ) documentDialog = new ShowDocumentDialog(SqlIdeApplication.getInstance().getFrame());
+				documentDialog.showDialog(title, getClass().getResourceAsStream(documentName));
 			}
-		}
-	}
-	public class ActionHelpReadme extends AbstractAction {
-		public ActionHelpReadme() {
-			super("Readme", ProgramIcons.getInstance().findIcon("images/Document.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_R));
 
 		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showReadmeDialog();
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
-		}
-	}
-	public class ActionHelpBugs extends AbstractAction {
-		public ActionHelpBugs() {
-			super("Known Bugs", ProgramIcons.getInstance().findIcon("images/Error.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_B));
-		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showKnownBugsDialog();
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
-		}
-	}
 
-	public class ActionHelpChanges extends AbstractAction {
-		public ActionHelpChanges() {
-			super("Changes", ProgramIcons.getInstance().findIcon("images/CheckAll.gif"));
-			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_H));
-		}
-		public void actionPerformed(ActionEvent e) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
-			try {
-				new ShowDocumentDialog().showDialog("Changes", SqlIdeApplication.class.getResourceAsStream("CHANGES.html"));
-
-			} finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			}
-		}
 	}
 
 	public class ActionCreatePlugin extends AbstractAction {
@@ -678,19 +630,20 @@ public class SqlIdeApplication  {
 			super(name, img);
 		}
 		public void actionPerformed(ActionEvent e) {
-                  String politeName = e.getActionCommand();
-                  try {
-                    frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                    IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin(politeName);
-                    runningPlugins.startPlugin(plugin);
-                    plugin.setDatabaseProcess( idebrowser.getDatabaseProcess() );
-                    setRightPanel(plugin);
-                    JPanel pluginPanel = (JPanel)plugin;
-                    jTabbedPane1.setSelectedComponent(pluginPanel);
-                  } finally {
-                    frame.setCursor(Cursor.getDefaultCursor());
-                  }
-                }
+			String politeName = e.getActionCommand();
+			try {
+				frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+				IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin(politeName);
+				runningPlugins.startPlugin(plugin);
+				plugin.setDatabaseProcess( idebrowser.getDatabaseProcess() );
+				setRightPanel(plugin);
+				JPanel pluginPanel = (JPanel)plugin;
+				pluginsTabbedPane.setSelectedComponent(pluginPanel);
+			} finally {
+				frame.setCursor(Cursor.getDefaultCursor());
+				createTasksMenu();
+			}
+		}
 	}
 
 	public class ActionSQLIDE extends AbstractAction {
@@ -751,6 +704,11 @@ public class SqlIdeApplication  {
 	}
 
 
+	/**
+	 * It loads and starts all the plugins that need to be initialized on
+	 * startup.
+	 * @throws IOException If the autoexec properties file is not found.
+	 */
 	private void bootstrapPlugins() throws IOException {
 
 		InputStream is = SqlIdeApplication.class.getResourceAsStream("autoexec.plugins.properties");
@@ -764,7 +722,7 @@ public class SqlIdeApplication  {
 				} else {
 					mainProgress.changeMessage("[SQLIDE] Starting "+def.pluginInstance.getPluginName()+"...");
 					runningPlugins.startPlugin(PluginFactory.createPlugin(def));
-					System.out.println("Plugin "+def.pluginInstance.getPluginName()+" started.");
+//					System.out.println(def.pluginInstance.getPluginName()+" started.");
 				}
 			}
 			newPlugin = reader.readLine();
@@ -804,6 +762,10 @@ public class SqlIdeApplication  {
 
 	public RunningPlugins getRunningPlugins() { return runningPlugins; }
 
-
+	class BrowserPropertyChangeListener implements PropertyChangeListener {
+		public void propertyChange(PropertyChangeEvent evt) {
+			createTasksMenu();
+		}
+	}
 
 }

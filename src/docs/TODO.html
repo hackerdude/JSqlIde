@@ -1,39 +1,54 @@
+<HTML>
+	<HEAD>
+			  <TITLE>To Do List</TITLE>
+	</HEAD>
+
+	<BODY>
 
 <FONT COLOR="AA0000"><H2>To Do:</H2></FONT>
 
 <UL>
 
-	<LI>The configuration should have an option to set a default save
-	directory. This directory should default to $HOME/sqlide (no initial dot!),
-	and it should be used as initial directory on all Open/Save dialogs.
+		<LI>Need a way to add external plugins that can be loaded as separate
+		classloaders. An XML descriptor inside a JAR should specify the name of
+		the plugin, at what point they should be loaded, etcetera.</LI>
 
-	<LI>Create a User Manager panel to manage GRANTs
+		<LI>The configuration should have an option to set a default save
+		directory.  This directory should default to $HOME/sqlide (no initial
+		dot!), and it should be used as initial directory on all Open/Save
+		dialogs.
 
-	<LI>Improve Drag and drop:
+		<LI>Create a User Manager panel to manage GRANTs
 
-	<UL>
-		<LI>It should be possible to drop at the current cursor location in the Interactive SQL
+		<LI>Improve Drag and drop:
 
-		<LI>Column components dropped into the table editor should add that
-			  column definition to the editor window.
-	</UL>
+		<UL>
 
-	<LI>Add Index/Primary Key tab to table editor. Add drag-drop from indices
-		  to table editor window
+				  <LI>It should be possible to drop at the current cursor location
+				  in the Interactive SQL
 
-	<LI>Finish Implementing the Panel Registry. It needs to keep Panel Polite
-Names, class names, a new static action class (see below)... Maybe an XML
-implementation of the registry is in order?
+				  <LI>Column components dropped into the table editor should add
+				  that column definition to the editor window.
 
-	<LI>Start working on DB-specific functionality - add a user manager for
-MySQL and come up with a standard set of ResultSets for retrieving users and
-analyzing permissions, as well as standard wrappers for GRANTs.
+		</UL>
+
+	
+		<LI>Add Index/Primary Key tab to table editor. Add drag-drop from indices
+		to table editor window
+
+		<LI>Finish Implementing the Panel Registry. It needs to keep Panel Polite
+		Names, class names, a new static action class (see below)... Maybe an XML
+		implementation of the registry is in order?
+
+		<LI>Start working on DB-specific functionality - add a user manager for
+		MySQL and come up with a standard set of ResultSets for retrieving users
+		and analyzing permissions, as well as standard wrappers for GRANTs.
 
 </UL>
 
 <H2>IDEAS</H2>
 
-<H3> New Panel - The DataMover</H3>
+<H3> New Plugin - The DataMover</H3>
 
 The datamover is a large plugin which has the purpose of giving some basic
 functionality for moving data from one database to another.
@@ -96,3 +111,4 @@ stated as follows:
 <LI> Data Mover execution: Create an observable that can take an array of
   execution nodes and run them using the connectionPools on the SQLIDE.
 
+  </BODY>
