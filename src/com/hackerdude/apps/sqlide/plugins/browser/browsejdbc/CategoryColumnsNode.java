@@ -24,8 +24,9 @@ public class CategoryColumnsNode extends NodeIDECategory {
 	}
 
 	public void readChildren() {
-		Connection conn = db.getConnection();
+		Connection conn = null;
 		try {
+			conn = db.getConnection();
 			ResultSet rs = conn.getMetaData().getColumns(catalogName, null, tableName, null);
 			iColumnCount = 0;
 			while ( rs.next() ) {

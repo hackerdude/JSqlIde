@@ -22,8 +22,9 @@ public class CategoryIndexesNode extends NodeIDECategory {
 	}
 
 	public void readChildren() {
-		Connection conn = db.getConnection();
+		Connection conn = null;
 		try {
+			conn = db.getConnection();
 			ResultSet rs = conn.getMetaData().getIndexInfo(catalogName, schemaName, tableName, false, true);
 			iIndices = 0;
 			while ( rs.next() ) {

@@ -228,7 +228,8 @@ public class MainISQLPanel extends JPanel {
 								ResultSetColumnModel columnModel) {
 
 		for (int i = 0; i < queryResults.getColumnSQLTypes().length; i++) {
-			if (queryResults.getColumnSQLTypes()[i] == java.sql.Types.CLOB) {
+			if ( queryResults.getColumnSQLTypes()[i] == java.sql.Types.CLOB ||
+				 queryResults.getColumnSQLTypes()[i] == java.sql.Types.BLOB) {
 				columnModel.getColumn(i).setCellEditor(buttonCellEditor);
 			}
 		}
@@ -371,7 +372,7 @@ public class MainISQLPanel extends JPanel {
 	class ActionViewText extends AbstractAction {
 		ClobEditorDialog editorDialog = new ClobEditorDialog();
 		public ActionViewText() {
-			super("(Text) ", ProgramIcons.getInstance().getServerIcon());
+			super("(Large) ", ProgramIcons.getInstance().getServerIcon());
 		}
 
 		public void actionPerformed(ActionEvent evt) {
@@ -386,6 +387,12 @@ public class MainISQLPanel extends JPanel {
 				editorDialog.showClobEditor(SqlIdeApplication.getFrame(),
 											"Clob View for " + fieldName, fieldName,
 											clob);
+			} else if (object instanceof Blob) {
+				Blob blob = (Blob) object;
+				editorDialog.showBlobEditor(SqlIdeApplication.getFrame(),
+											"Blob View for " + fieldName, fieldName,
+											blob);
+
 			}
 
 		}
