@@ -6,12 +6,9 @@ import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
  *
  * <P>This class encapsulates the description of a plugin.
  *
- * <P>A plugin is defined as <B>a visual piece of functionality that can be standardized
- * and placed as a container component on on the SQLIDE right-hand panel, and that
- * acts relation to a DatabaseProcess.</B>
- *
- * <P>In the near future, we will extend this definition to include non-visual
- * actions that can "become" available depending on the Browser's context.
+ * <P>A plugin is defined as <B>a piece of functionality that can be managed
+ * and accessed by SQLIDE in a standard way.
+ * </B>
  */
 public class PluginDefinition implements Comparable {
 

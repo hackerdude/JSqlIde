@@ -130,19 +130,22 @@ public class ResultSetPanel extends JPanel {
 	}
 
 	public void addStatusText(String text) {
-		String newText = "<P COLOR=\"BLACK\">"+statusLog.getText() + "\n" + text;
+		String newText = "<FONT COLOR=\"BLACK\">"+text + "</FONT>\n";
 		_addText(newText);
 	}
 
 	public void addWarningText(String text) {
 
-		String newWarning = "\n<P COLOR=\"RED\">"+text+"</P>";
+		String newWarning = "<FONT COLOR=\"RED\"><B>"+text+"</B></FONT>\n";
 		_addText(newWarning);
 	}
 
-	public void _addText(String newText) {
+	public synchronized void _addText(String newText) {
 		try {
-			statusLog.getEditorKit().read(new StringReader(newText), statusLog.getDocument(), statusLog.getDocument().getLength());
+			StringReader reader = new StringReader(newText);
+			int position = statusLog.getDocument().getLength()-1;
+			statusLog.getEditorKit().read(reader, statusLog.getDocument(), position);
+			reader.close();
 		}
 		catch (Exception ex) {
 		}
