@@ -12,8 +12,8 @@ import java.awt.*;
 import java.sql.*;
 
 /**
+ * A stored procedure editor.
  */
-
 public class StoredProcedureEditor extends AbstractVisualPlugin {
 
 	DatabaseProcess process;
@@ -31,7 +31,7 @@ public class StoredProcedureEditor extends AbstractVisualPlugin {
 
 	public String getPluginName() { return "Procedure Editor"; }
 	public String getPluginVersion() { return "0.0"; }
-	public String getPluginShortName() { return "Function Editor"+(storedProcedure==null?"":" - "+storedProcedure.toString()); }
+	public String getPluginShortName() { return "Function "+(storedProcedure==null?"":" - "+storedProcedure.toString()); }
 
 	public void initPlugin() {
 		super.initPlugin();
@@ -66,6 +66,7 @@ public class StoredProcedureEditor extends AbstractVisualPlugin {
 
 	public void setStoredProcedure(ItemStoredProcedureNode storedProcedure) {
 		this.storedProcedure = storedProcedure;
+
 	}
 
 	public void doCopy() {}
@@ -82,7 +83,7 @@ public class StoredProcedureEditor extends AbstractVisualPlugin {
 
 	}
 	public void doSaveFile() {
-
+		/** @todo Save procedure to the server. */
 	}
 
 	public void doOpenFile() {
@@ -97,11 +98,13 @@ public class StoredProcedureEditor extends AbstractVisualPlugin {
 		try {
 			conn = process.getConnection();
 			statement = conn.prepareStatement(sqlCall);
-			statement.setString(1, storedProcedure.getName());
+			statement.setString(1, storedProcedure.toString());
 			result = statement.executeQuery();
 			while ( result.next() ) {
 				String procedureSource = result.getString("prosrc");
 				editorPanel.area.setText(procedureSource);
+//				editorPanel.area.setSelectionStart(0);
+//				editorPanel.area.setSelectionEnd(0);
 			}
 
 		}

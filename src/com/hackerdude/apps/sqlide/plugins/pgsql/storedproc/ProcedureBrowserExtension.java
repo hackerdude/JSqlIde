@@ -31,16 +31,22 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 
 	public static final Properties sqlCalls = new Properties();
 
-    public ProcedureBrowserExtension() {
-    }
+	public ProcedureBrowserExtension() {
+	}
 
-    public void requestAddSubNodes(NodeIDEBase parentNode) {
+	public void requestAddSubNodes(NodeIDEBase parentNode) {
 		DatabaseProcess proc = parentNode.getDatabaseProcess();
 		if ( parentNode instanceof ItemSchemaNode ) {
 			ItemSchemaNode schemaNode = (ItemSchemaNode)parentNode;
 			String containerName = schemaNode.toString();
 			parentNode.add( new CategoryStoredProcedureNode(null, containerName, proc));
 
+		}
+
+		if ( parentNode instanceof ItemCatalogNode ) {
+			ItemCatalogNode catalogNode = (ItemCatalogNode)parentNode;
+			String containerName = catalogNode.toString();
+			parentNode.add(new CategoryStoredProcedureNode(containerName, null, proc));
 		}
 
 		if ( parentNode instanceof  ItemServerNode ) {
@@ -51,9 +57,9 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 			populateStoredProcedures((CategoryStoredProcedureNode)parentNode);
 		}
 
-    }
+	}
 
-    public void initPlugin() {
+	public void initPlugin() {
 		InputStream is = getClass().getResourceAsStream(PGSQL_PROCEDURE_SQL);
 		if ( is == null ) throw new IllegalArgumentException("Installation Error: Could not find "+PGSQL_PROCEDURE_SQL);
 		try {
@@ -61,24 +67,24 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 		} catch (IOException ex) {
 			throw new IllegalArgumentException("Could not initialize plugin - could not read "+PGSQL_PROCEDURE_SQL+" - "+ex.toString());
 		}
-    }
+	}
 
-    public String getPluginName() { return "Stored Procedure Browser"; }
+	public String getPluginName() { return "Stored Procedure Browser"; }
 
-    public String getPluginVersion() {
+	public String getPluginVersion() {
 		return "Version 0.0";
-    }
+	}
 
-    public void freePlugin() {
-    }
+	public void freePlugin() {
+	}
 
-    public String getPluginShortName() {
+	public String getPluginShortName() {
 		return "Procedure Browser";
-    }
+	}
 
-    public Icon getPluginIcon() {
+	public Icon getPluginIcon() {
 		return ProgramIcons.getInstance().getStoredProcIcon();
-    }
+	}
 
 	private void populateStoredProcedures(CategoryStoredProcedureNode storedProcCategory) {
 		ItemStoredProcedureNode dbItem = null;
@@ -99,6 +105,7 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
+			if ( catalogName  != null ) db.changeCatalog(catalogName);
 			conn = db.getConnection();
 			String sqlStatement = sqlCalls.getProperty(SQL_RETRIEVE_PROCS_PROPERTY);
 			preparedStatement = conn.prepareStatement(sqlStatement);
@@ -179,6 +186,7 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 			StoredProcedureEditor editor = new StoredProcedureEditor();
 			editor.setDatabaseProcess(storedProcedure.getDatabaseProcess());
 			editor.setStoredProcedure(storedProcedure);
+			editor.readStoredProcedureSource();
 			editor.initPlugin();
 			SqlIdeApplication.getInstance().setRightPanel(editor);
 		}

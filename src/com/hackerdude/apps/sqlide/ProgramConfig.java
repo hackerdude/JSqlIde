@@ -124,10 +124,14 @@ public class ProgramConfig extends Observable {
 	}
 
 	public Font getFont(String fontDefinitionName) {
-		String fontName = userinterface.getProperty(PROP_FONT_NAME+fontDefinitionName, "Monospaced");
+		return getFont(userinterface, fontDefinitionName);
+	}
+
+	public static Font getFont(Properties userInterface, String fontDefinitionName) {
+		String fontName = userInterface.getProperty(PROP_FONT_NAME+fontDefinitionName, "Monospaced");
 		int fontSize = 10;
 		try {
-			fontSize = Integer.parseInt(userinterface.getProperty(PROP_FONT_SIZE+fontDefinitionName));
+			fontSize = Integer.parseInt(userInterface.getProperty(PROP_FONT_SIZE+fontDefinitionName));
 		}
 		catch (Throwable ex) {}
 		Font result = new Font(fontName, Font.PLAIN, fontSize);
@@ -140,11 +144,11 @@ public class ProgramConfig extends Observable {
 
 
 	public Font getResultSetFont() {
-		return getFont(PROP_FONT_FOR_RESULTSET);
+		return getFont(userinterface, PROP_FONT_FOR_RESULTSET);
 	}
 
 	public Font getSQLFont() {
-		return getFont(PROP_FONT_FOR_EDITOR);
+		return getFont(userinterface, PROP_FONT_FOR_EDITOR);
 	}
 
 	/**
@@ -415,5 +419,8 @@ public class ProgramConfig extends Observable {
 		return result;
 	}
 
+	public Properties getUserInterfaceProperties() {
+		return userinterface;
+	}
 
 }

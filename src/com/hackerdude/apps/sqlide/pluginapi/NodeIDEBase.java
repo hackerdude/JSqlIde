@@ -1,21 +1,12 @@
-
-/**
- * Title:        JSqlIde<p>
- * Description:  A Java SQL Integrated Development Environment
- * <p>
- * Copyright:    Copyright (c) David Martinez<p>
- * Company:      <p>
- * @author David Martinez
- * @version 1.0
- */
 package com.hackerdude.apps.sqlide.pluginapi;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.*;
+
+import java.awt.datatransfer.*;
 import javax.swing.*;
+import javax.swing.tree.*;
+
+import com.hackerdude.apps.sqlide.dataaccess.*;
 
 /**
  * SQLIDE Base Node. All Nodes inherit from this base node.

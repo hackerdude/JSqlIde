@@ -167,7 +167,6 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	 */
 	public static boolean showConfigurationDialog(Frame owner) {
 
-
 		DlgIDEConfigure configuration = new DlgIDEConfigure(owner, "sqlIDE Configuration");
 		configuration.pack();
 		Dimension screen = configuration.getToolkit().getScreenSize();

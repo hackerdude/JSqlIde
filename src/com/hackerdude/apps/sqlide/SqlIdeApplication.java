@@ -23,11 +23,12 @@
  * @version $Id$
 */
 package com.hackerdude.apps.sqlide;
-import java.awt.*;
-import java.awt.event.*;
+import java.beans.*;
 import java.io.*;
 import java.util.*;
 
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -40,7 +41,6 @@ import com.hackerdude.apps.sqlide.wizards.*;
 import com.hackerdude.apps.sqlide.xml.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.swing.*;
-import java.beans.*;
 
 /**
  * Main class for the sql ide program.
@@ -109,9 +109,9 @@ public class SqlIdeApplication  {
 	JPopupMenu pluginPopupMenu = new JPopupMenu();
 
 	private RunningPlugins runningPlugins = new RunningPlugins();
-    private JButton btnSave = new JButton(FILE_SAVE);
-    private JToolBar tbToolbar = new JToolBar();
-    private JButton btnOpen = new JButton(FILE_OPEN);
+	private JButton btnSave = new JButton(FILE_SAVE);
+	private JToolBar tbToolbar = new JToolBar();
+	private JButton btnOpen = new JButton(FILE_OPEN);
 
 
 	/**
@@ -136,12 +136,12 @@ public class SqlIdeApplication  {
 		mainPanel.add(jSplitPane1, BorderLayout.CENTER);
 		jSplitPane1.add(pluginsTabbedPane, "right");
 		jSplitPane1.add(idebrowser, "left");
-        mainPanel.add(tbToolbar,  BorderLayout.NORTH);
+		mainPanel.add(tbToolbar,  BorderLayout.NORTH);
 		JMenuItem mnuClosePlugin = pluginPopupMenu.add( PLUGIN_CLOSE );
 		KeyStroke theAccel = (KeyStroke)PLUGIN_CLOSE.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
-        tbToolbar.add(btnOpen, null);
-        tbToolbar.add(btnSave, null);
+		tbToolbar.add(btnOpen, null);
+		tbToolbar.add(btnSave, null);
 
 	}
 

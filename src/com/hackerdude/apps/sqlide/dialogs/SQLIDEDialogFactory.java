@@ -6,22 +6,19 @@ import java.beans.PropertyChangeEvent;
 import java.io.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
+ * The dialog factory creates common dialogs with SQLIDE
+ * application-specific features.
  */
-
 public class SQLIDEDialogFactory {
 
-	public SQLIDEDialogFactory() {
-	}
-
+	/**
+	 * Creates a SQL file chooser that allows you to select SQL files with
+	 * a preview pane.
+	 * @param curDir The directory you want the dialog to start on.
+	 * @return The file chooser.
+	 */
 	public static JFileChooser createSQLFileChooser(String curDir) {
 		JFileChooser chooser = new JFileChooser(curDir);
-
 		final SQLFilePreviewPanel panel = new SQLFilePreviewPanel();
 		chooser.setAccessory(panel);
 		chooser.setFileView(new SQLIDEFileView());

@@ -5,14 +5,8 @@ import com.hackerdude.apps.sqlide.pluginapi.*;
 import java.sql.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
+ * Index category node.
  */
-
 public class CategoryIndexesNode extends NodeIDECategory {
 
 	String catalogName;

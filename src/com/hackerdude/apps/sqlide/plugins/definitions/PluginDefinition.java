@@ -1,6 +1,7 @@
 package com.hackerdude.apps.sqlide.plugins.definitions;
 
-import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.*;
+
 /**
  * SQLIDE Panel Definition
  *

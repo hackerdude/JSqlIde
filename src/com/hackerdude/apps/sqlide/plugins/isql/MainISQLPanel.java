@@ -1,11 +1,13 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.beans.*;
 import java.io.*;
 import java.sql.*;
+import java.text.*;
 import java.util.*;
 
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -14,12 +16,9 @@ import com.hackerdude.apps.sqlide.components.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.plugins.*;
+import com.hackerdude.apps.sqlide.xml.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.swing.table.*;
-import textarea.*;
-import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
-import java.text.*;
-import java.beans.*;
 
 /**
  * The main Interactive SQL Panel.
@@ -39,10 +38,8 @@ public class MainISQLPanel extends JPanel {
 	final DBChangeListener cbListener = new DBChangeListener();
 
 	private ResultSetPanel resultSetPanel = new ResultSetPanel();
-	private SyntaxTextArea sqlTextArea = new SyntaxTextArea(TextAreaDefaults.getDefaults());
-
+	private SyntaxTextArea sqlTextArea = SyntaxTextAreaFactory.createTextArea();
 	ModalButtonCellEditor buttonCellEditor = new ModalButtonCellEditor(ACTION_VIEW_CLOB);
-
 	private BorderLayout blMainLayout = new BorderLayout();
 	private JPanel pnlBottomPanel = new JPanel();
 	private JPanel pnlTopPanel = new JPanel();
@@ -288,9 +285,7 @@ public class MainISQLPanel extends JPanel {
 	}
 
 	public void refreshFromConfig() {
-		Font theFont = ProgramConfig.getInstance().getSQLFont();
-		sqlTextArea.setFont(theFont);
-		sqlTextArea.getPainter().setFont(theFont);
+		sqlTextArea.fireConfigurationChanged();
 	}
 
 	class DBChangeListener

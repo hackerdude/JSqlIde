@@ -1,13 +1,15 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.*;
-import javax.swing.*;
-import java.awt.event.*;
 import java.io.*;
-import java.util.*;
 import java.text.*;
+import java.util.*;
+
+import java.awt.event.*;
+import javax.swing.*;
+
+import com.hackerdude.apps.sqlide.*;
+import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
 
 /**
@@ -30,11 +32,11 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 	public final static String ICON_SUFFIX = ".icon";
 	public final static Action[] NOT_SAME_PROCESS = new Action[1];
 
-    public ContextCommandRunner() {
+	public ContextCommandRunner() {
 		NOT_SAME_PROCESS[0] = new AbstractAction("Active iSQL is not for this connection", ProgramIcons.getInstance().getStopIcon()) {
 			public void actionPerformed(ActionEvent evt) {}
 		};
-    }
+	}
 
 
 	class ActionCatalogChanger extends AbstractAction {
@@ -120,7 +122,7 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 		return actions;
 	}
 
-    public void initPlugin() {
+	public void initPlugin() {
 		try {
 			readContextCommands();
 		}
@@ -128,21 +130,21 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 			ex.printStackTrace();
 		}
 
-    }
+	}
 	public String getPluginName() {
 		return "Context ISQL commands";
-    }
-    public String getPluginVersion() {
+	}
+	public String getPluginVersion() {
 		return "";
-    }
-    public void freePlugin() {
-    }
-    public String getPluginShortName() {
+	}
+	public void freePlugin() {
+	}
+	public String getPluginShortName() {
 		return "commandrunner";
-    }
-    public Icon getPluginIcon() {
+	}
+	public Icon getPluginIcon() {
 		return ProgramIcons.getInstance().getServerIcon();
-    }
+	}
 
 	private void readContextCommands() throws Exception {
 		InputStream is = ContextCommandRunner.class.getResourceAsStream("context.commands.properties");
