@@ -34,7 +34,7 @@ import com.hackerdude.apps.sqlide.plugins.browser.*;
 import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.BasicJDBCIntrospector;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.swing.SwingUtils;
-
+import com.hackerdude.apps.sqlide.wizards.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -292,7 +292,20 @@ public class SqlIdeApplication  {
 	 */
 	public static void main(String s[]) {
 
+		ProgramConfig.getInstance();
 		initializeUI();
+
+		// If after this the vector is empty, show the wizard
+		// for DBSpecs and save it (this will be useful to new users).
+		if ( ProgramConfig.getInstance().getConnectionCount() == 0 ) {
+			NewServerWizard wiz = NewServerWizard.showWizard(true);
+			if ( wiz.result != NewServerWizard.OK ) System.exit(0);
+			ConnectionConfig config = wiz.getDBSpec();
+			ConnectionConfigFactory.saveConnectionConfig(config);
+			ProgramConfig.getInstance().setDefaultDatabaseSpec(config);
+			ProgramConfig.getInstance().addConnectionConfig(config);
+		}
+
 		getInstance();
 		// Create the sqlide and put it on a frame.
 		frame.addWindowListener(new WindowAdapter() {
