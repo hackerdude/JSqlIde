@@ -1,24 +1,22 @@
 /*
- *
- *   BrowserModel.java - a SQL Connection Browser Backend.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * $Id$
- * Version: $Revision$
- *
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*
+* $Id$
+* Version: $Revision$
+*
  */
 package com.hackerdude.apps.sqlide.plugins.browser;
 
@@ -38,12 +36,13 @@ import com.hackerdude.apps.sqlide.nodes.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 
 /**
- *   This class acts as the backend for the browser. Basically the browser will
- *   handle all the UI and this will handle actually asking questions to the
- *   database.
+ * This class acts as the backend for the browser. Basically the browser will
+ * handle all the UI and this will handle actually asking questions to the
+ * database.
  *
- *   @version $Id$
- *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
  */
 public class BrowserModel implements Observer {
 
@@ -90,10 +89,9 @@ public class BrowserModel implements Observer {
 		DefaultMutableTreeNode theNode;
 		DatabaseProcess dbProcess;
 		for ( int i=0; i<serverCount; i++) {
-				server =  new ItemServerNode( ProgramConfig.getInstance().getConnectionConfig(i) );
-				topNode.add(server);
+			server =  new ItemServerNode( ProgramConfig.getInstance().getConnectionConfig(i) );
+			topNode.add(server);
 		}
 	}
 
 }
-

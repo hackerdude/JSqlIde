@@ -15,6 +15,12 @@ import com.hackerdude.apps.sqlide.nodes.CategoryIndexesNode;
 import java.sql.*;
 import javax.swing.tree.*;
 
+/**
+ * A table item.
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class ItemTableNode extends NodeIDEItem {
 
    private int iIndexCount;

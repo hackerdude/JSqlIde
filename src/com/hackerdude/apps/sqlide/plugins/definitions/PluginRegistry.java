@@ -103,7 +103,7 @@ public class PluginRegistry {
 		  i++;
 		}
 		return theShorts;
-	};
+	}
 
 	/**
 	 * This returns an array with all the recommended keys.
@@ -117,11 +117,11 @@ public class PluginRegistry {
 		  i++;
 		}
 		return theKeys;
-	};
+	}
 
 	public int getPanelIndex( String politeName ) {
 	  PluginDefinition def = (PluginDefinition)pluginsByName.get(politeName);
-	  if ( def == null ) { return -1; };
+	  if ( def == null ) { return -1; }
 	  return(plugins.indexOf(def));
 	}
 
@@ -215,6 +215,6 @@ public class PluginRegistry {
 	 */
 	public int getPanelCount() {
 		return( plugins.size());
-	};
+	}
 
 }

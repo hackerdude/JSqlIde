@@ -17,8 +17,13 @@ import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.plugins.*;
 import textarea.*;
 
+/**
+ * The main Interactive SQL Panel.
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class MainISQLPanel extends JPanel {
-
 
 	public final Action ACTION_RUN_COMMAND = new ActionCommandRunner();
 	public final Action ACTION_VIEW_CLOB   = new ActionViewText();

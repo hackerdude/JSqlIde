@@ -1,16 +1,15 @@
 package com.hackerdude.apps.sqlide.servertypes;
 
 import java.util.HashMap;
+import java.io.*;
 
 /**
- * <p>Title: </p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: </p>
+ * Hypersonic server helper.
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */
-
 public class HypersonicSQLServerType extends ServerType {
 
   public HypersonicSQLServerType() {
@@ -25,7 +24,7 @@ public class HypersonicSQLServerType extends ServerType {
   public String getClassName() { return "org.hsqldb.jdbcDriver"; }
 
   public String getURL() {
-    return "jdbc:hsqldb:MyDBFile";
+    return "jdbc:hsqldb:"+System.getProperty("user.home")+File.separator+"MyDBFile";
   }
 
   public String toString() { return "Hypersonic SQL Driver"; }

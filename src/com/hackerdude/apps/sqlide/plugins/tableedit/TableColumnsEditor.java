@@ -9,14 +9,12 @@ import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
+ * Table Column Editor.
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */
-
 public class TableColumnsEditor extends JTable implements DropTargetListener {
 
 	FieldCollectionModel dbColumnsModel;

@@ -44,13 +44,15 @@ import textarea.*;
 import textarea.syntax.*;
 
 /**
- *   PanelTableEditor is a UI for the creation of tables
- *   interactively. It can read in the available data types
- *   and allow the user to visually compose a create table or
- *   alter table statemet. It will have a "preview" window
- *   that will allow the user to preview the SQL statement.
+ * PanelTableEditor is a UI for the creation of tables
+ * interactively. It can read in the available data types
+ * and allow the user to visually compose a create table or
+ * alter table statemet. It will have a "preview" window
+ * that will allow the user to preview the SQL statement.
  *
- * @version $Id$
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
+ * @author David Martinez
+ * @version 1.0
  */
 public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 

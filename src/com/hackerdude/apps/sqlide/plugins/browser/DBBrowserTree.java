@@ -8,15 +8,12 @@ import com.hackerdude.apps.sqlide.nodes.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
+ * The browser tree.
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */
 public class DBBrowserTree extends JTree implements DragSourceListener, DragGestureListener {
-
 
 	DragSource dragSource = null;
 
@@ -26,74 +23,74 @@ public class DBBrowserTree extends JTree implements DragSourceListener, DragGest
 		dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_MOVE, this);
 	}
 
-  /**
-   * this message goes to DragSourceListener, informing it that the dragging
-   * has ended
-   *
-   */
+	/**
+	 * this message goes to DragSourceListener, informing it that the dragging
+	 * has ended
+	 *
+	 */
 
-  public void dragDropEnd (DragSourceDropEvent event) {
+	public void dragDropEnd (DragSourceDropEvent event) {
 //    if ( event.getDropSuccess()){
 //	System.out.println("DragDropEnd");
 //    }
-  }
+	}
 
-  /**
-   * this message goes to DragSourceListener, informing it that the dragging
-   * has entered the DropSite
-   *
-   */
+	/**
+	 * this message goes to DragSourceListener, informing it that the dragging
+	 * has entered the DropSite
+	 *
+	 */
 
-  public void dragEnter (DragSourceDragEvent event) {
+	public void dragEnter (DragSourceDragEvent event) {
 //    System.out.println( " dragEnter");
-  }
+	}
 
-  /**
-   * this message goes to DragSourceListener, informing it that the dragging
-   * has exited the DropSite
-   *
-   */
+	/**
+	 * this message goes to DragSourceListener, informing it that the dragging
+	 * has exited the DropSite
+	 *
+	 */
 
-  public void dragExit (DragSourceEvent event) {
+	public void dragExit (DragSourceEvent event) {
 //    System.out.println( "dragExit");
 
-  }
+	}
 
-  /**
-   * this message goes to DragSourceListener, informing it that the dragging is currently
-   * ocurring over the DropSite
-   *
-   */
+	/**
+	 * this message goes to DragSourceListener, informing it that the dragging is currently
+	 * ocurring over the DropSite
+	 *
+	 */
 
-  public void dragOver (DragSourceDragEvent event) {
+	public void dragOver (DragSourceDragEvent event) {
 //    System.out.println( "dragExit");
 
-  }
+	}
 
-  /**
-   * is invoked when the user changes the dropAction
-   *
-   */
+	/**
+	 * is invoked when the user changes the dropAction
+	 *
+	 */
 
-  public void dropActionChanged ( DragSourceDragEvent event) {
+	public void dropActionChanged ( DragSourceDragEvent event) {
 //    System.out.println( "dropActionChanged");
-  }
+	}
 
-  /**
-   * a drag gesture has been initiated
-   *
-   */
+	/**
+	 * a drag gesture has been initiated
+	 *
+	 */
 
-  public void dragGestureRecognized( DragGestureEvent event) {
+	public void dragGestureRecognized( DragGestureEvent event) {
 
-	if ( getSelectionPath() != null ) {
-		Object selected = getSelectionPath().getLastPathComponent();
-		if ( selected != null && selected instanceof NodeIDEBase ){
-			NodeIDEBase transferableNode = (NodeIDEBase)selected;
-			dragSource.startDrag(event, DragSource.DefaultMoveDrop, transferableNode, this);
+		if ( getSelectionPath() != null ) {
+			Object selected = getSelectionPath().getLastPathComponent();
+			if ( selected != null && selected instanceof NodeIDEBase ){
+				NodeIDEBase transferableNode = (NodeIDEBase)selected;
+				dragSource.startDrag(event, DragSource.DefaultMoveDrop, transferableNode, this);
+			}
 		}
 	}
-  }
 
 
 

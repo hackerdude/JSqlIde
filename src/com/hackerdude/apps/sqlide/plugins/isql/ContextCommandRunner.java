@@ -11,10 +11,10 @@ import java.text.*;
 import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
 
 /**
-  * <p>Title: JSqlIde</p>
- * <p>Description: A Java SQL Integrated Development Environment
- * <p>Copyright: Copyright (c) David Martinez</p>
- * <p>Company: </p>
+ * This non-visual node context plugin feeds to the interactive SQL commands
+ * depending on the type of object that is selected.
+ *
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */

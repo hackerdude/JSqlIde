@@ -2,15 +2,13 @@ package com.hackerdude.apps.sqlide.plugins.browser.browsejdbc;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 import java.sql.*;
+
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
+ * A node for category columns.
+ * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
  * @author David Martinez
  * @version 1.0
  */
-
 public class CategoryColumnsNode extends NodeIDECategory {
 
 	String catalogName;
@@ -22,9 +20,8 @@ public class CategoryColumnsNode extends NodeIDECategory {
 		this.catalogName = catalogName;
 		this.tableName = tableName;
 	}
+
 	public void readChildren() {
-//		DefaultMutableTreeNode columnsNode = new DefaultMutableTreeNode("Columns");
-//		add(columnsNode);
 		Connection conn = db.getConnection();
 		try {
 			ResultSet rs = conn.getMetaData().getColumns(catalogName, null, tableName, null);
