@@ -57,7 +57,6 @@ public class DatabaseProcess {
 	public String lastQuery;
 	private TableModel lastResultTable;
 	String userName;
-	int updateCount;
 
 	private Connection lastConnection;
 	private QueryResults lastQueryResults;
@@ -248,7 +247,10 @@ public class DatabaseProcess {
 	public QueryResults runQuery(String queryString, boolean asUpdate, boolean updatableResultSet) throws SQLException {
 
 		lastResultTable = null;
-		if ( lastQueryResults != null ) { lastQueryResults.getResultSet().close(); lastQueryResults = null; }
+		if ( lastQueryResults != null ) {
+			if ( lastQueryResults.getResultSet()!=null ) lastQueryResults.getResultSet().close();
+			lastQueryResults = null;
+		}
 		if ( lastDatabaseCall != null ) { lastDatabaseCall.close(); lastDatabaseCall= null;}
 		if ( lastConnection != null ) { returnConnection(lastConnection); lastConnection = null; }
 		if ( !  doConnect() ) return null;
@@ -258,21 +260,22 @@ public class DatabaseProcess {
 		if ( updatableResultSet ) lastConnection.setAutoCommit(false);
 		int concurrency = (updatableResultSet?ResultSet.CONCUR_UPDATABLE:ResultSet.CONCUR_READ_ONLY);
 		int rtype        = ResultSet.TYPE_SCROLL_INSENSITIVE;
+
+		if ( asUpdate == true ) {
+			lastDatabaseCall = lastConnection.prepareStatement(queryString);
+			_executeUpdate();
+			return lastQueryResults;
+		}
+
 		try {
 			// Try a scrollable cursor
 			lastDatabaseCall = lastConnection.prepareStatement(queryString,rtype, concurrency);
-			if ( asUpdate == true ) {
-				_executeUpdate();
-			} else {
-				_executeQuery(rtype);
-			}
+			_executeQuery(rtype);
 		} catch ( Throwable exc ) {
 			System.out.println("[DatabaseProcess.runQuery] This driver does not support scrollable cursors... Using forward_only and CachedResultSetTableModel.");
 			rtype       = ResultSet.TYPE_FORWARD_ONLY;
 			lastDatabaseCall = lastConnection.prepareStatement(queryString, rtype, concurrency);
-			if ( asUpdate == true ) {
-				_executeUpdate();
-			} else {
+			if ( exc.toString().toLowerCase().indexOf("no results") == -1 ) {
 				_executeQuery(rtype);
 			}
 		}
@@ -286,8 +289,10 @@ public class DatabaseProcess {
 	}
 
 	private void _executeQuery(int rtype) throws SQLException {
+		long currentMS = System.currentTimeMillis();
 		ResultSet rs = lastDatabaseCall.executeQuery();
-		lastQueryResults = new QueryResults(rs);
+		long elapsedMS = calculateElapsedTime(currentMS);
+		lastQueryResults = new QueryResults(rs, elapsedMS);
 		if ( rtype == ResultSet.TYPE_FORWARD_ONLY ) {
 			CachedResultSetTableModel model = new CachedResultSetTableModel(lastQueryResults, 1000);
 			lastResultTable = model;
@@ -297,11 +302,22 @@ public class DatabaseProcess {
 		}
 	}
 
+	private long calculateElapsedTime(long currentMS) {
+		long finalMS = System.currentTimeMillis();
+		long elapsedMS = finalMS - currentMS;
+		return elapsedMS;
+	}
+
+
 	private void _executeUpdate() throws SQLException {
+		long currentMS = System.currentTimeMillis();
 		lastDatabaseCall.executeUpdate();
-		updateCount = 0;
+		long elapsedMS = calculateElapsedTime(currentMS);
+		lastQueryResults = new QueryResults(null, elapsedMS);
+		int updateCount = 0;
 		try {
 			updateCount = lastDatabaseCall.getUpdateCount();
+			lastQueryResults.setRowsAffected(updateCount);
 		} catch (SQLException exc) {}
 	}
 

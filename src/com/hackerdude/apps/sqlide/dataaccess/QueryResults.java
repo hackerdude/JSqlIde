@@ -17,16 +17,21 @@ public class QueryResults {
 	private int[] columnSQLTypes;
 	private int[] columnSizes;
 
+	private long queryTime;
+
 	private int columnCount;
 
 	private int rowsAffected;
 
-	public QueryResults(ResultSet results) throws SQLException {
+	public QueryResults(ResultSet results, long queryTime) throws SQLException {
 		columnNames = new ArrayList();
 		columnTypes = new ArrayList();
 		this.results = results;
-		this.metaData = results.getMetaData();
-		readColumnNames();
+		this.queryTime = queryTime;
+		if ( results != null ) {
+			this.metaData = results.getMetaData();
+			readColumnNames();
+		}
 	}
 
 	/**
@@ -130,5 +135,12 @@ public class QueryResults {
 	public int getColumnSize(int i) {
 		return columnSizes[i];
 	}
+
+	public long getElapsedTime() {
+		return queryTime;
+	}
+  public void setRowsAffected(int rowsAffected) {
+    this.rowsAffected = rowsAffected;
+  }
 
 }
