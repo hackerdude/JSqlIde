@@ -195,7 +195,7 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 			String queryName = queryNames[i];
 			String queryPattern = columnContextCommands.getProperty(queryName);
 			Icon icon = (Icon)iconNames.get(queryName+ICON_SUFFIX);
-			String query = MessageFormat.format(queryPattern, PARAMS);
+			String query = MessageFormat.format(queryPattern, (Object[])PARAMS);
 			Action newAction = new ActionCommandTyper(query, icon, interactiveSQL);
 			destination.add(newAction);
 		}
@@ -212,7 +212,7 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 			String queryName = queryNames[i];
 			String queryPattern = tableContextCommands.getProperty(queryName);
 			Icon icon = (Icon)iconNames.get(queryName+ICON_SUFFIX);
-			String query = MessageFormat.format(queryPattern, PARAMS);
+			String query = MessageFormat.format(queryPattern, (Object[])PARAMS);
 			Action newAction = new ActionCommandTyper(query, icon, interactiveSQL);
 			destination.add(newAction);
 		}

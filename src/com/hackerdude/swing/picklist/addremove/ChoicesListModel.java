@@ -5,10 +5,10 @@ import java.util.Vector;
 import javax.swing.AbstractListModel;
 
 /**
+ * 
  * This list model represents the picklist choices.
- * @author
- * @version 1.0
- * @copyright
+ * 
+ * @author davidm <a href="mailto:david@hackerdude.com">david@hackerdude.com</a>
  */
 public class ChoicesListModel extends AbstractListModel {
 

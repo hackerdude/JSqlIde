@@ -71,7 +71,7 @@ public class QueryResults {
 
 	/**
 	 * Returns an array of java classes that contain the column types.
-	 * @return
+	 * @return an array of java classes with the column types.
 	 */
 	public Class[] getColumnClasses() {
 		Class[] result = new Class[columnTypes.size()];

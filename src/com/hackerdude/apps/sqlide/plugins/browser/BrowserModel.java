@@ -50,7 +50,7 @@ public class BrowserModel implements Observer {
 	/**
 	 * Constructor
 	 *
-	 * @param config The program configuration.
+	 * @param topNode The top node for the browser
 	 */
 	public BrowserModel(DefaultMutableTreeNode topNode) {
 		servers         = new Vector();

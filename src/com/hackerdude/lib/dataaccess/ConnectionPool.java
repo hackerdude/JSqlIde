@@ -25,10 +25,10 @@ import java.util.Vector;
  * The ConnectionPool is basically a class that manages simultaneous connections across multiple
  * threads
  *
- * This is done by keeping a busy flag that is raised when you call {@link getConnection} and lowered
- * when you call {@link releaseConnection}.
+ * This is done by keeping a busy flag that is raised when you call {@link #getConnection()} and lowered
+ * when you call {@link #releaseConnection(Connection)}.
  *
- * {@link getConnection} <B>will return a null if all the connections are busy</B> and the maximum connections
+ * {@link #getConnection()} <B>will return a null if all the connections are busy</B> and the maximum connections
  * value has been exceeded. The calling program should know enough to check for this and return
  * a "Server too busy" message or something similar.
  */

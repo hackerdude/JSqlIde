@@ -2,5 +2,5 @@
 .bak
 bin
 build
-dist
+dist*
 tmp
