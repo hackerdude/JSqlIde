@@ -107,7 +107,7 @@ public class DataMoverPanel extends AbstractVisualPlugin implements IDENodeConte
 	public JPopupMenu getPopupMenuFor(NodeIDEBase node) { return null; }
 
 	public Action[] getActionsFor(NodeIDEBase[] node) {
-		return null;
+		return NULL_ACTIONS;
 	}
 
 	public Action[] getPossibleActions() {

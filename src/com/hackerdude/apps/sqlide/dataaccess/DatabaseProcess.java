@@ -454,6 +454,7 @@ public class DatabaseProcess {
 
 		if ( (configuration.getJdbc().getClassPath().getPathelementCount() == 0 ) ) {
 			theClass = Class.forName(driverClassName);
+			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName+" using base classloader.");
 		} else {
 			String[] classPath = configuration.getJdbc().getClassPath().getPathelement();
 			ArrayList al = new ArrayList();
@@ -469,7 +470,6 @@ public class DatabaseProcess {
 			theClass = urlClassLoader.loadClass(driverClassName);
 			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
 		}
-		System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
 		return theClass;
 	}
 

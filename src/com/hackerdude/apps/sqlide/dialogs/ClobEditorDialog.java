@@ -7,6 +7,10 @@ import java.sql.*;
 import com.hackerdude.swing.SwingUtils;
 import com.hackerdude.apps.sqlide.SqlIdeApplication;
 
+/**
+ * CLOB editor dialog. Allows the user to look at clobs (and edit them in
+ * the future).
+ */
 public class ClobEditorDialog extends JDialog {
 	private JPanel pnlMainPanel = new JPanel();
 	private BorderLayout borderLayout1 = new BorderLayout();

@@ -24,7 +24,7 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
     }
 
     public Action[] getActionsFor(NodeIDEBase[] selectedNodes) {
-		if ( selectedNodes.length != 1 ) { return null; }
+		if ( selectedNodes.length != 1 ) { return NULL_ACTIONS; }
 		ArrayList actionsList = new ArrayList();
 
 		if ( selectedNodes[0] instanceof ItemServerNode ) {

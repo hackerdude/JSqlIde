@@ -8,6 +8,9 @@ import java.io.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
+/**
+ * This panel allows the user to edit a class path.
+ */
 public class ConnectionClassPathPanel extends JPanel {
 
 	public final Action ACTION_ADD = new AddAction();

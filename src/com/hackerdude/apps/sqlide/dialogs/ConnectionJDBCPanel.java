@@ -5,7 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
-
+/**
+ * This panel allows the user to specify the JDBC properties for a connection.
+ * @author David Martinez
+ * @version 1.0
+ */
 public class ConnectionJDBCPanel extends JPanel {
 
 	SqlideHostConfig databaseSpec;

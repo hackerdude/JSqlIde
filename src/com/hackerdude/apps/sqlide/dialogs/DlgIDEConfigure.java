@@ -175,6 +175,7 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 				(screen.getSize().height - configuration.getSize().height) / 2);
 		configuration.setSize(400,250);
 		configuration.readFromModel();
+		configuration.setModal(true);
 		configuration.show();
 
 		return configuration.result == OK;

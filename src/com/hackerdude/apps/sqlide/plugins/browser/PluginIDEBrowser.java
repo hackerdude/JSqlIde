@@ -53,85 +53,105 @@ import java.sql.*;
  *   @version $Id$
  *
  */
-public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // JInternalFrame {
+public class PluginIDEBrowser extends JPanel
+	  implements IDEVisualPluginIF {
 
 	DatabaseProcess currentProcess;
 	BrowserModel serverBrowser;
 	DBBrowserTree browserTree;
-	DefaultMutableTreeNode top;
+	DefaultMutableTreeNode rootNode;
 	JScrollPane scroll;
-	BrowserRenderer brenderer;
-	BorderLayout borderLayout1 = new BorderLayout();
-	JPanel BrowserPanel = new JPanel();
-	BorderLayout borderLayout2 = new BorderLayout();
-	JPanel jPanel1 = new JPanel();
+
+	BorderLayout mainBorderLayout = new BorderLayout();
+	JPanel browserPanel = new JPanel();
+	BorderLayout browserPanelBorderLayout = new BorderLayout();
+	JPanel bottomPanel = new JPanel();
 	JLabel lblInfo = new JLabel();
-	JMenuItem mnuCopyName = new JMenuItem();
+
 	SqlIdeApplication ide;
 	BorderLayout borderLayout3 = new BorderLayout();
+
+	private final BrowserRenderer BROWSER_RENDERER = new BrowserRenderer();
+	private final TreeSelectionListener BROWSER_SELECTION_LISTENER = new IDEBrowserSelectionListener();
+	private final TreeWillExpandListener BROWSER_WILL_EXPAND_LISTENER = new BrowserWillExpandListener();
 
 	/**
 	 * JBuilder likes this
 	 */
 	public void jbInit() {
-
-		top = new DefaultMutableTreeNode("My Environment");
+		rootNode = new DefaultMutableTreeNode("My Environment");
 		// Override the drawing for the tree with our own class, below.
-		this.setLayout(borderLayout1);
-		BrowserPanel.setLayout(borderLayout2);
-		jPanel1.setLayout(borderLayout3);
+		this.setLayout(mainBorderLayout);
+		browserPanel.setLayout(browserPanelBorderLayout);
+		bottomPanel.setLayout(borderLayout3);
 		lblInfo.setText("Info:");
 		lblInfo.setIcon(ProgramIcons.getInstance().findIcon("images/Inform.gif"));
 		this.setMinimumSize(new Dimension(200, 58));
-		mnuCopyName.setText("Copy Name");
-		this.add(BrowserPanel, BorderLayout.CENTER);
-		BrowserPanel.add(jPanel1, BorderLayout.SOUTH);
+		this.add(browserPanel, BorderLayout.CENTER);
+		browserPanel.add(bottomPanel, BorderLayout.SOUTH);
 		createBrowserTree();
 	}
 
 	public void createBrowserTree() {
 		JScrollPane oldScroll = null;
-		if ( scroll != null ) oldScroll = scroll;
-		browserTree = new DBBrowserTree(top);
-		scroll =    new JScrollPane(browserTree);
-		TreeWillExpandListener willExpand = new BrowserWillExpandListener();
-		browserTree.addTreeWillExpandListener(willExpand);
+		if (scroll != null)
+			oldScroll = scroll;
+		browserTree = new DBBrowserTree(rootNode);
+		scroll = new JScrollPane(browserTree);
 		browserTree.setShowsRootHandles(false);
 		browserTree.addMouseListener(new BrowserTreePopupAdapter());
 		browserTree.putClientProperty("JTree.lineStyle", "Angled");
-		browserTree.addTreeSelectionListener(
-				new TreeSelectionListener() {
-			public void valueChanged( TreeSelectionEvent e ) {
-				TreePath tp = e.getNewLeadSelectionPath();
-				Object[] objs;
-				if ( tp == null )  return;
-				objs = tp.getPath();
-				TreeNode myNode;
-				for ( int i=0; i<objs.length; i++) {
-					myNode = (TreeNode)objs[i];
-					if ( myNode != null && myNode instanceof ItemServerNode ) {
-						currentProcess = ((ItemServerNode)myNode).getDatabaseProcess();
-					}
-/*				   myNode = (DefaultMutableTreeNode)objs[i];
-	   Object userObject = myNode.getUserObject();
-	   if ( userObject != null && userObject.getClass() == DatabaseProcess.class ) {
-	  currentProcess = (DatabaseProcess)myNode.getUserObject();
-	   }*/
-				}
-				browserTree_valueChanged(e);
-			}
-		});
-				BrowserPanel.add(scroll, BorderLayout.CENTER);
-				scroll.getViewport().add(browserTree, null);
-				jPanel1.add(lblInfo, BorderLayout.CENTER);
-				brenderer = new BrowserRenderer();
-				brenderer.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
-				brenderer.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
-				browserTree.setCellRenderer(brenderer);
-				browserTree.setVisible(true);
-				if ( oldScroll!= null ) BrowserPanel.remove(oldScroll);
-				if ( ide != null ) ide.pack();
+		browserTree.addTreeWillExpandListener(BROWSER_WILL_EXPAND_LISTENER);
+		browserTree.addTreeSelectionListener(BROWSER_SELECTION_LISTENER);
+		browserPanel.add(scroll, BorderLayout.CENTER);
+		scroll.getViewport().add(browserTree, null);
+		bottomPanel.add(lblInfo, BorderLayout.CENTER);
+		BROWSER_RENDERER.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
+		BROWSER_RENDERER.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
+		browserTree.setCellRenderer(BROWSER_RENDERER);
+		browserTree.setVisible(true);
+		browserTree.setFont(ProgramConfig.getInstance().getFont(ProgramConfig.PROP_FONT_FOR_BROWSER));
 
+		if (oldScroll != null)
+			browserPanel.remove(oldScroll);
+		if (ide != null)
+			ide.pack();
+
+	}
+
+	/**
+	 * A basic selection listener for the browser tree. It changes the current
+	 * process for this plugin and it also changes the information label in the
+	 * bottom to reflect what has been selected.
+	 */
+	class IDEBrowserSelectionListener implements TreeSelectionListener {
+		public void valueChanged(TreeSelectionEvent e) {
+			TreePath leadSelectionPath = e.getNewLeadSelectionPath();
+			Object[] objs;
+			if (leadSelectionPath == null)
+				return;
+			objs = leadSelectionPath.getPath();
+			TreeNode myNode;
+			for (int i = 0; i < objs.length; i++) {
+				myNode = (TreeNode) objs[i];
+				if (myNode != null && myNode instanceof ItemServerNode) {
+					currentProcess = ( (ItemServerNode) myNode).getDatabaseProcess();
+				}
+			}
+
+			TreePath selectionPath = browserTree.getSelectionPath();
+			if (selectionPath == null) {
+				lblInfo.setText("");
+				return;
+			}
+			TreeNode tn = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+			NodeIDEBase bn = null;
+			if (tn instanceof NodeIDEBase) {
+				bn = (NodeIDEBase) tn;
+			}
+			if (bn != null)
+				lblInfo.setText(bn.getInfo());
+		}
 	}
 
 	/**
@@ -143,10 +163,11 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 
 	public void initPlugin() {
 		jbInit();
-		serverBrowser = new BrowserModel(top);
+		serverBrowser = new BrowserModel(rootNode);
 		UIManager.put("Tree.expandedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
 		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
-		if (currentProcess == null) currentProcess = new DatabaseProcess(ProgramConfig.getInstance().getSqlideHostConfig(0));
+		if (currentProcess == null)
+			currentProcess = new DatabaseProcess(ProgramConfig.getInstance().getSqlideHostConfig(0));
 	}
 
 	public void freePlugin() {
@@ -157,30 +178,29 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 		this.ide = ide;
 	}
 
-	/**
+/**
 	 *  Creates the IdeBrowser-specific menu.
 	 */
-	public JMenu createPanelMenu( JMenu parent ) {
-		return(null);
+	public JMenu createPanelMenu(JMenu parent) {
+		return (null);
 	}
 
-
-	/**
+/**
 	 *  Shows/hides the menus.
 	 */
-	public void setVisibleMenus( boolean value, JMenu menu ){
+	public void setVisibleMenus(boolean value, JMenu menu) {
 	}
 
-	/**
+/**
 	 * Returns the Currently selected Database Process.
 	 */
 	public DatabaseProcess getDatabaseProcess() {
-		System.out.println("[PanelIDEBrowser] "+currentProcess);
-		return(currentProcess);
+		System.out.println("[PanelIDEBrowser] " + currentProcess);
+		return (currentProcess);
 
 	}
 
-	/**
+/**
 	 * Since this is a collection panel and doesn't have
 	 * one database process (it can potentially have many,
 	 * or even zero), this method is empty. It is not very
@@ -188,29 +208,34 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	 * in "Browser tree" situations that span across multiple
 	 * servers.
 	 */
-	public void setDatabaseProcess(DatabaseProcess proc) {  }
+	public void setDatabaseProcess(DatabaseProcess proc) {}
 
-	/**
+/**
 	 * Returns the "short name" for this plugin (to be put on
 	 * the tabs on a TabbedPane, for instance).
 	 */
-	public String getPluginShortName() { return("Browser"); }
+	public String getPluginShortName() {
+		return ("Browser");
+	}
 
-	public String getPluginName() { return "SQL-IDE Browser"; }
+	public String getPluginName() {
+		return "SQL-IDE Browser";
+	}
 
-	/**
+/**
 	 * Returns the version of this plugin as a string.
 	 */
-	public String getPluginVersion() { return("$Revision$"); }
-
+	public String getPluginVersion() {
+		return ("$Revision$");
+	}
 
 	/**
 	 * The listener for the expansion of the nodes.
 	 *
 	 * see treeWillExpand call.
 	 */
-	class BrowserWillExpandListener implements TreeWillExpandListener {
-
+	class BrowserWillExpandListener
+		  implements TreeWillExpandListener {
 
 		/**
 		 * This method is called by the tree when the node is about to expand
@@ -222,28 +247,31 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 
 			TreePath path = e.getPath();
 			Object comp = path.getLastPathComponent();
-			if ( comp == null ) return;  // Odd... ignore.
+			if (comp == null)
+				return; // Odd... ignore.
 			NodeIDEBase node = null;
 
 			try {
-				node = (NodeIDEBase)comp;
-			} catch( ClassCastException exc ) {
+				node = (NodeIDEBase) comp;
+			}
+			catch (ClassCastException exc) {
 				// Don't do anything
 			}
 
-			if ( node == null ) {
+			if (node == null) {
 				setCursor(Cursor.getDefaultCursor());
 				return;
 			}
 			// Remove all the children, and re-read them.
 			node.removeAllChildren();
 			try {
-   /* Read the standard children for this node, and also ask
-	any running  browser extension plugins to put their
-	contributions to this node (if any). */
+				/* Read the standard children for this node, and also ask
+				  any running  browser extension plugins to put their
+				  contributions to this node (if any). */
 				node.readChildren();
 				ide.requestAddSubNodes(node);
-			} catch( Exception exc ) {
+			}
+			catch (Exception exc) {
 				node.removeAllChildren();
 				node.add(new DefaultMutableTreeNode("Dummy"));
 				setCursor(Cursor.getDefaultCursor());
@@ -258,11 +286,11 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 			TreePath path = e.getPath();
 			Object comp = path.getLastPathComponent();
 			try {
-				NodeIDEBase node = (NodeIDEBase)comp;
+				NodeIDEBase node = (NodeIDEBase) comp;
 				node.removeChildren();
-				} catch ( ClassCastException exc ) {}
+			}
+			catch (ClassCastException exc) {}
 		}
-
 
 	}
 
@@ -271,58 +299,51 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 	 */
 	class BrowserRenderer extends DefaultTreeCellRenderer {
 
-		ImageIcon folderIcon;
-		ImageIcon catalogIcon;
-		ImageIcon schemaIcon;
-		ImageIcon serverIcon;
-		ImageIcon loginsIcon;
-		ImageIcon storedProcIcon;
-		ImageIcon triggerIcon;
-		ImageIcon expandIcon;
-		ImageIcon collapseIcon;
-		ImageIcon columnIcon;
-		ImageIcon tableIcon;
-		ImageIcon indexIcon;
-		ImageIcon usersIcon;
-		ImageIcon userIcon;
+		final ImageIcon folderIcon = ProgramIcons.getInstance().findIcon("images/Folder.gif");
+		final ImageIcon catalogIcon = ProgramIcons.getInstance().getDatabaseIcon();
+		final ImageIcon schemaIcon = ProgramIcons.getInstance().findIcon("images/Data.gif");
+		final ImageIcon serverIcon = ProgramIcons.getInstance().getServerIcon();
+		final ImageIcon loginsIcon = ProgramIcons.getInstance().getLoginsIcon();
+		final ImageIcon storedProcIcon = ProgramIcons.getInstance().getStoredProcIcon();
+		final ImageIcon triggerIcon = ProgramIcons.getInstance().getTriggerIcon();
+		final ImageIcon expandIcon = ProgramIcons.getInstance().getExpandIcon();
+		final ImageIcon collapseIcon = ProgramIcons.getInstance().getCollapseIcon();
+		final ImageIcon columnIcon = ProgramIcons.getInstance().findIcon("images/Column.gif");
+		final ImageIcon tableIcon = ProgramIcons.getInstance().findIcon("images/Sheet.gif");
+		final ImageIcon indexIcon = ProgramIcons.getInstance().findIcon("images/BCard.gif");
+		final ImageIcon usersIcon = ProgramIcons.getInstance().findIcon("images/Users.gif");
+		final ImageIcon userIcon = ProgramIcons.getInstance().findIcon("images/User.gif");
 
 		public BrowserRenderer() {
 
-			indexIcon      = ProgramIcons.getInstance().findIcon("images/BCard.gif");
-			tableIcon      = ProgramIcons.getInstance().findIcon("images/Sheet.gif");
-			folderIcon     = ProgramIcons.getInstance().findIcon("images/Folder.gif");
-			columnIcon     = ProgramIcons.getInstance().findIcon("images/Column.gif");
-			serverIcon     = ProgramIcons.getInstance().getServerIcon();
-			catalogIcon    = ProgramIcons.getInstance().getDatabaseIcon();
-			schemaIcon     = ProgramIcons.getInstance().findIcon("images/Data.gif");
-			loginsIcon     = ProgramIcons.getInstance().getLoginsIcon();
-			storedProcIcon = ProgramIcons.getInstance().getStoredProcIcon();
-			triggerIcon    = ProgramIcons.getInstance().getTriggerIcon();
-			expandIcon     = ProgramIcons.getInstance().getExpandIcon();
-			collapseIcon   = ProgramIcons.getInstance().getCollapseIcon();
-			usersIcon      = ProgramIcons.getInstance().findIcon("images/Users.gif");
-			userIcon      = ProgramIcons.getInstance().findIcon("images/User.gif");
 			setOpenIcon(expandIcon);
 			setClosedIcon(collapseIcon);
 
 		}
 
-		public Component getTreeCellRendererComponent(  JTree tree,   Object value,
-				boolean sel,  boolean expanded,
-	boolean leaf, int row, boolean hasFocus) {
+		public Component getTreeCellRendererComponent(JTree tree, Object value,
+			  boolean sel, boolean expanded,
+			  boolean leaf, int row, boolean hasFocus) {
 
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
 			// Get this node.
-			TreeNode node = (TreeNode)value;
+			TreeNode node = (TreeNode) value;
 			ImageIcon icon = null;
 			TreeNode parent = node.getParent();
 			icon = getIconfor(node);
-			if ( tree.getModel().getRoot() == value ) { icon = ProgramIcons.getInstance().getRootIcon(); }
-			if ( icon == null ) { System.out.println("[PanelIDEBrowser] Couldn't find icon for class "+node.getClass().getName()); }
+			if (tree.getModel().getRoot() == value) {
+				icon = ProgramIcons.getInstance().getRootIcon();
+			}
+			if (icon == null) {
+				System.out.println("[PanelIDEBrowser] Couldn't find icon for class " + node.getClass().getName());
+			}
 
 			// Still No icon?? Put a default on it.
-			if ( icon == null ) { icon = folderIcon; };
+			if (icon == null) {
+				icon = folderIcon;
+			}
+			;
 			setIcon(icon);
 
 			return this;
@@ -332,92 +353,122 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 		protected ImageIcon getIconfor(TreeNode treeNode) {
 			Class nodeClass = treeNode.getClass();
 			ImageIcon icon = null;
-			if ( nodeClass == ItemCatalogNode.class
-				|| nodeClass == CategoryCatalogsNode.class ) { icon = catalogIcon; }
-			if ( nodeClass == ItemSchemaNode.class
-				|| nodeClass == CategorySchemaNode.class ) { icon = schemaIcon; }
+			if (nodeClass == ItemCatalogNode.class
+				|| nodeClass == CategoryCatalogsNode.class) {
+				icon = catalogIcon;
+			}
+			if (nodeClass == ItemSchemaNode.class
+				|| nodeClass == CategorySchemaNode.class) {
+				icon = schemaIcon;
+			}
 
-			if ( nodeClass == ItemTableNode.class  )    { icon = tableIcon; }
-			if ( nodeClass == CategoryTableNode.class ) { icon = folderIcon; }
+			if (nodeClass == ItemTableNode.class) {
+				icon = tableIcon;
+			}
+			if (nodeClass == CategoryTableNode.class) {
+				icon = folderIcon;
+			}
 
-			if ( nodeClass == CategoryStoredProcedureNode.class ) { icon = storedProcIcon; }
-			if ( nodeClass == CategoryTriggerNode.class ) { icon = triggerIcon; }
-			if ( nodeClass == ItemIndexNode.class ) { icon = indexIcon; }
-			if ( nodeClass == ItemServerNode.class ) { icon = serverIcon; }
-			if ( nodeClass == CategoryIndexesNode.class ) { icon = indexIcon; }
+			if (nodeClass == CategoryStoredProcedureNode.class) {
+				icon = storedProcIcon;
+			}
+			if (nodeClass == CategoryTriggerNode.class) {
+				icon = triggerIcon;
+			}
+			if (nodeClass == ItemIndexNode.class) {
+				icon = indexIcon;
+			}
+			if (nodeClass == ItemServerNode.class) {
+				icon = serverIcon;
+			}
+			if (nodeClass == CategoryIndexesNode.class) {
+				icon = indexIcon;
+			}
 
-			if ( nodeClass == CategoryColumnsNode.class ) { icon = columnIcon; }
-			if ( nodeClass == ItemTableColumnNode.class ) { icon = columnIcon; }
-			if ( nodeClass == CategoryUsersNode.class ) { icon = usersIcon; }
-			if ( nodeClass == CategoryGeneralUsersNode.class ) { icon = usersIcon; }
-			if ( treeNode instanceof ItemUserNode ) { icon = userIcon; }
-			if ( nodeClass == CategoryDbUsersNode.class ) { icon = catalogIcon; }
-			if ( nodeClass == ItemStoredProcedureNode.class ) { icon = storedProcIcon; }
+			if (nodeClass == CategoryColumnsNode.class) {
+				icon = columnIcon;
+			}
+			if (nodeClass == ItemTableColumnNode.class) {
+				icon = columnIcon;
+			}
+			if (nodeClass == CategoryUsersNode.class) {
+				icon = usersIcon;
+			}
+			if (nodeClass == CategoryGeneralUsersNode.class) {
+				icon = usersIcon;
+			}
+			if (treeNode instanceof ItemUserNode) {
+				icon = userIcon;
+			}
+			if (nodeClass == CategoryDbUsersNode.class) {
+				icon = catalogIcon;
+			}
+			if (nodeClass == ItemStoredProcedureNode.class) {
+				icon = storedProcIcon;
+			}
 
 			return icon;
 		}
 
-
 	}
 
-	public boolean isActionPossible( String action ) {
+	public boolean isActionPossible(String action) {
 		boolean theResult = false;
-		if ( action.equals("Cut") ) {  };
-		if ( action.equals("Copy") ) {  };
-		if ( action.equals("Paste") ) {  };
-		return(theResult);
+		if (action.equals("Cut")) {}
+		;
+		if (action.equals("Copy")) {}
+		;
+		if (action.equals("Paste")) {}
+		;
+		return (theResult);
 	}
 
-	public boolean executeAction( String action ) {
+	public boolean executeAction(String action) {
 		/** @todo Implement */
 		return false;
 	}
 
 	public void showAboutBox() {
-		GPLAboutDialog gpl = new GPLAboutDialog(this, "IDE Browser Panel",getPluginVersion(),
-				"A Tree-Based Multiple Database browser panel for SQLIDE.",
-	"(C) 1999 by David Martinez.");
+		GPLAboutDialog gpl = new GPLAboutDialog(this, "IDE Browser Panel", getPluginVersion(),
+												"A Tree-Based Multiple Database browser panel for SQLIDE.",
+												"(C) 1999 by David Martinez.");
 		gpl.actionPerformed(null);
 	}
 
 	public void refreshPanel() {
-		serverBrowser = new BrowserModel(top);
+		serverBrowser = new BrowserModel(rootNode);
 		createBrowserTree();
 	}
 
-	void browserTree_valueChanged(TreeSelectionEvent e) {
-		TreePath tp = browserTree.getSelectionPath();
-		if ( tp == null ) {
-			lblInfo.setText("");
-			return;
-		}
-		TreeNode tn = (DefaultMutableTreeNode)tp.getLastPathComponent();
-		NodeIDEBase bn = null;
-		if ( tn instanceof NodeIDEBase ) { bn = (NodeIDEBase)tn; }
-		if ( bn != null ) lblInfo.setText(bn.getInfo());
-
-	}
-
+	/**
+	 * This is a Popup Adapter for the browser tree. It actually checks for the
+	 * right-click because some JDKs don't have a registered gesture (at least
+	 * as of JDK1.2).
+	 */
 	public class BrowserTreePopupAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			try {
 				/** @todo This does not work on MacOS */
-				if ( e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK ) {
+				if (e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK) {
 					TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
-					if ( selectedPaths == null ) return;
+					if (selectedPaths == null)
+						return;
 					NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
-					for ( int i=0; i<selectedPaths.length; i++ ) {
+					for (int i = 0; i < selectedPaths.length; i++) {
 						Object lastPathComponent = selectedPaths[i].getLastPathComponent();
 						Object selectedNode = lastPathComponent;
-						if ( selectedNode instanceof NodeIDEBase ) {
-							selectedNodes[i] = (NodeIDEBase)selectedNode;
-						} else return;
+						if (selectedNode instanceof NodeIDEBase) {
+							selectedNodes[i] = (NodeIDEBase) selectedNode;
+						}
+						else
+							return;
 					}
 					Action[] actions = ide.getActionsFor(selectedNodes);
-					if ( actions == null || actions.length > 0 ) {
+					if (actions == null || actions.length > 0) {
 						JPopupMenu thisMenu = new JPopupMenu("Actions");
-						for ( int i=0; i<actions.length; i++) thisMenu.add(actions[i]);
-						if ( thisMenu != null ) {
+						for (int i = 0; i < actions.length; i++)
+							thisMenu.add(actions[i]);
+						if (thisMenu != null) {
 							Double theX = new Double(e.getPoint().getX());
 							Double theY = new Double(e.getPoint().getY());
 							thisMenu.show(browserTree, theX.intValue(), theY.intValue());
@@ -432,15 +483,13 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 
 	}
 
-	public JPopupMenu getPopupMenuFor(NodeIDEBase node) { return null; }
-
-	public Action[] getActionsFor(NodeIDEBase node) {
-		throw new UnsupportedOperationException("Not Implemented");
+	public JPopupMenu getPopupMenuFor(NodeIDEBase node) {
+		return null;
 	}
 
+
 	public Action[] getPossibleActions() {
-		/** @todo Implement */
-		throw new UnsupportedOperationException("Not Implemented");
+		return NULL_ACTIONS;
 	}
 
 	public void receivePluginFocus() {

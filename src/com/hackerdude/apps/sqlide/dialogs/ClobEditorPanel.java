@@ -6,6 +6,9 @@ import java.sql.*;
 import java.io.*;
 import com.hackerdude.apps.sqlide.ProgramConfig;
 
+/**
+ * A panel with a sql CLOB editor.
+ */
 public class ClobEditorPanel  extends JPanel {
 
 	private Clob clob;

@@ -6,14 +6,10 @@ import javax.swing.event.TableModelListener;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
+ * Table Model for connection properties.
  * @author David Martinez
  * @version 1.0
  */
-
 public class ConnPropertiesTableModel extends AbstractTableModel  {
 
 		Vector colNames = new Vector();
