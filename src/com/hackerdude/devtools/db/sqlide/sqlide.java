@@ -1,6 +1,6 @@
 /*
  * sqlIDE - a Pure Java Database Development environment
- *  Copyright (C) 1999 by David Martinez (davidmartinez@home.net)
+ *  Copyright (C) 1999 by David Martinez <david@hackerdude.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * Please read hacking.html for overview information if you want
  * to modify.
  *
- * @author David Martinez <davidmartinez@home.net>
+ * @author David Martinez <david@hackerdude.com>
  * @version $Id$
 */
 package com.hackerdude.devtools.db.sqlide;
