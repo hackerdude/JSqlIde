@@ -392,16 +392,15 @@ public class DatabaseProcess {
 		if ( currentDriver == null ) {
 			try {
 				Class theClass;
-				try {
-						System.out.println("Trying to open JAR "+databaseSpec.getJarFileName());
-						JdbcJarClassLoader ldr = new JdbcJarClassLoader(databaseSpec.getJarFileName());
-						//           JARClassLoader ldr = new JARClassLoader(driverJar);
-						theClass = ldr.loadClass(databaseSpec.getDriverName());
-				} catch ( Exception exc) {
-						//                System.out.println("Jar loader failed to open the class. Trying to instantiate the class from the ClassPath");
-						theClass = Class.forName(databaseSpec.getDriverName());
+				String driverClassName = databaseSpec.getDriverName();
+				String driverJarFile   = databaseSpec.getJarFileName();
+				if ( driverJarFile == null ) {
+					theClass = Class.forName(databaseSpec.getDriverName());
+				} else {
+					System.out.println("Trying to open JAR "+driverJarFile+" to retrieve class "+driverClassName);
+					JdbcJarClassLoader ldr = new JdbcJarClassLoader(driverJarFile);
+					theClass = ldr.loadClass(driverClassName);
 				}
-				theClass = Class.forName(databaseSpec.getDriverName());
 
 				System.setProperty("java.class.path", System.getProperty("java.class.path",".")+System.getProperty("path.separator")+databaseSpec.getJarFileName());
 				System.out.println("[DatabaseProcess] Loaded driver class "+databaseSpec.getDriverName());
@@ -409,9 +408,9 @@ public class DatabaseProcess {
 				DriverManager.registerDriver( currentDriver );
 
 			} catch(Exception exc) {
-					exc.printStackTrace();
-					JOptionPane.showMessageDialog(null, exc, "The Driver was Loaded, but had a Problem",
-									JOptionPane.ERROR_MESSAGE);
+				exc.printStackTrace();
+				JOptionPane.showMessageDialog(null, exc, "The Driver was Loaded, but had a Problem",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

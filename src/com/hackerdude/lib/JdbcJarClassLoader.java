@@ -45,13 +45,20 @@ public class JdbcJarClassLoader extends ClassLoader {
     */
    private byte[] loadClassData(String name) throws ClassNotFoundException {
      // This loads the class from the Jar file.
-     String entryName = name.replace('.','/').concat(".class"); // com.katmango.whatever -> com/katmango/whatever
+     String entryName = name.replace('.','/').concat(".class"); // com.hackerdude.whatever -> com/hackerdude/whatever
      ZipEntry entry = file.getEntry(entryName);
      if ( entry == null ) throw new ClassNotFoundException();
-     byte[] bytes = new byte[new Long(entry.getSize()).intValue()];
+	 long entrySize = entry.getSize();
+	 int  entryIntSize = new Long(entrySize).intValue();
+	 ByteArrayOutputStream bos = new ByteArrayOutputStream(entryIntSize*2);
+	 byte[] bytes = new byte[entryIntSize];
      try {
        InputStream is = file.getInputStream(entry);
-       is.read(bytes,0, bytes.length);
+	   int bytesRead = 0;
+
+	   while ( bytesRead > -1 ) {
+		   bytesRead = is.read(bytes, offSet, length);
+	   }
      } catch ( IOException exc ) {
        throw new ClassNotFoundException("I/O Error while reading file: "+exc.toString());
      }
