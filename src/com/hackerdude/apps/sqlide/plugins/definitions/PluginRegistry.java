@@ -74,6 +74,7 @@ public class PluginRegistry {
 				plugins.add(def);
 			} catch ( Exception exc ) {
 				System.out.println("Plugin class "+pluginClassNames[i]+" cannot be instantiated");
+				exc.printStackTrace();
 			}
 		}
 	}
