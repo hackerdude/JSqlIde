@@ -1,0 +1,50 @@
+Just some thoughts...
+
+SQLIDE should become just a skeleton framework that allows people to write in
+more functionality.
+
+On the JBuilder OpenTools, the browser is a very important piece of the
+framework. Likewise, on JSQLIDE...
+
+	- BrowserPanel is important
+	- CategoryNode and ItemNode are also important.
+
+Plugins can be one of three forms:
+
+	- Visual Plugins
+	- Non-Visual Plugins
+	- Node-based plugins.
+
+
+All plugins must be registered in the plugin registry for them to load.
+
+Common Functionality for plug-ins
+=================================
+
+All plugins will need a parameterless constructor and an initPlugin() method.
+It is important to keep the constructor itself small so the plugins can be
+instantiated just to find out their metadata (version information and so on).
+The heavy initialization should occur on the initPlugin() method.
+
+
+Visual Plugins
+==============
+
+Visual plugins descend from JPanel and are always associated with at least one
+primary database connection.
+
+
+Node Context Plugins
+====================
+
+Node Context Plugins are asked what action is available for a set of selected
+nodes prior to showing a menu. The Node context is responsible for returning a
+(possibly empty) set of standard swing actions.
+
+Non-Visual Plugins
+==================
+
+Non-Visual plugins usually add a few menu items to the main menu structure. In
+the future (once SQLIDE has streamlined its event model) they could also
+register for events such as before open, before save, etc.
+
