@@ -48,6 +48,7 @@ public class AboutDialog extends JDialog implements KeyListener {
 				hide();
 			}
 		});
+		label.setForeground(Color.red);
 
 		setTitle("About SQLIDE...");
 		addKeyListener(this);
