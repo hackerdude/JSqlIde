@@ -47,9 +47,9 @@ public class NewServerWizard extends Wizard {
 		pages[0] = pageSelectClassPath;
 		pages[1] = pageNewServer;
 		pages[2] = pageServerDetails;
-		File defaultFile = new File(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
+		File defaultFile = new File(ConnectionConfig.DEFAULT_DBSPEC);
 		if ( ! defaultFile.exists() ) {
-			setFileName(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
+			setFileName(ConnectionConfig.DEFAULT_DBSPEC);
 			pageNewServer.setFileNameEnabled(false);
 		}
 		setPages(pages);

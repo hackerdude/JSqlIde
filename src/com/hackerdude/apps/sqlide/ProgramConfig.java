@@ -290,6 +290,8 @@ public class ProgramConfig extends Observable {
 	 */
 	public ConnectionConfig getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
 
+	public void setDefaultDatabaseSpec(ConnectionConfig config) { defaultDatabaseSpec = config; };
+
 	/**
 	 * Get a database spec by number
 	 * @param index The number of database spec we want to retrieve
@@ -329,15 +331,6 @@ public class ProgramConfig extends Observable {
 				exc.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Could not parse Database spec "+fileName+" - "+exc.toString(), "Could not parse "+fileName, JOptionPane.ERROR_MESSAGE);
 			}
-		}
-		// If after this the vector is empty, show the wizard
-		// for DBSpecs and save it (this will be useful to new users).
-		if ( connectionConfigList.size() == 0 ) {
-			NewServerWizard wiz = NewServerWizard.showWizard(true);
-			if ( wiz.result != NewServerWizard.OK ) System.exit(0);
-			defaultDatabaseSpec = wiz.getDBSpec();
-			ConnectionConfigFactory.saveConnectionConfig(defaultDatabaseSpec);
-			connectionConfigList.add(defaultDatabaseSpec);
 		}
 		notifyObservers();
 
