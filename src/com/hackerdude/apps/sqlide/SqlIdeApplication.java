@@ -23,32 +23,23 @@
  * @version $Id$
 */
 package com.hackerdude.apps.sqlide;
-import com.hackerdude.lib.*;
-import com.hackerdude.apps.sqlide.dbspecific.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.*;
-import com.hackerdude.apps.sqlide.plugins.isql.PluginInteractiveSQL;
-import com.hackerdude.apps.sqlide.plugins.definitions.*;
-import com.hackerdude.apps.sqlide.plugins.browser.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.BasicJDBCIntrospector;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.swing.SwingUtils;
-import com.hackerdude.apps.sqlide.wizards.*;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.Cursor;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.event.*;
-import java.util.*;
-import java.lang.Object.*;
 import java.io.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.util.*;
+
+import javax.swing.*;
+import javax.swing.event.*;
+
+import com.hackerdude.apps.sqlide.dialogs.*;
+import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.plugins.browser.*;
+import com.hackerdude.apps.sqlide.plugins.definitions.*;
+import com.hackerdude.apps.sqlide.plugins.isql.*;
+import com.hackerdude.apps.sqlide.wizards.*;
 import com.hackerdude.apps.sqlide.xml.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.swing.*;
 
 /**
  * Main class for the sql ide program.
@@ -90,7 +81,6 @@ public class SqlIdeApplication  {
 	public final Action SELECT_LEFT = new ActionSelectLeftPanel();
 	public final Action SELECT_RIGHT = new ActionSelectRightPanel();
 
-//	public final Action HELP_CHANGES   = new ActionHelpChanges();
 	public final Action HELP_ABOUT     = new ActionHelpAbout();
 	public final Action HELP_README    = new ActionHelpReadme();
 	public final Action HELP_PAYING    = new ActionHelpPaying();
@@ -812,6 +802,7 @@ public class SqlIdeApplication  {
 	}
 
 	public RunningPlugins getRunningPlugins() { return runningPlugins; }
+
 
 
 }
