@@ -27,7 +27,7 @@ import org.exolab.castor.xml.validators.*;
  * 
  * @version $Revision$ $Date$
 **/
-public class GENERICPROPERTIESTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class QueryHistoryDescriptor extends QUERYHISTORYTypeDescriptor {
 
 
       //--------------------------/
@@ -47,55 +47,12 @@ public class GENERICPROPERTIESTypeDescriptor extends org.exolab.castor.xml.util.
      //- Constructors -/
     //----------------/
 
-    public GENERICPROPERTIESTypeDescriptor() {
+    public QueryHistoryDescriptor() {
         super();
+        setExtendsWithoutFlatten(new QUERYHISTORYTypeDescriptor());
         nsURI = "urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd";
-        xmlName = "GENERICPROPERTIESType";
-        
-        //-- set grouping compositor
-        setCompositorAsSequence();
-        XMLFieldDescriptorImpl  desc           = null;
-        XMLFieldHandler         handler        = null;
-        FieldValidator          fieldValidator = null;
-        //-- initialize attribute descriptors
-        
-        //-- initialize element descriptors
-        
-        //-- _propertyList
-        desc = new XMLFieldDescriptorImpl(Property.class, "_propertyList", "property", NodeType.Element);
-        handler = (new XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                GENERICPROPERTIESType target = (GENERICPROPERTIESType) object;
-                return target.getProperty();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    GENERICPROPERTIESType target = (GENERICPROPERTIESType) object;
-                    target.addProperty( (Property) value);
-                }
-                catch (Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new Property();
-            }
-        } );
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd");
-        desc.setMultivalued(true);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _propertyList
-        fieldValidator = new FieldValidator();
-        fieldValidator.setMinOccurs(0);
-        desc.setValidator(fieldValidator);
-        
-    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.GENERICPROPERTIESTypeDescriptor()
+        xmlName = "queryHistory";
+    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.QueryHistoryDescriptor()
 
 
       //-----------/
@@ -113,13 +70,15 @@ public class GENERICPROPERTIESTypeDescriptor extends org.exolab.castor.xml.util.
     **/
     public org.exolab.castor.mapping.ClassDescriptor getExtends()
     {
-        return null;
+        return super.getExtends();
     } //-- org.exolab.castor.mapping.ClassDescriptor getExtends() 
 
     /**
     **/
     public org.exolab.castor.mapping.FieldDescriptor getIdentity()
     {
+        if (identity == null)
+            return super.getIdentity();
         return identity;
     } //-- org.exolab.castor.mapping.FieldDescriptor getIdentity() 
 
@@ -127,7 +86,7 @@ public class GENERICPROPERTIESTypeDescriptor extends org.exolab.castor.xml.util.
     **/
     public java.lang.Class getJavaClass()
     {
-        return com.hackerdude.apps.sqlide.xml.hostconfig.GENERICPROPERTIESType.class;
+        return com.hackerdude.apps.sqlide.xml.hostconfig.QueryHistory.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**

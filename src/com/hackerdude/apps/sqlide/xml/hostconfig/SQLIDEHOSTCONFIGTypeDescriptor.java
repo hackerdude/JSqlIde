@@ -92,11 +92,12 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- initialize element descriptors
         
         //-- _fileName
@@ -134,11 +135,12 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _name
         desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_name", "name", NodeType.Element);
         desc.setImmutable(true);
@@ -174,11 +176,12 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _general
         desc = new XMLFieldDescriptorImpl(General.class, "_general", "general", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -212,9 +215,8 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         //-- validation code for: _general
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
         //-- _jdbc
         desc = new XMLFieldDescriptorImpl(Jdbc.class, "_jdbc", "jdbc", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -248,9 +250,8 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         //-- validation code for: _jdbc
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
         //-- _browserPlugin
         desc = new XMLFieldDescriptorImpl(BrowserPlugin.class, "_browserPlugin", "browserPlugin", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -282,9 +283,41 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         
         //-- validation code for: _browserPlugin
         fieldValidator = new FieldValidator();
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
+        //-- _queryHistory
+        desc = new XMLFieldDescriptorImpl(QueryHistory.class, "_queryHistory", "queryHistory", NodeType.Element);
+        handler = (new XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                return target.getQueryHistory();
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    SQLIDEHOSTCONFIGType target = (SQLIDEHOSTCONFIGType) object;
+                    target.setQueryHistory( (QueryHistory) value);
+                }
+                catch (Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return new QueryHistory();
+            }
+        } );
+        desc.setHandler(handler);
+        desc.setNameSpaceURI("urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd");
+        desc.setMultivalued(false);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _queryHistory
+        fieldValidator = new FieldValidator();
+        desc.setValidator(fieldValidator);
+        
         //-- _pluginSpecificList
         desc = new XMLFieldDescriptorImpl(PluginSpecific.class, "_pluginSpecificList", "plugin-specific", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -317,9 +350,8 @@ public class SQLIDEHOSTCONFIGTypeDescriptor extends org.exolab.castor.xml.util.X
         //-- validation code for: _pluginSpecificList
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(0);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.SQLIDEHOSTCONFIGTypeDescriptor()
 
 

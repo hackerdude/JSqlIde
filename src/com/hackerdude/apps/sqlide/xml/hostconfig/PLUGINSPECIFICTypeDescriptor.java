@@ -92,11 +92,12 @@ public class PLUGINSPECIFICTypeDescriptor extends org.exolab.castor.xml.util.XML
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- initialize element descriptors
         
         //-- _pluginProperties
@@ -132,9 +133,8 @@ public class PLUGINSPECIFICTypeDescriptor extends org.exolab.castor.xml.util.XML
         //-- validation code for: _pluginProperties
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.PLUGINSPECIFICTypeDescriptor()
 
 

@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Vector;
 import org.exolab.castor.xml.*;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
@@ -34,7 +34,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
      //- Class/Member Variables -/
     //--------------------------/
 
-    private java.util.Vector _pathelementList;
+    private java.util.ArrayList _pathelementList;
 
 
       //----------------/
@@ -43,7 +43,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
 
     public CLASSPATHType() {
         super();
-        _pathelementList = new Vector();
+        _pathelementList = new ArrayList();
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.CLASSPATHType()
 
 
@@ -59,7 +59,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
     public void addPathelement(java.lang.String vPathelement)
         throws java.lang.IndexOutOfBoundsException
     {
-        _pathelementList.addElement(vPathelement);
+        _pathelementList.add(vPathelement);
     } //-- void addPathelement(java.lang.String) 
 
     /**
@@ -71,14 +71,21 @@ public abstract class CLASSPATHType implements java.io.Serializable {
     public void addPathelement(int index, java.lang.String vPathelement)
         throws java.lang.IndexOutOfBoundsException
     {
-        _pathelementList.insertElementAt(vPathelement, index);
+        _pathelementList.add(index, vPathelement);
     } //-- void addPathelement(int, java.lang.String) 
+
+    /**
+    **/
+    public void clearPathelement()
+    {
+        _pathelementList.clear();
+    } //-- void clearPathelement() 
 
     /**
     **/
     public java.util.Enumeration enumeratePathelement()
     {
-        return _pathelementList.elements();
+        return new org.exolab.castor.util.IteratorEnumeration(_pathelementList.iterator());
     } //-- java.util.Enumeration enumeratePathelement() 
 
     /**
@@ -94,7 +101,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
             throw new IndexOutOfBoundsException();
         }
         
-        return (String)_pathelementList.elementAt(index);
+        return (String)_pathelementList.get(index);
     } //-- java.lang.String getPathelement(int) 
 
     /**
@@ -104,7 +111,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
         int size = _pathelementList.size();
         java.lang.String[] mArray = new java.lang.String[size];
         for (int index = 0; index < size; index++) {
-            mArray[index] = (String)_pathelementList.elementAt(index);
+            mArray[index] = (String)_pathelementList.get(index);
         }
         return mArray;
     } //-- java.lang.String[] getPathelement() 
@@ -146,23 +153,15 @@ public abstract class CLASSPATHType implements java.io.Serializable {
         throws java.io.IOException, org.exolab.castor.xml.MarshalException, org.exolab.castor.xml.ValidationException;
 
     /**
-    **/
-    public void removeAllPathelement()
-    {
-        _pathelementList.removeAllElements();
-    } //-- void removeAllPathelement() 
-
-    /**
      * 
      * 
-     * @param index
+     * @param vPathelement
     **/
-    public java.lang.String removePathelement(int index)
+    public boolean removePathelement(java.lang.String vPathelement)
     {
-        java.lang.Object obj = _pathelementList.elementAt(index);
-        _pathelementList.removeElementAt(index);
-        return (String)obj;
-    } //-- java.lang.String removePathelement(int) 
+        boolean removed = _pathelementList.remove(vPathelement);
+        return removed;
+    } //-- boolean removePathelement(java.lang.String) 
 
     /**
      * 
@@ -177,7 +176,7 @@ public abstract class CLASSPATHType implements java.io.Serializable {
         if ((index < 0) || (index > _pathelementList.size())) {
             throw new IndexOutOfBoundsException();
         }
-        _pathelementList.setElementAt(vPathelement, index);
+        _pathelementList.set(index, vPathelement);
     } //-- void setPathelement(int, java.lang.String) 
 
     /**
@@ -188,9 +187,9 @@ public abstract class CLASSPATHType implements java.io.Serializable {
     public void setPathelement(java.lang.String[] pathelementArray)
     {
         //-- copy array
-        _pathelementList.removeAllElements();
+        _pathelementList.clear();
         for (int i = 0; i < pathelementArray.length; i++) {
-            _pathelementList.addElement(pathelementArray[i]);
+            _pathelementList.add(pathelementArray[i]);
         }
     } //-- void setPathelement(java.lang.String) 
 

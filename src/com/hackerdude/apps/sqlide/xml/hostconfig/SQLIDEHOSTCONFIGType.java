@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Vector;
 import org.exolab.castor.xml.*;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
@@ -48,7 +48,9 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
 
     private BrowserPlugin _browserPlugin;
 
-    private java.util.Vector _pluginSpecificList;
+    private QueryHistory _queryHistory;
+
+    private java.util.ArrayList _pluginSpecificList;
 
 
       //----------------/
@@ -57,7 +59,7 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
 
     public SQLIDEHOSTCONFIGType() {
         super();
-        _pluginSpecificList = new Vector();
+        _pluginSpecificList = new ArrayList();
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.SQLIDEHOSTCONFIGType()
 
 
@@ -73,7 +75,7 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     public void addPluginSpecific(PluginSpecific vPluginSpecific)
         throws java.lang.IndexOutOfBoundsException
     {
-        _pluginSpecificList.addElement(vPluginSpecific);
+        _pluginSpecificList.add(vPluginSpecific);
     } //-- void addPluginSpecific(PluginSpecific) 
 
     /**
@@ -85,14 +87,21 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     public void addPluginSpecific(int index, PluginSpecific vPluginSpecific)
         throws java.lang.IndexOutOfBoundsException
     {
-        _pluginSpecificList.insertElementAt(vPluginSpecific, index);
+        _pluginSpecificList.add(index, vPluginSpecific);
     } //-- void addPluginSpecific(int, PluginSpecific) 
+
+    /**
+    **/
+    public void clearPluginSpecific()
+    {
+        _pluginSpecificList.clear();
+    } //-- void clearPluginSpecific() 
 
     /**
     **/
     public java.util.Enumeration enumeratePluginSpecific()
     {
-        return _pluginSpecificList.elements();
+        return new org.exolab.castor.util.IteratorEnumeration(_pluginSpecificList.iterator());
     } //-- java.util.Enumeration enumeratePluginSpecific() 
 
     /**
@@ -158,7 +167,7 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
             throw new IndexOutOfBoundsException();
         }
         
-        return (PluginSpecific) _pluginSpecificList.elementAt(index);
+        return (PluginSpecific) _pluginSpecificList.get(index);
     } //-- PluginSpecific getPluginSpecific(int) 
 
     /**
@@ -168,7 +177,7 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
         int size = _pluginSpecificList.size();
         PluginSpecific[] mArray = new PluginSpecific[size];
         for (int index = 0; index < size; index++) {
-            mArray[index] = (PluginSpecific) _pluginSpecificList.elementAt(index);
+            mArray[index] = (PluginSpecific) _pluginSpecificList.get(index);
         }
         return mArray;
     } //-- PluginSpecific[] getPluginSpecific() 
@@ -179,6 +188,16 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     {
         return _pluginSpecificList.size();
     } //-- int getPluginSpecificCount() 
+
+    /**
+     * Returns the value of field 'queryHistory'.
+     * 
+     * @return the value of field 'queryHistory'.
+    **/
+    public QueryHistory getQueryHistory()
+    {
+        return this._queryHistory;
+    } //-- QueryHistory getQueryHistory() 
 
     /**
      * Returns the value of field 'version'.
@@ -220,23 +239,15 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
         throws java.io.IOException, org.exolab.castor.xml.MarshalException, org.exolab.castor.xml.ValidationException;
 
     /**
-    **/
-    public void removeAllPluginSpecific()
-    {
-        _pluginSpecificList.removeAllElements();
-    } //-- void removeAllPluginSpecific() 
-
-    /**
      * 
      * 
-     * @param index
+     * @param vPluginSpecific
     **/
-    public PluginSpecific removePluginSpecific(int index)
+    public boolean removePluginSpecific(PluginSpecific vPluginSpecific)
     {
-        java.lang.Object obj = _pluginSpecificList.elementAt(index);
-        _pluginSpecificList.removeElementAt(index);
-        return (PluginSpecific) obj;
-    } //-- PluginSpecific removePluginSpecific(int) 
+        boolean removed = _pluginSpecificList.remove(vPluginSpecific);
+        return removed;
+    } //-- boolean removePluginSpecific(PluginSpecific) 
 
     /**
      * Sets the value of field 'browserPlugin'.
@@ -301,7 +312,7 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
         if ((index < 0) || (index > _pluginSpecificList.size())) {
             throw new IndexOutOfBoundsException();
         }
-        _pluginSpecificList.setElementAt(vPluginSpecific, index);
+        _pluginSpecificList.set(index, vPluginSpecific);
     } //-- void setPluginSpecific(int, PluginSpecific) 
 
     /**
@@ -312,11 +323,21 @@ public abstract class SQLIDEHOSTCONFIGType implements java.io.Serializable {
     public void setPluginSpecific(PluginSpecific[] pluginSpecificArray)
     {
         //-- copy array
-        _pluginSpecificList.removeAllElements();
+        _pluginSpecificList.clear();
         for (int i = 0; i < pluginSpecificArray.length; i++) {
-            _pluginSpecificList.addElement(pluginSpecificArray[i]);
+            _pluginSpecificList.add(pluginSpecificArray[i]);
         }
     } //-- void setPluginSpecific(PluginSpecific) 
+
+    /**
+     * Sets the value of field 'queryHistory'.
+     * 
+     * @param queryHistory the value of field 'queryHistory'.
+    **/
+    public void setQueryHistory(QueryHistory queryHistory)
+    {
+        this._queryHistory = queryHistory;
+    } //-- void setQueryHistory(QueryHistory) 
 
     /**
      * Sets the value of field 'version'.

@@ -27,7 +27,7 @@ import org.exolab.castor.xml.validators.*;
  * 
  * @version $Revision$ $Date$
 **/
-public class BROWSERPLUGINTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class QUERYHISTORYTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -47,10 +47,10 @@ public class BROWSERPLUGINTypeDescriptor extends org.exolab.castor.xml.util.XMLC
      //- Constructors -/
     //----------------/
 
-    public BROWSERPLUGINTypeDescriptor() {
+    public QUERYHISTORYTypeDescriptor() {
         super();
         nsURI = "urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd";
-        xmlName = "BROWSERPLUGINType";
+        xmlName = "QUERYHISTORYType";
         
         //-- set grouping compositor
         setCompositorAsSequence();
@@ -61,75 +61,47 @@ public class BROWSERPLUGINTypeDescriptor extends org.exolab.castor.xml.util.XMLC
         
         //-- initialize element descriptors
         
-        //-- _namedQueries
-        desc = new XMLFieldDescriptorImpl(NamedQueries.class, "_namedQueries", "namedQueries", NodeType.Element);
+        //-- _historyItemList
+        desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_historyItemList", "historyItem", NodeType.Element);
+        desc.setImmutable(true);
         handler = (new XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                BROWSERPLUGINType target = (BROWSERPLUGINType) object;
-                return target.getNamedQueries();
+                QUERYHISTORYType target = (QUERYHISTORYType) object;
+                return target.getHistoryItem();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    BROWSERPLUGINType target = (BROWSERPLUGINType) object;
-                    target.setNamedQueries( (NamedQueries) value);
+                    QUERYHISTORYType target = (QUERYHISTORYType) object;
+                    target.addHistoryItem( (java.lang.String) value);
                 }
                 catch (Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new NamedQueries();
+                return null;
             }
         } );
         desc.setHandler(handler);
         desc.setNameSpaceURI("urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
+        desc.setMultivalued(true);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _namedQueries
+        //-- validation code for: _historyItemList
         fieldValidator = new FieldValidator();
-        fieldValidator.setMinOccurs(1);
+        fieldValidator.setMinOccurs(0);
+        { //-- local scope
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
+        }
         desc.setValidator(fieldValidator);
         
-        //-- _pluginProperties
-        desc = new XMLFieldDescriptorImpl(PluginProperties.class, "_pluginProperties", "pluginProperties", NodeType.Element);
-        handler = (new XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                BROWSERPLUGINType target = (BROWSERPLUGINType) object;
-                return target.getPluginProperties();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    BROWSERPLUGINType target = (BROWSERPLUGINType) object;
-                    target.setPluginProperties( (PluginProperties) value);
-                }
-                catch (Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new PluginProperties();
-            }
-        } );
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("urn:hackerdude.com/Schemas/2002/databasespec_1.0.xsd");
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _pluginProperties
-        fieldValidator = new FieldValidator();
-        desc.setValidator(fieldValidator);
-        
-    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.BROWSERPLUGINTypeDescriptor()
+    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.QUERYHISTORYTypeDescriptor()
 
 
       //-----------/
@@ -161,7 +133,7 @@ public class BROWSERPLUGINTypeDescriptor extends org.exolab.castor.xml.util.XMLC
     **/
     public java.lang.Class getJavaClass()
     {
-        return com.hackerdude.apps.sqlide.xml.hostconfig.BROWSERPLUGINType.class;
+        return com.hackerdude.apps.sqlide.xml.hostconfig.QUERYHISTORYType.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**
