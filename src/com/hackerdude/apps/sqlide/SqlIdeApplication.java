@@ -661,7 +661,7 @@ public class SqlIdeApplication  {
 		public void actionPerformed(ActionEvent e) {
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
 			try {
-				new ShowDocumentDialog().showDialog("Changes", "com.hackerdude.apps.sqlide.CHANGES.html", "../docs/CHANGES.html");
+				new ShowDocumentDialog().showDialog("Changes", SqlIdeApplication.class.getResourceAsStream("CHANGES.html"));
 
 			} finally {
 				frame.setCursor(Cursor.getDefaultCursor());
