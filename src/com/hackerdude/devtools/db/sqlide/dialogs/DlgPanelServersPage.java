@@ -137,13 +137,13 @@ public class DlgPanelServersPage extends JPanel {
 		}
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
-			DatabaseSpec spec = null;
+			ConnectionConfig spec = null;
 			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getDatabaseSpec(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			DlgDBSpecConfig.showConfigurationDialog( null, spec );
+			DlgConnectionConfig.showConfigurationDialog( null, spec );
 		}
 	}
 
@@ -155,7 +155,7 @@ public class DlgPanelServersPage extends JPanel {
 		public ActionAddServer() { super("New", ProgramIcons.getInstance().findIcon("images/NewPlug.gif"));}
 		public void actionPerformed(ActionEvent ev) {
 			NewServerWizard wiz = NewServerWizard.showWizard(true);
-			DatabaseSpec spec = wiz.getDBSpec();
+			ConnectionConfig spec = wiz.getDBSpec();
 			if ( wiz.result == wiz.OK || spec != null ) {
 					DatabaseSpecFactory.saveDatabaseSpec(spec);
 					ProgramConfig.getInstance().addDatabaseSpec(spec);
@@ -171,7 +171,7 @@ public class DlgPanelServersPage extends JPanel {
 		public ActionRemoveServer() { super("Delete", ProgramIcons.getInstance().findIcon("images/UnPlug.gif")); }
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
-			DatabaseSpec spec = null;
+			ConnectionConfig spec = null;
 			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getDatabaseSpec(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no database selected.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -22,12 +22,10 @@
  */
 package com.hackerdude.devtools.db.sqlide.intf;
 
-import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseProcess;
-import com.hackerdude.devtools.db.sqlide.ProgramConfig;
-import com.hackerdude.devtools.db.sqlide.intf.SQLIDEDBInterface;
-import com.hackerdude.devtools.db.sqlide.pluginapi.NodeIDEBase;
-import com.hackerdude.lib.JARClassLoader;
 import javax.swing.*;
+
+import com.hackerdude.devtools.db.sqlide.dataaccess.*;
+import com.hackerdude.devtools.db.sqlide.pluginapi.*;
 
 /**
  * This interface specifies the functionality a class must implement

@@ -66,7 +66,7 @@ public class ProgramConfig extends Observable {
 
 	protected String saveDirectory = System.getProperty("user.home")+File.separator+"sqlide";
 
-	protected DatabaseSpec defaultDatabaseSpec;
+	protected ConnectionConfig defaultDatabaseSpec;
 	protected ArrayList databaseSpecs;
 
 	private static ProgramConfig instance;
@@ -181,7 +181,7 @@ public class ProgramConfig extends Observable {
 			setDefaults(userinterface);
 		}
 
-		defaultdbPropsFile = userinterface.getProperty(DatabaseSpec.prop_db_defaultdb)+DatabaseSpec.prop_db_configsuffix;
+		defaultdbPropsFile = userinterface.getProperty(ConnectionConfig.prop_db_defaultdb)+ConnectionConfig.prop_db_configsuffix;
 		iSQLbyDefault = userinterface.getProperty(prop_isqldefault).equals(new String("yes"));
 
 		readdbConfigs();
@@ -199,7 +199,7 @@ public class ProgramConfig extends Observable {
 		userinterface.setProperty(prop_isqltableview, "true");
 		userinterface.setProperty(prop_isqlfontsize, "12");
 		userinterface.setProperty(prop_isqlfontname, "MonoSpaced");
-		userinterface.setProperty(DatabaseSpec.prop_db_defaultdb, "default");
+		userinterface.setProperty(ConnectionConfig.prop_db_defaultdb, "default");
 
 		File saveDir = new File(saveDirectory);
 		if ( ! saveDir.exists() ) saveDir.mkdir();
@@ -208,11 +208,11 @@ public class ProgramConfig extends Observable {
 
 	}
 
-	public void removeDatabaseSpec(DatabaseSpec spec) {
+	public void removeDatabaseSpec(ConnectionConfig spec) {
 		databaseSpecs.remove(spec);
 	}
 
-	public void addDatabaseSpec(DatabaseSpec spec) {
+	public void addDatabaseSpec(ConnectionConfig spec) {
 		databaseSpecs.add(spec);
 		notifyObservers(spec);
 	}
@@ -272,7 +272,7 @@ public class ProgramConfig extends Observable {
 	 * @return The "Polite Name" of the database configuration item
 	 */
 	public String getDbConfigName( int index ) {
-		return( ((DatabaseSpec)databaseSpecs.get(index)).getPoliteName());
+		return( ((ConnectionConfig)databaseSpecs.get(index)).getPoliteName());
 	}
 
 	/**
@@ -286,14 +286,14 @@ public class ProgramConfig extends Observable {
 	 * @return A DatabaseSpec object with the database specification that
 	 * will be used for the default server.
 	 */
-	public DatabaseSpec getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
+	public ConnectionConfig getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
 
 	/**
 	 * Get a database spec by number
 	 * @param index The number of database spec we want to retrieve
 	 * @return A reference to the DatabaseSpec object with order in index.
 	 */
-	public DatabaseSpec getDatabaseSpec( int index ) { return((DatabaseSpec)databaseSpecs.get(index)); }
+	public ConnectionConfig getDatabaseSpec( int index ) { return((ConnectionConfig)databaseSpecs.get(index)); }
 
 	/**
 	 * Returns the number of database specs.
@@ -307,9 +307,9 @@ public class ProgramConfig extends Observable {
 	public synchronized void readdbConfigs() {
 
 		File findFiles = new File(getPropsPath());
-		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(DatabaseSpec.prop_db_configsuffix));
+		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(ConnectionConfig.prop_db_configsuffix));
 		String fileName;
-		DatabaseSpec dbSpec;
+		ConnectionConfig dbSpec;
 
 		databaseSpecs = new ArrayList();
 
@@ -345,7 +345,7 @@ public class ProgramConfig extends Observable {
 	 */
 	public void savedbConfigs() {
 		for (int i=0; i<databaseSpecs.size(); i++) {
-			DatabaseSpec currentSpec = ((DatabaseSpec)databaseSpecs.get(i));
+			ConnectionConfig currentSpec = ((ConnectionConfig)databaseSpecs.get(i));
 			DatabaseSpecFactory.saveDatabaseSpec(currentSpec);
 		}
 	}

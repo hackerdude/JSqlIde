@@ -46,12 +46,12 @@ import com.hackerdude.devtools.db.sqlide.ProgramConfig;
  * (DatabaseSpec) visually.
  * @version $Id$
  */
-public class DlgDBSpecConfig extends JDialog {
+public class DlgConnectionConfig extends JDialog {
 
 	public final Action ACTION_OK = new OKAction();
 	public final Action ACTION_CANCEL = new CancelAction();
 
-	DatabaseSpec databaseSpec;
+	ConnectionConfig connectionConfig;
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel pnlOkCancel = new JPanel();
@@ -60,53 +60,40 @@ public class DlgDBSpecConfig extends JDialog {
 	JTabbedPane tabbedPane = new JTabbedPane();
 	JPanel topPanel = new JPanel();
 
-	DbSpecJDBCPanel pnlJDBC = new DbSpecJDBCPanel();
-	DBSpecConnectionPanel pnlConnectionPanel = new DBSpecConnectionPanel();
-	DBSpecClassPathPanel pnlClasspathPanel = new DBSpecClassPathPanel();
+	ConnectionJDBCPanel pnlJDBC = new ConnectionJDBCPanel();
+	ConnectionParametersPanel pnlConnectionPanel = new ConnectionParametersPanel();
+	ConnectionClassPathPanel pnlClasspathPanel = new ConnectionClassPathPanel();
 
 	/**
 	 * readFromSpec() fills in the UI from the Database Spec object.
 	 *
 	*/
-	public void readFromSpec() {
-		/** @todo Figure this thing out here. */
-		File tmp = new File(databaseSpec.getFileName());
-		// Only allow editing of filenames if the file already exists.
-//		fFileName.setEnabled( ! tmp.exists() );
-//		btnSpecBrowse.setVisible( ! tmp.exists() );
-//		fFileName.setText(spec.getFileName());
-//		fDriver.setText(spec.getDriverName());
-//		fURLForm.setText(spec.getURL());
-//		fDisplayName.setText(spec.getPoliteName());
-//		fIDEManager.setText(spec.getDbIntfClassName());
-//		fDefaultCatalog.setText(spec.getDefaultCatalog());
-//		setConnectionPropsModel();
-//		updateMessageLabel();
-//		setModal(true);
+	public void readFromModel() {
 	};
 
 	/**
 	 * writeToSpec() updates the Database spec with the UI's edited contents.
 	 *
 	*/
-	public void aplpyToModel() {
+	public void applyToModel() {
+		pnlClasspathPanel.applyToModel();
 		pnlJDBC.applyToModel();
 		pnlConnectionPanel.applyToModel();
 	}
 
-	public DlgDBSpecConfig( JFrame frame, DatabaseSpec spec ) {
+	public DlgConnectionConfig( JFrame frame, ConnectionConfig spec ) {
 		super( frame );
-		setDatabaseSpec(spec);
-		readFromSpec();
+		setConnectionConfig(spec);
+		readFromModel();
 		if ( frame != null ) frame.setIconImage( ProgramIcons.getInstance().getDatabaseIcon().getImage() );
 		jbInit();
 		pnlConnectionPanel.readFromModel();
 		pnlJDBC.readFromModel();
 	}
 
-	public void setDatabaseSpec( DatabaseSpec spec ) {
-		this.databaseSpec = spec;
-		pnlConnectionPanel.setDatabaseSpec(spec);
+	public void setConnectionConfig( ConnectionConfig spec ) {
+		this.connectionConfig = spec;
+		pnlConnectionPanel.setConnectionConfig(spec);
 		pnlJDBC.setDatabaseSpec(spec);
 		pnlClasspathPanel.setDatabaseSpec(spec);
 	}
@@ -134,16 +121,16 @@ public class DlgDBSpecConfig extends JDialog {
 
 	// Test function
 	public static void main( String[] args ) {
-		DatabaseSpec spec = ProgramConfig.getInstance().getDefaultDatabaseSpec();
+		ConnectionConfig spec = ProgramConfig.getInstance().getDefaultDatabaseSpec();
 		showConfigurationDialog( null, spec);
 	}
 
 	/**
 	 * Shows the configuration dialog.
 	 */
-	public static void showConfigurationDialog(JFrame frame, DatabaseSpec s) {
+	public static void showConfigurationDialog(JFrame frame, ConnectionConfig s) {
 
-		DlgDBSpecConfig configuration = new DlgDBSpecConfig( frame , s );
+		DlgConnectionConfig configuration = new DlgConnectionConfig( frame , s );
 		configuration.setModal(true);
 		configuration.setTitle("Database Spec: "+s.getPoliteName());
 		Dimension screen = configuration.getToolkit().getScreenSize();
@@ -157,7 +144,7 @@ public class DlgDBSpecConfig extends JDialog {
 	}
 
 	class OKAction extends AbstractAction {
-		public void actionPerformed(ActionEvent e) { aplpyToModel(); dispose(); }
+		public void actionPerformed(ActionEvent e) { applyToModel(); dispose(); }
 	}
 
 	class CancelAction extends AbstractAction {
@@ -171,6 +158,9 @@ public class DlgDBSpecConfig extends JDialog {
 /*
 
   $Log$
+  Revision 1.1  2002/08/14 16:40:07  davidmartinez
+  Refactored- Renamed DatabaseSpec to ConnectionConfig, and dialogs as well.
+
   Revision 1.3  2002/08/14 16:07:18  davidmartinez
   Now database specs use several files and a URL classloader in order to load the classes.
 

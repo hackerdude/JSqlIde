@@ -3,12 +3,12 @@ package com.hackerdude.devtools.db.sqlide.wizards;
 import com.hackerdude.lib.ui.WizardPage;
 import com.hackerdude.devtools.db.sqlide.dialogs.*;
 import java.awt.*;
-import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseSpec;
+import com.hackerdude.devtools.db.sqlide.dataaccess.ConnectionConfig;
 
 public class SelectClassPathWizardPage extends WizardPage {
 
     private BorderLayout borderLayout1 = new BorderLayout();
-	DBSpecClassPathPanel classpathPanel = new DBSpecClassPathPanel();
+	ConnectionClassPathPanel classpathPanel = new ConnectionClassPathPanel();
 
     public SelectClassPathWizardPage() {
         try {
@@ -26,7 +26,7 @@ public class SelectClassPathWizardPage extends WizardPage {
     }
 
 
-	public void setDatabaseSpec(DatabaseSpec spec) {
+	public void setDatabaseSpec(ConnectionConfig spec) {
 		classpathPanel.setDatabaseSpec(spec);
 	}
 

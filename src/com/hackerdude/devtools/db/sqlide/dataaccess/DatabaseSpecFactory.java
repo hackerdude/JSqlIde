@@ -13,9 +13,9 @@ public class DatabaseSpecFactory {
 	/**
 	 * Creates a default database spec.
 	 */
-	public static DatabaseSpec createDatabaseSpec() {
+	public static ConnectionConfig createDatabaseSpec() {
 		InputStream is = DatabaseSpecFactory.class.getResourceAsStream("default.db.xml");
-		DatabaseSpec result = null;
+		ConnectionConfig result = null;
 		try {
 			result = parser.parseDatabaseSpec(is);
 		} catch ( Exception exc ) {
@@ -24,13 +24,13 @@ public class DatabaseSpecFactory {
 		return result;
 	}
 
-	public static DatabaseSpec createDatabaseSpec(InputStream is) throws SAXException, IOException {
-		DatabaseSpec result = parser.parseDatabaseSpec(is);
+	public static ConnectionConfig createDatabaseSpec(InputStream is) throws SAXException, IOException {
+		ConnectionConfig result = parser.parseDatabaseSpec(is);
 		return result;
 	}
 
-	public static DatabaseSpec createDatabaseSpec(String fileName) throws IOException {
-		DatabaseSpec result = null;
+	public static ConnectionConfig createDatabaseSpec(String fileName) throws IOException {
+		ConnectionConfig result = null;
 		try {
 			FileInputStream is = new FileInputStream(fileName);
 			result = parser.parseDatabaseSpec(is);
@@ -42,7 +42,7 @@ public class DatabaseSpecFactory {
 		return result;
 	}
 
-	public static void saveDatabaseSpec(DatabaseSpec spec) {
+	public static void saveDatabaseSpec(ConnectionConfig spec) {
 		parser.save(spec);
 	}
 

@@ -19,9 +19,9 @@ import java.util.*;
  */
 public class ItemServerNode extends NodeIDEBase {
 
-	DatabaseSpec spec;
+	ConnectionConfig spec;
 
-	public ItemServerNode(DatabaseSpec spec) {
+	public ItemServerNode(ConnectionConfig spec) {
 		super(spec.getPoliteName(), new DatabaseProcess(spec));
 		this.spec = spec;
 	}

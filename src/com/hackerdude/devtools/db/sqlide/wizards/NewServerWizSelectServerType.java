@@ -28,7 +28,7 @@ import java.beans.*;
  */
 public class NewServerWizSelectServerType extends WizardPage {
 
-	DatabaseSpec databaseSpec;
+	ConnectionConfig databaseSpec;
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel jPanel1 = new JPanel();
@@ -285,7 +285,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 
 	public javax.swing.filechooser.FileFilter getFileFilter() {
 
-		String exFFSuffix = DatabaseSpec.prop_db_configsuffix;
+		String exFFSuffix = ConnectionConfig.prop_db_configsuffix;
 		if ( exFFSuffix.startsWith(".") ) exFFSuffix = exFFSuffix.substring(1);
 		String[] filters = { exFFSuffix };
 		String description = "SQLIDE Configuration Files";
@@ -312,7 +312,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 		databaseSpec.setDriverClassName(fClassName.getText());
 		updateDriverInfo();
 	}
-	public void setDatabaseSpec(DatabaseSpec newSpec) {
+	public void setDatabaseSpec(ConnectionConfig newSpec) {
 		databaseSpec = newSpec;
 	}
 

@@ -39,11 +39,9 @@ import org.xml.sax.*;
 import com.hackerdude.devtools.db.sqlide.ProgramConfig;
 
 /**
- * This class has all the getters and setters needed for the database
- * connections.
- *
+ * This class represents the connection Configuration.
  */
-public class DatabaseSpec {
+public class ConnectionConfig {
 
 
 	public static final String _ASK_ = "____<ASK>____";
@@ -74,7 +72,7 @@ public class DatabaseSpec {
 	protected boolean jdbcCompliant;
 	protected String userMessage;
 
-	public DatabaseSpec() {
+	public ConnectionConfig() {
 	   this(DEFAULT_DBSPEC_FILENAME);
 	}
 
@@ -84,7 +82,7 @@ public class DatabaseSpec {
 	 * This constructor creates a new DatabaseSpec, defining the filename.
 	 * @param fileName The specification file to load.
 	 */
-	public DatabaseSpec( String fileName ) {
+	public ConnectionConfig( String fileName ) {
 	  jdbcCompliant = false;
 	  this.fileName = fileName;
 	}
@@ -233,7 +231,7 @@ public class DatabaseSpec {
 
 
 	public static void main(String[] args) {
-	   DatabaseSpec spec = new DatabaseSpec("asample.xml");
+	   ConnectionConfig spec = new ConnectionConfig("asample.xml");
 
 	}
 
