@@ -111,7 +111,7 @@ public class GenericSearchDialog extends JDialog {
 	 * <P>Item level actions will only be active when there is a selected
 	 * result on the search field.
 	 *
-	 * @param actions Extra actions you want to include.
+	 * @param itemLevelActions Extra actions you want to include.
 	 */
 	public void setItemLevelActions(Action[] itemLevelActions) {
 		this.itemLevelActions = itemLevelActions;

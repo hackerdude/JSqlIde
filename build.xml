@@ -28,7 +28,7 @@
 	<property name="build.tests" value="${build.dir}/testcases"/>
 	<property name="temp.dir" value="tmp"/>
 	<property name="unjar.cache" value="${temp.dir}/unjar_cache"/>
-	<property name="jsqlide.dist.dir" value="dist-${version}"/>
+	<property name="jsqlide.dist.dir" value="dist/${name}-${version}"/>
 	<property name="jsqlide.signjar.alias" value="jarsignalias"/>
 	<property name="jsqlide.signjar.storepass" value="password"/>
 	<property name="jsqlide.j2se.version" value="1.4.0+"/>
@@ -191,7 +191,13 @@ jsqlide.version=${version}
 	<!-- =================================================================== -->
 	<target name="javadocs" depends="prepare" description="Creates the API documentation">
 		<mkdir dir="${build.javadocs}"/>
-		<javadoc packagenames="${packages}" sourcepath="${basedir}/${src.dir}" destdir="${build.javadocs}" author="true" version="true" windowtitle="${Name} API" doctitle="${Name}" bottom="Copyright © 2001 by David Martinez. Licensed under the GNU GPL. Visit http://www.hackerdude.com"/>
+		<javadoc packagenames="${packages}" sourcepath="${basedir}/${src.dir}" 
+			destdir="${build.javadocs}" 
+			author="true" version="true" windowtitle="${Name} API" 
+			doctitle="${Name}" 
+			bottom="Copyright © 2001 by David Martinez. Licensed under the GNU GPL. Visit http://www.hackerdude.com">
+			<classpath refid="jsqlide_classpath"/> 
+		</javadoc>
 	</target>
 
 	<!-- =================================================================== -->
@@ -237,18 +243,18 @@ jsqlide.version=${version}
 	<!-- Packages the distribution with ZIP                                  -->
 	<!-- =================================================================== -->
 	<target name="dist-zip" depends="dist,javadocs">
-		<zip zipfile="${Name}-${version}.zip" basedir="${jsqlide.dist.dir}/.." includes="${jsqlide.dist.dir}}/**"/>
+		<zip zipfile="${jsqlide.dist.dir}/../${Name}-${version}.zip" basedir="${jsqlide.dist.dir}/.." includes="${name}-${version}/**"/>
 	</target>
 
 	<!-- =================================================================== -->
 	<!-- Packages the distribution with TAR-GZIP                             -->
 	<!-- =================================================================== -->
 	<target name="dist-tgz" depends="dist,javadocs">
-		<tar tarfile="${Name}-${version}.tar" basedir="${jsqlide.dist.dir}" includes="**"/>
-		<gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar"/>
+		<tar tarfile="${jsqlide.dist.dir}/../${Name}-${version}.tar" basedir="${jsqlide.dist.dir}/.." includes="${name}-${version}/**"/>
+		<gzip zipfile="${jsqlide.dist.dir}/../${Name}-${version}.tar.gz" src="${Name}-${version}.tar"/>
 	</target>
 
-	<target name="dist-all" depends="dist-tgz,dist-zip"/>
+	<target name="dist-all" depends="clean,dist-tgz,dist-zip"/>
 
 	<!-- =================================================================== -->
 	<!-- Installs the jsqlide.jar library and binary files into jsqlide.home -->
@@ -290,7 +296,7 @@ jsqlide.version=${version}
 	<target name="clean">
 		<delete dir="${build.dir}"/>
 		<delete dir="${temp.dir}"/>
-		<delete dir="${jsqlide.dist.dir}"/>
+		<delete dir="dist"/>
 	</target>
 
 	<!-- =================================================================== -->

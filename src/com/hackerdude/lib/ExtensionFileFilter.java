@@ -68,7 +68,7 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Creates a file filter. If no filters are added, then all
 	 * files are accepted.
 	 *
-	 * @see #addExtension
+	 * @see #addExtension(String)
 	 */
 	public ExtensionFileFilter() {
 		this((String) null, (String) null);
@@ -78,7 +78,7 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Creates a file filter that accepts files with the given extension.
 	 * Example: new ExtensionFileFilter("jpg");
 	 *
-	 * @see #addExtension
+	 * @see #addExtension(String)
 	 */
 	public ExtensionFileFilter(String extension) {
 		this(extension,null);
@@ -91,7 +91,7 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Note that the "." before the extension is not needed. If
 	 * provided, it will be ignored.
 	 *
-	 * @see #addExtension
+	 * @see #addExtension(String)
 	 */
 	public ExtensionFileFilter(String extension, String description) {
 		this(new String[] {extension}, description);
@@ -104,7 +104,7 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Note that the "." before the extension is not needed adn
 	 * will be ignored.
 	 *
-	 * @see #addExtension
+	 * @see #addExtension(String)
 	 */
 	public ExtensionFileFilter(String[] filters) {
 		this(filters, null);
@@ -116,7 +116,7 @@ public class ExtensionFileFilter extends FileFilter {
 	 *
 	 * Note that the "." before the extension is not needed and will be ignored.
 	 *
-	 * @see #addExtension
+	 * @see #addExtension(String)
 	 */
 	public ExtensionFileFilter(String[] filters, String description) {
 		this.filters = new Hashtable(filters.length);
@@ -133,8 +133,8 @@ public class ExtensionFileFilter extends FileFilter {
 	 *
 	 * Files that begin with "." are ignored.
 	 *
-	 * @see #getExtension
-	 * @see FileFilter#accepts
+	 * @see #getExtension(File)
+	 * @see FileFilter#accept(java.io.File)
 	 */
 	public boolean accept(File f) {
 		if(f != null) {
@@ -152,8 +152,8 @@ public class ExtensionFileFilter extends FileFilter {
 	/**
 	 * Return the extension portion of the file's name .
 	 *
-	 * @see #getExtension
-	 * @see FileFilter#accept
+	 * @see #getExtension(File)
+	 * @see FileFilter#accept(java.io.File)
 	 */
 	public String getExtension(File f) {
 		if(f != null) {
@@ -191,10 +191,10 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Returns the human readable description of this filter. For
 	 * example: "JPEG and GIF Image Files (*.jpg, *.gif)"
 	 *
-	 * @see setDescription
-	 * @see setExtensionListInDescription
-	 * @see isExtensionListInDescription
-	 * @see FileFilter#getDescription
+	 * @see ExtensionFileFilter#setDescription(String)
+	 * @see ExtensionFileFilter#setExtensionListInDescription(boolean)
+	 * @see ExtensionFileFilter#isExtensionListInDescription()
+	 * @see FileFilter#getDescription()
 	 */
 	public String getDescription() {
 		if(fullDescription == null) {
@@ -223,9 +223,8 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Sets the human readable description of this filter. For
 	 * example: filter.setDescription("Gif and JPG Images");
 	 *
-	 * @see setDescription
-	 * @see setExtensionListInDescription
-	 * @see isExtensionListInDescription
+	 * @see ExtensionFileFilter#setExtensionListInDescription(boolean)
+	 * @see ExtensionFileFilter#isExtensionListInDescription()
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -239,9 +238,9 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Only relevent if a description was provided in the constructor
 	 * or using setDescription();
 	 *
-	 * @see getDescription
-	 * @see setDescription
-	 * @see isExtensionListInDescription
+	 * @see ExtensionFileFilter#getDescription()
+	 * @see ExtensionFileFilter#setDescription(String)
+	 * @see ExtensionFileFilter#isExtensionListInDescription()
 	 */
 	public void setExtensionListInDescription(boolean b) {
 		useExtensionsInDescription = b;
@@ -255,9 +254,9 @@ public class ExtensionFileFilter extends FileFilter {
 	 * Only relevent if a description was provided in the constructor
 	 * or using setDescription();
 	 *
-	 * @see getDescription
-	 * @see setDescription
-	 * @see setExtensionListInDescription
+	 * @see ExtensionFileFilter#getDescription()
+	 * @see ExtensionFileFilter#setDescription(String)
+	 * @see ExtensionFileFilter#setExtensionListInDescription(boolean)
 	 */
 	public boolean isExtensionListInDescription() {
 		return useExtensionsInDescription;

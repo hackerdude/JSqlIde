@@ -17,7 +17,7 @@ public class SwingUtils {
 	/**
 	 * This method returns the point at which the incoming dialog will be
 	 * perfectly centered on screen.
-	 * @param dialogToCenter The dialog to center. Make sure thesize has been set (pack or validate first).
+	 * @param windowToCenter The window to center. Make sure thesize has been set (pack or validate first).
 	 * @return The point to set on the dialog using setLocation().
 	 */
 	public static Point getCenteredWindowPoint(java.awt.Window windowToCenter) {

@@ -411,7 +411,7 @@ public class SqlIdeApplication  {
 	private class TabChangeListener implements ChangeListener{
 
 		public void stateChanged( ChangeEvent e ) {
-			/** @todo Ask panels to hide their menus when this event fires. */
+			/** TODO Ask panels to hide their menus when this event fires. */
 			  if ( rightIdePanel != null ) {
 				//rightIdsePanel.setVisibleMenus(false, mnuPluginControl );
 				rightIdePanel = (IDEVisualPluginIF)pluginsTabbedPane.getSelectedComponent();
@@ -435,7 +435,7 @@ public class SqlIdeApplication  {
 		return rightIdePanel instanceof PluginInteractiveSQL;
 	}
 
-	/** @todo Todo: Use this if the plugin is also an instance of contextprovider plugins */
+	/* TODO Use this if the plugin is also an instance of contextprovider plugins */
 	public Action[] getActionsFor(NodeIDEBase[] nodes) {
 		return runningPlugins.getActionsFor(nodes);
 	}
