@@ -1,7 +1,8 @@
 package com.hackerdude.apps.sqlide.dataaccess;
 
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import java.util.*;
+import java.util.Hashtable;
+
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * Database Service. It Database Process creation. Eventually it will also

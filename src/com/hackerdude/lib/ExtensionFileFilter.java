@@ -30,10 +30,10 @@
 package com.hackerdude.lib;
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.Enumeration;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import java.util.Hashtable;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
  * A convenience implementation of FileFilter that filters out

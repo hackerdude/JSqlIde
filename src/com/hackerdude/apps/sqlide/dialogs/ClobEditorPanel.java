@@ -1,9 +1,19 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import java.awt.*;
-import java.sql.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.SQLException;
+
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
 import com.hackerdude.apps.sqlide.ProgramConfig;
 
 /**
@@ -46,7 +56,7 @@ public class ClobEditorPanel  extends JPanel {
 	 */
 	public void setBlob(Blob blob) {
 		edtEditor.setFont(ProgramConfig.getInstance().getResultSetFont());
-		this.clob = clob;
+		this.blob = blob;
 		final Blob ourBlob = blob;
 		edtEditor.setText("Reading CLOB. Please wait...");
 		Thread clobReader = new Thread() {

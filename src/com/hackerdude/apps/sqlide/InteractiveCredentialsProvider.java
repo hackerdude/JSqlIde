@@ -1,10 +1,17 @@
 package com.hackerdude.apps.sqlide;
 
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import javax.swing.*;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 import com.hackerdude.apps.sqlide.dataaccess.CredentialsProvider;
-import java.util.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * This is an interactive credentials provider. It shows a login box

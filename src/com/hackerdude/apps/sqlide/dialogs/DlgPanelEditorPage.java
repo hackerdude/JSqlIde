@@ -23,14 +23,26 @@
 
 package com.hackerdude.apps.sqlide.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.swing.picklist.font.FontPickListDialog;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.swing.picklist.font.FontPickListDialog;
 
 /**
  * This panel allows the user to specify the fonts for different on-screen

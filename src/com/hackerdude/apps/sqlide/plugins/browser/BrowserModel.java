@@ -20,20 +20,17 @@
  */
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import java.util.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
+
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.lang.Object.*;
-import java.io.*;
-import java.sql.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseService;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
+import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
 
 /**
  * This class acts as the backend for the browser. Basically the browser will

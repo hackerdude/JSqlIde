@@ -1,7 +1,6 @@
 package com.hackerdude.apps.sqlide.nodes;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
 
 /**
  * Users category node.

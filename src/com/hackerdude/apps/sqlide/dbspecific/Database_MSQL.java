@@ -6,9 +6,13 @@
  */
 package com.hackerdude.apps.sqlide.dbspecific;
 
-import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
-import java.sql.*;
+import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
 
 public class Database_MSQL implements SQLIDEDBInterface {
 

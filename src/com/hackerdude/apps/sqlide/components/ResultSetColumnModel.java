@@ -1,11 +1,15 @@
 package com.hackerdude.apps.sqlide.components;
 
-import javax.swing.table.*;
-import java.awt.font.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+
+import javax.swing.JComponent;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+
+import com.hackerdude.apps.sqlide.dataaccess.QueryResults;
 
 /**
  * Title:        JSqlIde

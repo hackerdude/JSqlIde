@@ -1,8 +1,13 @@
 package com.hackerdude.swing.picklist.addremove;
 
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /**
  * A Box with a list of choices.

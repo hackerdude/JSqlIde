@@ -1,9 +1,12 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.table.*;
-import java.util.*;
-import javax.swing.event.TableModelListener;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+import javax.swing.table.AbstractTableModel;
 
 /**
  * Table Model for connection properties.

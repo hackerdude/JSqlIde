@@ -1,15 +1,17 @@
 package com.hackerdude.apps.sqlide.plugins.pgsql.storedproc;
 
-import javax.swing.Action;
-import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.swing.Action;
 import javax.swing.Icon;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.sql.*;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.AbstractVisualPlugin;
 
 /**
  * A stored procedure editor.

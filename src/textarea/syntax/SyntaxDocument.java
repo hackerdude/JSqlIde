@@ -18,8 +18,11 @@
  */
 package textarea.syntax;
 
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.Segment;
 
 /**
  * A document implementation that can be tokenized by the syntax highlighting
@@ -166,8 +169,11 @@ public class SyntaxDocument extends PlainDocument
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:51  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:15  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:51  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:23  david
  * Initial Import

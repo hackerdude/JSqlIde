@@ -10,10 +10,14 @@ package com.hackerdude.swing.keymapper;
 =====================================================================
 */
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import javax.swing.InputMap;
+import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableModel;
 
 public class KeyMapTableModel extends DefaultTableModel
 {

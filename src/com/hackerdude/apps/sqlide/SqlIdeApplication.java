@@ -23,25 +23,68 @@
  * @version $Id$
 */
 package com.hackerdude.apps.sqlide;
-import java.beans.*;
-import java.io.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import com.hackerdude.apps.sqlide.dialogs.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.browser.*;
-import com.hackerdude.apps.sqlide.plugins.definitions.*;
-import com.hackerdude.apps.sqlide.plugins.isql.*;
-import com.hackerdude.apps.sqlide.wizards.*;
-import com.hackerdude.apps.sqlide.xml.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.swing.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseService;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
+import com.hackerdude.apps.sqlide.dialogs.AboutDialog;
+import com.hackerdude.apps.sqlide.dialogs.DlgIDEConfigure;
+import com.hackerdude.apps.sqlide.dialogs.DlgPluginManager;
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.browser.PluginIDEBrowser;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginDefinition;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginRegistry;
+import com.hackerdude.apps.sqlide.plugins.isql.PluginInteractiveSQL;
+import com.hackerdude.apps.sqlide.wizards.NewServerWizard;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
+import com.hackerdude.swing.SwingUtils;
 
 /**
  * Main class for the sql ide program.
@@ -464,7 +507,7 @@ public class SqlIdeApplication  {
 		}
 
 		void browserTree_mouseClicked(MouseEvent e) {
-			if ( e.getModifiers() == e.BUTTON3_MASK ) {
+			if ( e.getModifiers() == InputEvent.BUTTON3_MASK ) {
 					Double theX = new Double(e.getPoint().getX());
 					Double theY = new Double(e.getPoint().getY());
 					pluginPopupMenu.show(pluginsTabbedPane, theX.intValue(), theY.intValue());
@@ -581,7 +624,7 @@ public class SqlIdeApplication  {
 			super("Plugins...",ProgramIcons.getInstance().getServerIcon());
 		}
 		public void actionPerformed(ActionEvent e) {
-			DlgPluginManager.showPluginManager(getInstance().getFrame(), "Plugin Manager");
+			DlgPluginManager.showPluginManager(getFrame(), "Plugin Manager");
 		}
 
 	}
@@ -619,7 +662,7 @@ public class SqlIdeApplication  {
 
 		public void actionPerformed(ActionEvent evt) {
 			synchronized ( ActionHelpShowDocument.class ) {
-				if ( documentDialog == null ) documentDialog = new ShowDocumentDialog(SqlIdeApplication.getInstance().getFrame());
+				if ( documentDialog == null ) documentDialog = new ShowDocumentDialog(SqlIdeApplication.getFrame());
 				documentDialog.showDialog(title, getClass().getResourceAsStream(documentName));
 			}
 

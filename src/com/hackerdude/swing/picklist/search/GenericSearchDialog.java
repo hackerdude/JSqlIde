@@ -1,12 +1,25 @@
 package com.hackerdude.swing.picklist.search;
 
-import java.awt.*;
-import javax.swing.*;
-import java.beans.*;
-import javax.swing.table.*;
-import javax.swing.event.*;
-import com.hackerdude.swing.*;
-import java.awt.event.*;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.table.TableModel;
+
+import com.hackerdude.swing.SwingUtils;
 
 /**
  * This is a generic Search Dialog. See the generic search panel for details.

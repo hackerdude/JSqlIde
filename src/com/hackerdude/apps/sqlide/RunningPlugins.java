@@ -1,8 +1,16 @@
 package com.hackerdude.apps.sqlide;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.Action;
+
+import com.hackerdude.apps.sqlide.pluginapi.BrowserExtensionPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDENonVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
 
 /**
  * This class encapsulates the currently running plugins.

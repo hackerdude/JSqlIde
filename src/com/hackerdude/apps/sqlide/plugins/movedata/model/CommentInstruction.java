@@ -1,7 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.movedata.model;
 
-import org.w3c.dom.*;
-import org.apache.xerces.dom.*;
+import org.apache.xerces.dom.CommentImpl;
+import org.apache.xerces.dom.DocumentImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 
 /**

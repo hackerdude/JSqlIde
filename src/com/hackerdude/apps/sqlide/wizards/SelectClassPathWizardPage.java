@@ -1,10 +1,12 @@
 package com.hackerdude.apps.sqlide.wizards;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+
+import com.hackerdude.apps.sqlide.dialogs.ConnectionClassPathPanel;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 import com.hackerdude.lib.ui.WizardPage;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import java.awt.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import javax.swing.*;
 
 public class SelectClassPathWizardPage extends WizardPage {
 

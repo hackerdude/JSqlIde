@@ -1,7 +1,9 @@
 package com.hackerdude.apps.sqlide.plugins.usrmgr;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * This is a command factory that maintains a list of usermanager commands

@@ -1,10 +1,17 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
 import com.hackerdude.apps.sqlide.plugins.definitions.PluginDefinition;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.*;
 
 public class PluginDefinitionPanel extends JPanel {
 

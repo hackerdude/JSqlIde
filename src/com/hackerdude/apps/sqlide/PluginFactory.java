@@ -1,15 +1,10 @@
 package com.hackerdude.apps.sqlide;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.*;
-import com.hackerdude.apps.sqlide.plugins.isql.PluginInteractiveSQL;
-import com.hackerdude.apps.sqlide.plugins.definitions.*;
-
 import javax.swing.JOptionPane;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.Enumeration;
+
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginDefinition;
+import com.hackerdude.apps.sqlide.plugins.definitions.PluginRegistry;
 
 /**
  * This class is responsible for dynamically creating plugins.

@@ -10,9 +10,10 @@ package com.hackerdude.swing.keymapper;
 =====================================================================
 */
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTree;
 
 public class JKeyMapTest extends JPanel
 {

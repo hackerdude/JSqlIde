@@ -1,11 +1,8 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
 import javax.swing.AbstractAction;
-
 import javax.swing.Icon;
-import javax.swing.event.*;
 import javax.swing.KeyStroke;
-import java.awt.event.*;
 
 /**
  * This is an action that can be created with an accelerator key.

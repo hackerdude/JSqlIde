@@ -1,11 +1,13 @@
 package com.hackerdude.apps.sqlide.components;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.table.AbstractTableModel;
+
 import com.hackerdude.apps.sqlide.dataaccess.QueryResults;
-import javax.swing.table.*;
-import javax.swing.event.*;
-import javax.swing.*;
-import java.sql.*;
-import java.util.*;
 
 /**
  * Table Model for a Scrollable ResultSet.

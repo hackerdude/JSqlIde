@@ -21,20 +21,15 @@
 */
 package com.hackerdude.apps.sqlide.dialogs;
 
-import com.hackerdude.apps.sqlide.ProgramConfig;
+import java.awt.BorderLayout;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.UIManager.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.lang.Exception.*;
-import java.io.*;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
 
 
 /**

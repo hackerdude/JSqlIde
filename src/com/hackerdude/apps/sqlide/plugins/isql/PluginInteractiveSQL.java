@@ -1,17 +1,37 @@
 package com.hackerdude.apps.sqlide.plugins.isql;
 
-import java.io.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.dialogs.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.lib.*;
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.dialogs.SQLIDEDialogFactory;
+import com.hackerdude.apps.sqlide.pluginapi.AbstractVisualPlugin;
+import com.hackerdude.lib.ExtensionFileFilter;
+import com.hackerdude.lib.GPLAboutDialog;
 
 /**
  *   PanelInteractiveSQL is a UI for the generation of interactive
@@ -198,7 +218,7 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 			loadFileChooser.setDialogTitle("Open SQL File");
 		}
 		int selected = loadFileChooser.showOpenDialog(this);
-		if ( selected == loadFileChooser.APPROVE_OPTION ) {
+		if ( selected == JFileChooser.APPROVE_OPTION ) {
 			String loadedText = loadFromFile(loadFileChooser.getSelectedFile());
 			mainSQLPanel.setQueryText(loadedText);
 			} else { System.out.println("[PanelInteractiveSQL] File Open Cancelled"); }
@@ -220,8 +240,8 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 			exc.printStackTrace();
 		} catch ( IOException exc2 ) {
 			exc2.printStackTrace();
-			} finally { return result; }
-
+		}  
+		return result; 
 	}
 
 
@@ -236,7 +256,7 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 			saveFileChooser.setFileFilter(getFileFilter());
 		}
 		int selected = saveFileChooser.showSaveDialog(this);
-		if ( selected == saveFileChooser.APPROVE_OPTION ) {
+		if ( selected == JFileChooser.APPROVE_OPTION ) {
 			File selectedFile = saveFileChooser.getSelectedFile();
 			if ( ( ! selectedFile.exists() ) && selectedFile.getName().indexOf(".") < 0 ) { selectedFile = new File(selectedFile.getAbsolutePath()+".sql"); }
 			if (  selectedFile.exists() &&

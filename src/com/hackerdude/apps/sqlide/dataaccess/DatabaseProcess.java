@@ -21,26 +21,34 @@
  */
 package com.hackerdude.apps.sqlide.dataaccess;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.components.CachedResultSetTableModel;
+import com.hackerdude.apps.sqlide.components.ScrollableResultSetTableModel;
 import com.hackerdude.apps.sqlide.intf.SQLIDEDBInterface;
-import com.hackerdude.lib.*;
-import com.hackerdude.lib.dataaccess.ConnectionPool;
-import com.hackerdude.apps.sqlide.components.*;
-import com.hackerdude.apps.sqlide.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import javax.swing.plaf.basic.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.io.*;
-import java.sql.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import com.hackerdude.apps.sqlide.xml.*;
-import java.util.HashMap;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.ConnectionProperties;
+import com.hackerdude.apps.sqlide.xml.hostconfig.Property;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 import com.hackerdude.lib.dataaccess.ConnectionFactory;
+import com.hackerdude.lib.dataaccess.ConnectionPool;
 
 /**
  * A Database Process is the db access backend for all the sqlIDE

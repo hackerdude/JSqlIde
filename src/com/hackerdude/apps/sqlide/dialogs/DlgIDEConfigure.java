@@ -22,23 +22,26 @@
 */
 package com.hackerdude.apps.sqlide.dialogs;
 
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+
 import com.hackerdude.apps.sqlide.ProgramConfig;
 import com.hackerdude.apps.sqlide.ProgramIcons;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.UIManager.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.lang.Exception.*;
-import java.io.*;
-import javax.swing.event.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
 
 /**
  * This is a dialog that allows us to configure the

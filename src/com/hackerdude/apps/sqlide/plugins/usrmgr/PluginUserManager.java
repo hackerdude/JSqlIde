@@ -1,13 +1,20 @@
 package com.hackerdude.apps.sqlide.plugins.usrmgr;
 
-import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.awt.*;
-import javax.swing.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import com.hackerdude.apps.sqlide.ProgramIcons;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import java.sql.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
+import com.hackerdude.apps.sqlide.pluginapi.BrowserExtensionPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
 
 /**
  * A User Manager plugin for PostgreSQL. Displays available users, and lets you

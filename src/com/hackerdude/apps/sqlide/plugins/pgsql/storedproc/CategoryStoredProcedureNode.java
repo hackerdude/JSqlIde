@@ -9,13 +9,11 @@
  */
 package com.hackerdude.apps.sqlide.plugins.pgsql.storedproc;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import javax.swing.tree.*;
-import javax.swing.*;
-import java.util.*;
-import java.sql.*;
-import com.hackerdude.apps.sqlide.*;
+import javax.swing.ImageIcon;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
 
 
 /**

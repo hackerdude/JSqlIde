@@ -1,9 +1,26 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import com.hackerdude.apps.sqlide.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
 /**
  * Title:        JSqlIde
  * Description:  A Java SQL Integrated Development Environment
@@ -41,7 +58,7 @@ public class AboutDialog extends JDialog implements KeyListener {
 		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		bottomPanel.add(btn);
 		bottomPanel.add(btnLicense);
-		label.setAlignmentX(label.CENTER_ALIGNMENT);
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btn.setDefaultCapable(true);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -65,7 +82,7 @@ public class AboutDialog extends JDialog implements KeyListener {
 	}
 
 	public void keyReleased(KeyEvent e) {
-		if ( e.getKeyCode() == e.VK_A && e.getModifiers() == e.ALT_MASK ) {
+		if ( e.getKeyCode() == KeyEvent.VK_A && e.getModifiers() == KeyEvent.ALT_MASK ) {
 			if ( logoPanel.isRunning() ) logoPanel.stop(); else logoPanel.start();
 		}
 	}

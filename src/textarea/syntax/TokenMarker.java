@@ -19,7 +19,6 @@
 package textarea.syntax;
 
 import javax.swing.text.Segment;
-import java.util.*;
 
 /**
  * A token marker that splits lines of text into tokens. Each token carries
@@ -347,8 +346,11 @@ public abstract class TokenMarker
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:54  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:15  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:54  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:24  david
  * Initial Import

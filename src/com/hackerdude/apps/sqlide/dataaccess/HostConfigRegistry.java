@@ -1,11 +1,14 @@
 package com.hackerdude.apps.sqlide.dataaccess;
 
-import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.io.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.xml.*;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  *
@@ -89,7 +92,7 @@ public class HostConfigRegistry extends Observable {
 	 */
 	public synchronized void readSqlideHostConfigs() {
 
-		File findFiles = new File(ProgramConfig.getInstance().getUserProfilePath());
+		File findFiles = new File(ProgramConfig.getUserProfilePath());
 		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(HostConfigFactory.PROP_DB_CONFIG_SUFFIX));
 		String fileName;
 		SqlideHostConfig dbSpec;
@@ -98,7 +101,7 @@ public class HostConfigRegistry extends Observable {
 
 		for ( int i=0; i<dbPropFileNames.length; i++) {
 
-			fileName = ProgramConfig.getInstance().getUserProfilePath()+dbPropFileNames[i];
+			fileName = ProgramConfig.getUserProfilePath()+dbPropFileNames[i];
 			try {
 				dbSpec = HostConfigFactory.createHostConfig(fileName);
 				// Just in case they renamed it from the outside.

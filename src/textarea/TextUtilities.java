@@ -19,7 +19,8 @@
 
 package textarea;
 
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  * Class with several utility functions used by the text area component.
@@ -139,8 +140,11 @@ public class TextUtilities
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:41  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:13  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:41  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:22  david
  * Initial Import

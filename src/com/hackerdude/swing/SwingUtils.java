@@ -1,7 +1,8 @@
 package com.hackerdude.swing;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 
 /**
  * A collection of static utility methods for swing.

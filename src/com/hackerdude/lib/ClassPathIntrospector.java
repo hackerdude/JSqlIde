@@ -1,8 +1,13 @@
 package com.hackerdude.lib;
 
-import java.util.*;
-import java.io.*;
-import java.util.zip.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * This class allows you to query the classpath for the

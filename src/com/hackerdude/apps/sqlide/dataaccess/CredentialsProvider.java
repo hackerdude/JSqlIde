@@ -1,7 +1,8 @@
 package com.hackerdude.apps.sqlide.dataaccess;
 
-import java.util.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.util.Map;
+
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * Implement this interface to provide the credentials

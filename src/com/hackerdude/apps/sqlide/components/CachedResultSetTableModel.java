@@ -1,10 +1,12 @@
 package com.hackerdude.apps.sqlide.components;
 
-import javax.swing.table.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 import com.hackerdude.apps.sqlide.dataaccess.QueryResults;
 
 /**

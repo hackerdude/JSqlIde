@@ -1,9 +1,12 @@
 package com.hackerdude.apps.sqlide.plugins.pgsql.storedproc;
 
-import java.awt.*;
-import textarea.*;
-import javax.swing.*;
-import com.hackerdude.apps.sqlide.plugins.*;
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextArea;
+import com.hackerdude.apps.sqlide.plugins.SyntaxTextAreaFactory;
 
 /**
  * Stored Procedure Editor Panel.

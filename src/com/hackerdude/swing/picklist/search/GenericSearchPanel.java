@@ -1,12 +1,12 @@
 package com.hackerdude.swing.picklist.search;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
-import javax.swing.*;
-import javax.swing.text.*;
-
-import com.hackerdude.swing.widgets.*;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * This is a Generic Search Panel. It shows a generic, event-aware search

@@ -1,11 +1,14 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
-import javax.swing.JPanel;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import javax.swing.Action;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
 import com.hackerdude.apps.sqlide.ProgramIcons;
 
 /**

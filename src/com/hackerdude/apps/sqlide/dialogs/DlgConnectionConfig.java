@@ -22,26 +22,22 @@
 */
 package com.hackerdude.apps.sqlide.dialogs;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.ProgramIcons;
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import javax.swing.UIManager.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.lang.Exception.*;
-import java.io.*;
-import javax.swing.event.*;
-import com.hackerdude.apps.sqlide.ProgramConfig;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 import com.hackerdude.swing.SwingUtils;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * Dialog to configure the database connection profile

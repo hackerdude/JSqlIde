@@ -4,9 +4,9 @@
 
  */
 package com.hackerdude.apps.sqlide.intf;
-import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Database Interface.

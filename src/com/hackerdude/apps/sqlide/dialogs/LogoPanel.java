@@ -1,13 +1,29 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.RenderingHints;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowAdapter;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 
 public class LogoPanel extends JPanel implements Runnable {
@@ -188,7 +204,7 @@ public class LogoPanel extends JPanel implements Runnable {
             Graphics g = getGraphics();
             paint(g);
             g.dispose();
-            thread.yield();
+            Thread.yield();
         }
         thread = null;
     }
@@ -199,7 +215,7 @@ public class LogoPanel extends JPanel implements Runnable {
 		dlg.setTitle( "About SQLIDE");
 		final LogoPanel logoPanel = new LogoPanel();
 		JLabel lbl = new JLabel("<HTML><B>About SQLIDE</HTML>");
-		lbl.setAlignmentX(lbl.CENTER_ALIGNMENT);
+		lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
 		dlg.getContentPane().setLayout(new BorderLayout());
 		dlg.getContentPane().add(logoPanel, BorderLayout.CENTER);
 		dlg.getContentPane().add(lbl, BorderLayout.SOUTH);

@@ -1,6 +1,7 @@
 package com.hackerdude.swing.widgets;
 
-import javax.swing.text.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.PlainDocument;
 
 
 /**

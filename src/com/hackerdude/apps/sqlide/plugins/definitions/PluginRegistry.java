@@ -1,9 +1,19 @@
 package com.hackerdude.apps.sqlide.plugins.definitions;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.pluginapi.BrowserExtensionPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDENonVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
 
 /**
  * Plug-in Registry.

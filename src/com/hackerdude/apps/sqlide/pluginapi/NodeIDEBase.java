@@ -1,12 +1,14 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
-import java.io.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
-import java.awt.datatransfer.*;
-import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.ImageIcon;
+import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 
 /**
  * SQLIDE Base Node. All Nodes inherit from this base node.

@@ -22,16 +22,13 @@
  */
 package com.hackerdude.apps.sqlide;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.UIManager.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.io.*;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Properties;
+
+import javax.swing.ImageIcon;
 
 /**
  * The Icon collection for the sqlDE program.
@@ -240,6 +237,9 @@ public class ProgramIcons {
 /*
 
   $Log$
+  Revision 1.3  2005/03/17 21:51:12  davidmartinez
+  Turning into an eclipse project, global import optimize and warning-busting
+
   Revision 1.2  2003/01/27 19:44:45  davidmartinez
   New tasks menu. Miscellaneous fixes.
 

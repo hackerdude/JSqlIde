@@ -1,7 +1,9 @@
 package com.hackerdude.apps.sqlide.dataaccess;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * An encapsulation of the query results so that JDBC 1.0 drivers can remain

@@ -19,9 +19,13 @@
 
 package textarea;
 
-import textarea.syntax.*;
-import javax.swing.JPopupMenu;
 import java.awt.Color;
+
+import javax.swing.JPopupMenu;
+
+import textarea.syntax.SyntaxDocument;
+import textarea.syntax.SyntaxStyle;
+import textarea.syntax.SyntaxUtilities;
 
 /**
  * Encapsulates default settings for a text area. This can be passed

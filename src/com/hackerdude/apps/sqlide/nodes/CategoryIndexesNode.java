@@ -1,8 +1,11 @@
 package com.hackerdude.apps.sqlide.nodes;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
 
 /**
  * Index category node.

@@ -1,10 +1,11 @@
 package com.hackerdude.apps.sqlide.plugins.browser.browsejdbc;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.BrowserExtensionPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
 
 /**
  * The Basic JDBC Introspector implements the base browser functionality,

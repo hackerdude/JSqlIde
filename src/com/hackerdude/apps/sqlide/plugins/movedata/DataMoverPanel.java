@@ -1,14 +1,24 @@
 package com.hackerdude.apps.sqlide.plugins.movedata;
 
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import javax.swing.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.event.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.ProgramIcons;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.AbstractVisualPlugin;
+import com.hackerdude.apps.sqlide.pluginapi.IDENodeContextPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
 
 /**
  * Data Mover plugin. The Data Mover can create a script

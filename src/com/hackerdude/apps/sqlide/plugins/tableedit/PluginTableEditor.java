@@ -21,27 +21,53 @@
  */
 package com.hackerdude.apps.sqlide.plugins.tableedit;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.lib.*;
-import com.hackerdude.apps.sqlide.plugins.browser.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import com.hackerdude.swing.SwingUtils;
-import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.io.*;
-import textarea.*;
-import textarea.syntax.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
+import textarea.JEditTextArea;
+import textarea.syntax.SyntaxDocument;
+import textarea.syntax.TSQLTokenMarker;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableNode;
+import com.hackerdude.lib.GPLAboutDialog;
+import com.hackerdude.swing.SwingUtils;
 
 /**
  * PanelTableEditor is a UI for the creation of tables

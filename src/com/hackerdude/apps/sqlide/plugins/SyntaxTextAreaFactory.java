@@ -1,8 +1,8 @@
 package com.hackerdude.apps.sqlide.plugins;
 
-import com.hackerdude.apps.sqlide.*;
-import java.util.*;
-import java.awt.*;
+import java.util.Properties;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
 
 /**
  * A factory class for SQLIDE text areas.

@@ -1,9 +1,10 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
-import java.io.*;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
 
 /**
  * The dialog factory creates common dialogs with SQLIDE

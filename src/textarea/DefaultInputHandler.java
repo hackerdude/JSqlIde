@@ -19,15 +19,19 @@
 
 package textarea;
 
-import javax.swing.text.*;
-import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
-import java.awt.event.*;
 import java.awt.Component;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.EventObject;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.text.BadLocationException;
 
 /**
  * The default input handler. It maps sequences of keystrokes into actions
@@ -963,8 +967,11 @@ public class DefaultInputHandler implements InputHandler
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:32  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:13  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:32  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:21  david
  * Initial Import

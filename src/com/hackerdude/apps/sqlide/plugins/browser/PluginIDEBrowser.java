@@ -22,19 +22,66 @@
  */
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import com.hackerdude.apps.sqlide.*;
-import com.hackerdude.apps.sqlide.dataaccess.*;
-import com.hackerdude.apps.sqlide.nodes.*;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.*;
-import com.hackerdude.lib.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.ProgramIcons;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
+import com.hackerdude.apps.sqlide.dataaccess.DatabaseService;
+import com.hackerdude.apps.sqlide.dataaccess.HostConfigRegistry;
+import com.hackerdude.apps.sqlide.nodes.CategoryDbUsersNode;
+import com.hackerdude.apps.sqlide.nodes.CategoryGeneralUsersNode;
+import com.hackerdude.apps.sqlide.nodes.CategoryIndexesNode;
+import com.hackerdude.apps.sqlide.nodes.CategoryTriggerNode;
+import com.hackerdude.apps.sqlide.nodes.CategoryUsersNode;
+import com.hackerdude.apps.sqlide.nodes.ItemIndexNode;
+import com.hackerdude.apps.sqlide.nodes.ItemServerNode;
+import com.hackerdude.apps.sqlide.nodes.ItemUserNode;
+import com.hackerdude.apps.sqlide.pluginapi.IDEVisualPluginIF;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategoryCatalogsNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategoryColumnsNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategorySchemaNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.CategoryTableNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemCatalogNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemSchemaNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableColumnNode;
+import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.ItemTableNode;
+import com.hackerdude.lib.GPLAboutDialog;
 
 /**
  *   Based on the sqlIDE Config, this browser
@@ -459,7 +506,7 @@ public class PluginIDEBrowser extends JPanel
 		public void mouseClicked(MouseEvent e) {
 			try {
 				/** @todo This does not work on MacOS */
-				if (e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK) {
+				if (e.getModifiers() == InputEvent.BUTTON3_MASK || e.getModifiers() == InputEvent.CTRL_MASK) {
 					if (contextActions == null || contextActions.length > 0) {
 						JPopupMenu thisMenu = new JPopupMenu("Actions");
 						for (int i = 0; i < contextActions.length; i++)

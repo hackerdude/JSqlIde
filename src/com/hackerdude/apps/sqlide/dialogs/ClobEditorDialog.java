@@ -1,11 +1,20 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.sql.*;
-import com.hackerdude.swing.SwingUtils;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.sql.Blob;
+import java.sql.Clob;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import com.hackerdude.swing.SwingUtils;
 
 /**
  * CLOB editor dialog. Allows the user to look at clobs (and edit them in
@@ -54,7 +63,7 @@ public class ClobEditorDialog extends JDialog {
 		ClobEditorDialog dialog = new ClobEditorDialog(owner, title, true);
 		dialog.pnlClobEditor.setFieldName(fieldName);
 		dialog.pnlClobEditor.setClob(clob);
-		Dimension appDimension = SqlIdeApplication.getInstance().getFrame().getSize();
+		Dimension appDimension = SqlIdeApplication.getFrame().getSize();
 
 		dialog.setSize((int)appDimension.getWidth()/2, (int)appDimension.getHeight() / 2);
 		Point center = SwingUtils.getCenteredWindowPoint(this);
@@ -66,7 +75,7 @@ public class ClobEditorDialog extends JDialog {
 		ClobEditorDialog dialog = new ClobEditorDialog(owner, title, true);
 		dialog.pnlClobEditor.setFieldName(fieldName);
 		dialog.pnlClobEditor.setBlob(blob);
-		Dimension appDimension = SqlIdeApplication.getInstance().getFrame().getSize();
+		Dimension appDimension = SqlIdeApplication.getFrame().getSize();
 
 		dialog.setSize((int)appDimension.getWidth()/2, (int)appDimension.getHeight() / 2);
 		Point center = SwingUtils.getCenteredWindowPoint(this);

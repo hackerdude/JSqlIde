@@ -24,11 +24,20 @@
  */
 package com.hackerdude.lib;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * <A HREF="http://www.warren-wilson.edu/~echerry/GPLAboutDialog/GPLAboutDialog.html">GPLAboutDialog</A> is an extension of AbstractAction which will

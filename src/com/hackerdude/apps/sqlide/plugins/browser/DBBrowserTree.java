@@ -1,10 +1,18 @@
 package com.hackerdude.apps.sqlide.plugins.browser;
 
-import java.awt.dnd.*;
-import javax.swing.*;
-import javax.swing.tree.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
 
-import com.hackerdude.apps.sqlide.pluginapi.*;
+import javax.swing.JTree;
+import javax.swing.tree.TreeNode;
+
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEBase;
 
 /**
  * The browser tree.

@@ -1,6 +1,7 @@
 package com.hackerdude.apps.sqlide.plugins.movedata.model;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * An abstract script node.

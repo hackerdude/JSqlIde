@@ -1,7 +1,7 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
+import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.*;
 
 /**
  * This is the basic interface for version 2 of the plugin

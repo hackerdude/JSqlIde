@@ -1,12 +1,24 @@
 package com.hackerdude.apps.sqlide.xml;
 
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
-import java.util.*;
-import java.io.*;
-import org.exolab.castor.xml.*;
-import org.exolab.castor.xml.*;
-import org.apache.xml.serialize.*;
-import com.hackerdude.apps.sqlide.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.xml.hostconfig.ClassPath;
+import com.hackerdude.apps.sqlide.xml.hostconfig.ConnectionProperties;
+import com.hackerdude.apps.sqlide.xml.hostconfig.General;
+import com.hackerdude.apps.sqlide.xml.hostconfig.Jdbc;
+import com.hackerdude.apps.sqlide.xml.hostconfig.Property;
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * This class creates properly-initialized Host Configuration objects.
@@ -25,7 +37,7 @@ public class HostConfigFactory {
 		result.setName("New Configuration");
 		result.getJdbc().setClassPath(new ClassPath());
 		result.getJdbc().setConnectionProperties(new ConnectionProperties());
-		result.setVersion(ProgramConfig.getInstance().getVersionNumber());
+		result.setVersion(ProgramConfig.getVersionNumber());
 		return result;
 	}
 

@@ -19,8 +19,13 @@
 
 package textarea.syntax;
 
-import javax.swing.text.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+
+import javax.swing.text.Segment;
+import javax.swing.text.TabExpander;
+import javax.swing.text.Utilities;
 
 /**
  * Class with several utility functions used by jEdit's syntax colorizing
@@ -170,8 +175,11 @@ public class SyntaxUtilities
 /*
  * ChangeLog:
  * $Log$
- * Revision 1.1  2001/09/07 02:47:52  davidmartinez
- * Initial revision
+ * Revision 1.2  2005/03/17 21:51:15  davidmartinez
+ * Turning into an eclipse project, global import optimize and warning-busting
+ *
+ * Revision 1.1.1.1  2001/09/07 02:47:52  davidmartinez
+ * Initial Checkin of the Alpha tree
  *
  * Revision 1.1.1.1  1999/10/20 00:09:23  david
  * Initial Import

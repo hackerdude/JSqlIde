@@ -1,15 +1,26 @@
 package com.hackerdude.apps.sqlide.plugins;
 
 //import textarea.JEditTextArea;
-import java.awt.dnd.*;
-import java.awt.datatransfer.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
-import com.hackerdude.apps.sqlide.pluginapi.*;
-import java.awt.Dimension;
-import javax.swing.*;
-import java.util.*;
-import java.awt.*;
-import com.hackerdude.apps.sqlide.*;
+import java.util.Properties;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import com.hackerdude.apps.sqlide.ProgramConfig;
+import com.hackerdude.apps.sqlide.pluginapi.NodeIDEItem;
 //import textarea.TextAreaDefaults;
 //import textarea.syntax.SyntaxDocument;
 

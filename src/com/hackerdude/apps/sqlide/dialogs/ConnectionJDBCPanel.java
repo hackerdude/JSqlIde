@@ -1,9 +1,18 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.hackerdude.apps.sqlide.xml.hostconfig.SqlideHostConfig;
 
 /**
  * This panel allows the user to specify the JDBC properties for a connection.

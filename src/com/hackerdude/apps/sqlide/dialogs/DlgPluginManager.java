@@ -1,12 +1,18 @@
 package com.hackerdude.apps.sqlide.dialogs;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.*;
-import com.hackerdude.apps.sqlide.SqlIdeApplication;
+import java.awt.BorderLayout;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JSplitPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import com.hackerdude.apps.sqlide.RunningPlugins;
-import com.hackerdude.swing.*;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
 import com.hackerdude.apps.sqlide.plugins.definitions.PluginDefinition;
+import com.hackerdude.swing.SwingUtils;
 
 public class DlgPluginManager extends JDialog {
 
