@@ -41,8 +41,8 @@ public class DatabaseSpecDOMParser {
 	}
 
 
-	public DatabaseSpec parseDatabaseSpec(InputStream is) throws IOException, SAXException {
-		DatabaseSpec result =  new DatabaseSpec();
+	public ConnectionConfig parseDatabaseSpec(InputStream is) throws IOException, SAXException {
+		ConnectionConfig result =  new ConnectionConfig();
 		InputSource iSource = new InputSource(is);
 		org.apache.xerces.parsers.DOMParser p = new org.apache.xerces.parsers.DOMParser();
 		p.setFeature("http://apache.org/xml/features/dom/include-ignorable-whitespace", false);
@@ -55,7 +55,7 @@ public class DatabaseSpecDOMParser {
 
 
 
-	private void readConfiguration(Document doc, DatabaseSpec destination ) throws SAXException {
+	private void readConfiguration(Document doc, ConnectionConfig destination ) throws SAXException {
 		Node rootNode = doc.getFirstChild();
 		while ( rootNode.getNodeType() != Node.ELEMENT_NODE ) {
 			rootNode = rootNode.getNextSibling();
@@ -76,7 +76,7 @@ public class DatabaseSpecDOMParser {
 	}
 
 
-   private void parseConnection( Node connectionNode, DatabaseSpec destination ) {
+   private void parseConnection( Node connectionNode, ConnectionConfig destination ) {
 	  NamedNodeMap nm = connectionNode.getAttributes();
 	  String sConnections = nm.getNamedItem(ATTRIBUTE_NUM_CONNECTIONS).getNodeValue();
 	  NodeList nl = connectionNode.getChildNodes();
@@ -105,7 +105,7 @@ public class DatabaseSpecDOMParser {
 	   setPoliteName(sGeneral);
 	}*/
 
-	private void parseJdbc(Node jdbcNode, DatabaseSpec spec) throws SAXException {
+	private void parseJdbc(Node jdbcNode, ConnectionConfig spec) throws SAXException {
 		NodeList children = jdbcNode.getChildNodes();
 		String driver = null;
 		String url    = null;
@@ -132,7 +132,7 @@ public class DatabaseSpecDOMParser {
 	}
 
 
-	private void parseClassPathNode(Node classpathNode, DatabaseSpec spec) throws SAXException {
+	private void parseClassPathNode(Node classpathNode, ConnectionConfig spec) throws SAXException {
 		NodeList children = classpathNode.getChildNodes();
 		int itemLength = children.getLength();
 		ArrayList arrayList = new ArrayList();
@@ -149,7 +149,7 @@ public class DatabaseSpecDOMParser {
 		spec.setJarFileName(files);
 	}
 
-	private void parseSQLIDE(Node ideNode, DatabaseSpec spec) throws SAXException {
+	private void parseSQLIDE(Node ideNode, ConnectionConfig spec) throws SAXException {
 	   NodeList children = ideNode.getChildNodes();
 		String _userName  = null;
 		String _hostName  = null;
@@ -190,7 +190,7 @@ public class DatabaseSpecDOMParser {
 	 /** @todo Make sure connections section and sqlide section are being accounted for.
 	  *  Also the only general property was the polite name. This is now elsewhere. put it thw
 	  *  way it's expected.*/
-   public void save(DatabaseSpec spec) {
+   public void save(ConnectionConfig spec) {
 		DocumentImpl xmlDatabaseSpec = new DocumentImpl();
 
 		Element rootNode    = xmlDatabaseSpec.createElement(XSPEC_SPEC_ROOTNODE);

@@ -66,7 +66,7 @@ public class DatabaseProcess {
 	private String serverCatalogName;
 	private String urlform;
 
-	private DatabaseSpec databaseSpec;
+	private ConnectionConfig databaseSpec;
 
 	public TableModel getTableModel() {
 		return lastResultTable;
@@ -80,7 +80,7 @@ public class DatabaseProcess {
 	 * Constructor
 	 * @param svr The database Specification to use for the connection..
 	 */
-	public DatabaseProcess(DatabaseSpec svr) {
+	public DatabaseProcess(ConnectionConfig svr) {
 
 		databaseSpec = svr;
 		currentCatalog  = databaseSpec.getDefaultCatalog();
@@ -506,7 +506,7 @@ public class DatabaseProcess {
 			return(databaseSpec.getPoliteName());
 	}
 
-	public DatabaseSpec getSpec() { return databaseSpec; }
+	public ConnectionConfig getSpec() { return databaseSpec; }
 
    /**
 	* Get a connection pool for this Process

@@ -3,12 +3,12 @@ package com.hackerdude.devtools.db.sqlide.dialogs;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseSpec;
+import com.hackerdude.devtools.db.sqlide.dataaccess.ConnectionConfig;
 
-public class DbSpecJDBCPanel extends JPanel {
+public class ConnectionJDBCPanel extends JPanel {
 
 
-	DatabaseSpec databaseSpec;
+	ConnectionConfig databaseSpec;
 
     private BorderLayout mainBL = new BorderLayout();
     private JTextField fFileName = new JTextField();
@@ -40,7 +40,7 @@ public class DbSpecJDBCPanel extends JPanel {
     private JLabel lblURLForm = new JLabel();
     private JTextField fDisplayName = new JTextField();
 
-    public DbSpecJDBCPanel() {
+    public ConnectionJDBCPanel() {
         try {
             jbInit();
         }
@@ -117,7 +117,7 @@ public class DbSpecJDBCPanel extends JPanel {
 
     }
 
-	public void setDatabaseSpec(DatabaseSpec spec) {
+	public void setDatabaseSpec(ConnectionConfig spec) {
 		this.databaseSpec = spec;
 	}
 

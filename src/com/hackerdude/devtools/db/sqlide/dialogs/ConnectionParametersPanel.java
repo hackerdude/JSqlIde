@@ -4,15 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseSpec;
+import com.hackerdude.devtools.db.sqlide.dataaccess.ConnectionConfig;
 
-public class DBSpecConnectionPanel extends JPanel {
+public class ConnectionParametersPanel extends JPanel {
 
 	public final Action ACTION_NEW_CONNECTION = new NewConnectionAction();
 	public final Action ACTION_DELETE_CONNECTION = new DeleteConnectionAction();
 
 	ConnPropertiesTableModel connModel = null;
-	DatabaseSpec databaseSpec;
+	ConnectionConfig connectionConfig;
 
     private BorderLayout borderLayout1 = new BorderLayout();
     private JButton btnDeleteConnection = new JButton(ACTION_DELETE_CONNECTION);
@@ -27,7 +27,7 @@ public class DBSpecConnectionPanel extends JPanel {
     private BorderLayout borderLayout8 = new BorderLayout();
     private BorderLayout borderLayout7 = new BorderLayout();
 
-    public DBSpecConnectionPanel() {
+    public ConnectionParametersPanel() {
         try {
             jbInit();
         }
@@ -70,12 +70,12 @@ public class DBSpecConnectionPanel extends JPanel {
 		}
 	}
 
-	public void setDatabaseSpec(DatabaseSpec databaseSpec) {
-		this.databaseSpec = databaseSpec;
+	public void setConnectionConfig(ConnectionConfig databaseSpec) {
+		this.connectionConfig = databaseSpec;
 	}
 
 	public void readFromModel() {
-		connModel = new ConnPropertiesTableModel(databaseSpec.getConnectionProperties(), "Parameter");
+		connModel = new ConnPropertiesTableModel(connectionConfig.getConnectionProperties(), "Parameter");
 		tblConnectionParams.setModel(connModel);
 	}
 
@@ -84,7 +84,7 @@ public class DBSpecConnectionPanel extends JPanel {
 	 * TODO: Apply the data model for connection Properties
 	 */
 	public void applyToModel() {
-		databaseSpec.setConnectionProperties(connModel.getProperties());
+		connectionConfig.setConnectionProperties(connModel.getProperties());
 	}
 
 }

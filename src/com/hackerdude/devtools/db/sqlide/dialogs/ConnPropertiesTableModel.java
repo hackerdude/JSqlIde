@@ -3,7 +3,7 @@ package com.hackerdude.devtools.db.sqlide.dialogs;
 import javax.swing.table.*;
 import java.util.*;
 import javax.swing.event.TableModelListener;
-import com.hackerdude.devtools.db.sqlide.dataaccess.DatabaseSpec;
+import com.hackerdude.devtools.db.sqlide.dataaccess.ConnectionConfig;
 
 /**
  * Title:        JSqlIde
@@ -74,7 +74,7 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 
 		Vector row = (Vector)dataTable.get(rowIndex);
 		String value = (String)row.get(1);
-		if ( value.equals( DatabaseSpec._ASK_) ) return false;
+		if ( value.equals( ConnectionConfig._ASK_) ) return false;
 		return true;
 	}
 
@@ -85,11 +85,11 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 		if ( columnIndex == 2 ) {
 			value = (String)row.get(1);
 			/** @todo Reduce object creation by putting these in the actual vector. */
-			if ( value.equals(DatabaseSpec._ASK_) ) { return new Boolean(true); }
+			if ( value.equals(ConnectionConfig._ASK_) ) { return new Boolean(true); }
 			else return new Boolean(false);
 		} else
 		value = (String)row.get(columnIndex);
-		if ( columnIndex == 1 && value.equals(DatabaseSpec._ASK_) ) { value = ""; }
+		if ( columnIndex == 1 && value.equals(ConnectionConfig._ASK_) ) { value = ""; }
 		return value;
 
 	}
@@ -102,7 +102,7 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 		if ( columnIndex == 2 ) {
 			row.remove(1);
 			if ( ((Boolean)aValue).booleanValue() )
-				row.add(1, DatabaseSpec._ASK_);
+				row.add(1, ConnectionConfig._ASK_);
 			else row.add(1, "");
 		} else {
 			row.set(columnIndex, aValue);

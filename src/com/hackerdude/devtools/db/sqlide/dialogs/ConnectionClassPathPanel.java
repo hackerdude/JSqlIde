@@ -7,12 +7,12 @@ import java.util.*;
 import java.io.*;
 import com.hackerdude.devtools.db.sqlide.dataaccess.*;
 
-public class DBSpecClassPathPanel extends JPanel {
+public class ConnectionClassPathPanel extends JPanel {
 
 	public final Action ACTION_ADD = new AddAction();
 	public final Action ACTION_REMOVE = new RemoveAction();
 
-	private DatabaseSpec databaseSpec;
+	private ConnectionConfig databaseSpec;
 	ClassPathListModel listModel = new ClassPathListModel();
 
     private BorderLayout borderLayout1 = new BorderLayout();
@@ -26,7 +26,7 @@ public class DBSpecClassPathPanel extends JPanel {
     private JList lstFileList = new JList();
     private JLabel lblInstruction = new JLabel();
 
-    public DBSpecClassPathPanel() {
+    public ConnectionClassPathPanel() {
         try {
             jbInit();
         }
@@ -50,13 +50,13 @@ public class DBSpecClassPathPanel extends JPanel {
         fileScroller.getViewport().add(lstFileList, null);
         pnlTop.add(lblInstruction, null);
     }
-    public void setDatabaseSpec(DatabaseSpec databaseSpec) {
+    public void setDatabaseSpec(ConnectionConfig databaseSpec) {
         this.databaseSpec = databaseSpec;
 		readFromModel();
     }
 
 
-    public DatabaseSpec getDatabaseSpec() {
+    public ConnectionConfig getDatabaseSpec() {
         return databaseSpec;
     }
 

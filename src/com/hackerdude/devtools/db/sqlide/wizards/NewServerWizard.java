@@ -26,7 +26,7 @@ public class NewServerWizard extends Wizard {
 	ServerDetailsWizardPage      pageServerDetails;
 	SelectClassPathWizardPage    pageSelectClassPath;
 
-	DatabaseSpec databaseSpec;
+	ConnectionConfig databaseSpec;
 
 	public NewServerWizard(boolean modal) {
 		super("New Server Profile",
@@ -46,15 +46,15 @@ public class NewServerWizard extends Wizard {
 		pages[0] = pageSelectClassPath;
 		pages[1] = pageNewServer;
 		pages[2] = pageServerDetails;
-		File defaultFile = new File(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
+		File defaultFile = new File(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
 		if ( ! defaultFile.exists() ) {
-			setFileName(DatabaseSpec.DEFAULT_DBSPEC_FILENAME);
+			setFileName(ConnectionConfig.DEFAULT_DBSPEC_FILENAME);
 			pageNewServer.disableFileSelection();
 		}
 		setPages(pages);
 	}
 
-	public DatabaseSpec getDBSpec() { return databaseSpec; }
+	public ConnectionConfig getDBSpec() { return databaseSpec; }
 
 	public void setFileName(String fileName) {
 		pageNewServer.fFileName.setText(fileName);
