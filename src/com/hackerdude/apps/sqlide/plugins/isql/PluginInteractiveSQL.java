@@ -323,6 +323,11 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 	public void setQueryText(String newText) {
 		mainSQLPanel.setQueryText(newText);
 	}
+
+	public String getQueryText() {
+		return mainSQLPanel.getQueryText();
+	}
+
 	public void selectCatalog(String catalogName) {
 		mainSQLPanel.selectCatalog(catalogName);
 	}
