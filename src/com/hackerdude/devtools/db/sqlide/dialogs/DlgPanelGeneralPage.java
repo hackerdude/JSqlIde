@@ -65,34 +65,11 @@ public class DlgPanelGeneralPage extends JPanel {
 		add(pnMidPane, BorderLayout.CENTER);
     }
 
-	public void updateFromConfig() {
-		/** @todo Implement this updateFromConfig method */
+	public void readFromModel() {
+		String lkName = ProgramConfig.getInstance().getUILookandFeel();
+		cbLookFeel.setSelectedItem(UIManager.getLookAndFeel().getName());
 	}
+
 
 }
 
-/*
-
-  $Log$
-  Revision 1.1  2001/09/07 02:51:20  davidmartinez
-  Initial revision
-
-  Revision 1.1.1.1  2000/04/27 11:54:54  david
-  Initial Import
-
-  Revision 1.6  1999/12/15 09:10:18  david
-  Lots of fixes, now Database specs can be added and deleted; changed
-  expand/collapse icons switched.
-
-  Revision 1.5  1999/10/25 15:20:37  david
-  Moved files to a flat JSqlIde package, in preparation for the
-  makefile and package organization.
-
-  Revision 1.4  1999/10/19 01:04:41  david
-  added class javadoc commment
-
-  Revision 1.3  1999/10/19 00:46:16  david
-  Added Log
-
-
- */

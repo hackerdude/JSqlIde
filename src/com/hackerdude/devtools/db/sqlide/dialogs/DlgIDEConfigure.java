@@ -81,9 +81,9 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 
 
 	public void update(Observable obs, Object obj) {
-		pgEditor.updateFromConfig();
-		pgGeneral.updateFromConfig();
-		pgServers.updateFromConfig();
+		pgEditor.readFromModel();
+		pgGeneral.readFromModel();
+		pgServers.readFromModel();
 	}
 
 	public void jbInit() {
@@ -160,14 +160,11 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	 * Update the User Interface from the configuration item. Basically
 	 * reads all the correct values for the widgets.
 	 */
-	public void updateUIFromConfig() {
+	public void readFromModel() {
 
-	int i;
-	for ( i=0; i<pgGeneral.cbLookFeel.getItemCount(); i++)
-		if ( pgGeneral.cbLookFeel.getItemAt(i).equals(ProgramConfig.getInstance().getUILookandFeel()) )
-		pgGeneral.cbLookFeel.setSelectedIndex(i);
-		pgEditor.updateFromConfig();
-//        pgEditor.setConfiguration(ProgramConfig.getInstance());
+		pgGeneral.readFromModel();
+		pgEditor.readFromModel();
+		pgServers.readFromModel();
 
 	}
 
@@ -207,7 +204,9 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 	class ActionOK extends AbstractAction {
 		public ActionOK() { super("OK", ProgramIcons.getInstance().findIcon("images/Check.gif")); }
 		public void actionPerformed(ActionEvent ev) {
-			applyConfiguration(); result = OK; hide();
+			applyConfiguration();
+			result = OK;
+			hide();
 		}
 	}
 	class ActionCANCEL extends AbstractAction {

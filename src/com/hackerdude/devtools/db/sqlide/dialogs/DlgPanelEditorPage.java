@@ -23,29 +23,26 @@
 
 package com.hackerdude.devtools.db.sqlide.dialogs;
 
-import com.hackerdude.devtools.db.sqlide.ProgramConfig;
 import java.awt.*;
-import java.awt.event.*;
-import java.net.*;
-import java.applet.*;
+
 import javax.swing.*;
-import javax.swing.UIManager.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.lang.Object.*;
-import java.lang.Exception.*;
-import java.io.*;
+
+import com.hackerdude.devtools.db.sqlide.*;
 
 public class DlgPanelEditorPage extends JPanel {
 
-   JComboBox  cbSQLFontName  = new JComboBox();
-   JTextField cbSQLFontSize  = new JTextField();
-   JLabel lblSQLFontName;
-   JLabel lblSQLFontSize;
-   JPanel pnTopPane;
-   JPanel pnTopPane2;
    static String[] fontFamilyNames;
+    BorderLayout borderLayout1 = new BorderLayout();
+    JPanel jPanel1 = new JPanel();
+    GridBagLayout gridBagLayout1 = new GridBagLayout();
+    JPanel pnTopPane2;
+    JTextField cbSQLFontSize = new JTextField();
+    JLabel lblSQLFontSize;
+    JComboBox cbSQLFontName = new JComboBox();
+    JPanel pnTopPane;
+    JLabel lblSQLFontName;
+    BorderLayout borderLayout2 = new BorderLayout();
+    BorderLayout borderLayout3 = new BorderLayout();
 
     public DlgPanelEditorPage() {
 
@@ -55,19 +52,27 @@ public class DlgPanelEditorPage extends JPanel {
    }
 
    public void jbInit() {
-      lblSQLFontName = new JLabel("SQL Code Font Name: ");
-      lblSQLFontSize  = new JLabel("SQL Code Font Size: ");
-      pnTopPane = new JPanel();
-      this.addFocusListener(new java.awt.event.FocusAdapter() {
-      });
-      pnTopPane.add(lblSQLFontName);
-      pnTopPane.add(cbSQLFontName);
       pnTopPane2 = new JPanel();
-      pnTopPane2.add(lblSQLFontSize);
-      pnTopPane2.add(cbSQLFontSize);
+        lblSQLFontSize = new JLabel("SQL Code Font Size: ");
+        pnTopPane = new JPanel();
+        lblSQLFontName = new JLabel("SQL Code Font Name: ");
+        this.addFocusListener(new java.awt.event.FocusAdapter() {
+      });
+      this.setLayout(borderLayout1);
+        jPanel1.setLayout(gridBagLayout1);
+        pnTopPane2.setLayout(borderLayout2);
+        pnTopPane.setLayout(borderLayout3);
+        cbSQLFontSize.setMinimumSize(new Dimension(15, 21));
+        this.add(jPanel1,  BorderLayout.CENTER);
+        pnTopPane2.add(lblSQLFontSize,  BorderLayout.WEST);
+        pnTopPane2.add(cbSQLFontSize, BorderLayout.CENTER);
+        jPanel1.add(pnTopPane,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+        pnTopPane.add(lblSQLFontName, BorderLayout.CENTER);
+        pnTopPane.add(cbSQLFontName, BorderLayout.EAST);
+        jPanel1.add(pnTopPane2,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
-      add(pnTopPane, BorderLayout.SOUTH);
-      add(pnTopPane2, BorderLayout.SOUTH);
 
     };
 
@@ -79,45 +84,20 @@ public class DlgPanelEditorPage extends JPanel {
 		 fontFamilyNames = ge.getAvailableFontFamilyNames();
 		}
 		if ( cbSQLFontName.getItemCount() < 1 ) for ( int f=0; f<fontFamilyNames.length; f++ ) cbSQLFontName.addItem(fontFamilyNames[f]);
-		if ( shouldUpdateConfig ) updateFromConfig();
+		if ( shouldUpdateConfig ) readFromModel();
 
 	}
 
 
-    public void updateFromConfig() {
-	int i;
-	for ( i=0; i<cbSQLFontName.getItemCount(); i++)
-	    if ( cbSQLFontName.getItemAt(i).equals(ProgramConfig.getInstance().getSQLFontName()) )
-		cbSQLFontName.setSelectedIndex(i);
-	//for ( i=0; i<cbSQLFontSize.getItemCount(); i++)
-	  //  if ( cbSQLFontSize.getItemAt(i).equals(new Integer( ProgramConfig.getInstance().getSQLFontSize()) ) )
-		//cbSQLFontSize.setSelectedIndex(i);
+    public void readFromModel() {
+		int i;
+		for ( i=0; i<cbSQLFontName.getItemCount(); i++) {
+			if ( cbSQLFontName.getItemAt(i).equals(ProgramConfig.getInstance().getSQLFontName()) ) {
+				cbSQLFontName.setSelectedIndex(i);
+			}
+		}
 		cbSQLFontSize.setText(Integer.toString(ProgramConfig.getInstance().getSQLFontSize()));
-    }
+	}
 
 }
 
-/*
-
-  $Log$
-  Revision 1.1  2001/09/07 02:51:20  davidmartinez
-  Initial revision
-
-  Revision 1.2  2000/05/05 22:51:33  david
-  Implement a connection pool; Completely reworked DatabaseSpec and the
-  DlgDbSpecConfig to work with a user defined set of name/value pairs;
-  Added a history feature to the Interactive SQL window; Promoted
-  refreshConfiguration to required by the Panel Interface.
-
-  Revision 1.1.1.1  2000/04/27 11:55:02  david
-  Initial Import
-
-  Revision 1.4  1999/10/25 15:20:37  david
-  Moved files to a flat JSqlIde package, in preparation for the
-  makefile and package organization.
-
-  Revision 1.3  1999/10/19 00:45:05  david
-  Added Log
-
-
- */

@@ -65,12 +65,12 @@ import java.io.*;
  */
 public class sqlide  {
 
-	private static JFrame frame;
+	private final static JFrame frame = new JFrame("sqlide Main Window");
+
 	JMenuBar  menubar;
 	private static sqlide instance;
 
 	private final ImageIcon sqlideIcon = ProgramIcons.getInstance().getAppIcon();
-	private ProgramConfig config;
 
 	private IDEVisualPluginIF rightIdePanel;
 
@@ -158,12 +158,7 @@ public class sqlide  {
 		// Read the configuration
 		mainProgress.changeMessage("Reading Configuration...");
 
-//		sqlideIcon = ProgramIcons.getInstance().getAppIcon();
-		config = ProgramConfig.getInstance();
 		mainProgress.setIconImage(sqlideIcon.getImage());
-		mainProgress.setValue(++mainProgressValue);
-
-		mainProgress.changeMessage("Initializing UI...");
 		mainProgress.setValue(++mainProgressValue);
 
 		mainProgress.changeMessage("Creating Menus...");
@@ -186,7 +181,7 @@ public class sqlide  {
 		}
 
 		mainProgress.changeMessage("Creating Default Interactive SQL");
-		DatabaseProcess ideserver = new DatabaseProcess(config.getDefaultDatabaseSpec());
+		DatabaseProcess ideserver = new DatabaseProcess(ProgramConfig.getInstance().getDefaultDatabaseSpec());
 		mainProgress.setValue(++mainProgressValue);
 
 //
@@ -274,14 +269,14 @@ public class sqlide  {
    * This initializes the user interface according to the
    * whatever the configuration class says (look and feel)
    */
-	public void initializeUI() {
+	public static void initializeUI() {
 		// Set the Look-and-Feel
 		try {
-			UIManager.setLookAndFeel(config.getUILookandFeelClass());
+			UIManager.setLookAndFeel(ProgramConfig.getInstance().getUILookandFeelClass());
 			SwingUtilities.updateComponentTreeUI(frame);
 			frame.pack();
 		} catch (Exception exc) {
-			System.err.println("Error: Could not load LookAndFeel: " + config.getUILookandFeelClass());
+			System.err.println("Error: Could not load LookAndFeel: " + ProgramConfig.getInstance().getUILookandFeelClass());
 		}
 	}
 
@@ -292,13 +287,12 @@ public class sqlide  {
 	 */
 	public static void main(String s[]) {
 
+
+		instance = new sqlide();
 		// Create the sqlide and put it on a frame.
-		frame = new JFrame("sqlide Main Window");
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) { System.exit(0); }
 		});
-
-		instance = new sqlide();
 		frame.setIconImage(instance.sqlideIcon.getImage());
 
 		instance.mainProgress.setValue(++instance.mainProgressValue);
@@ -307,8 +301,6 @@ public class sqlide  {
 
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		instance.mainProgress.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		instance.mainProgress.changeMessage("Loading look-and-feel...");
-		instance.initializeUI();
 		instance.mainProgress.changeMessage("Showing IDE...");
 		instance.mainProgress.setValue(++instance.mainProgressValue);
 		instance.mainProgress.setVisible(false);
@@ -512,8 +504,18 @@ public class sqlide  {
 		public void actionPerformed(ActionEvent e) {
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR) );
 			try {
+				String currentLF = ProgramConfig.getInstance().getUILookandFeel();
 				if ( DlgIDEConfigure.showConfigurationDialog(frame) ) {
 					refreshPanels();
+					String newLF = ProgramConfig.getInstance().getUILookandFeel();
+					if (  ! currentLF.equals(newLF) ) {
+						try {
+							LookAndFeel newLookAndFeel = sqlide.changeLookAndFeel(newLF);
+							SwingUtilities.updateComponentTreeUI(sqlide.getFrame());
+						} catch ( UnsupportedLookAndFeelException exc ) {
+							exc.printStackTrace();
+						}
+					}
 				}
 			} finally {
 				frame.setCursor(Cursor.getDefaultCursor());
@@ -734,6 +736,32 @@ public class sqlide  {
 
 	public static JFrame getFrame() {
 		return frame;
+	}
+
+
+	/**
+	 * This method changes the look and feel on the UI manager and returns
+	 * the new look and feel.
+	 * @param lfName The name of the look and feel
+	 * @return The new look and feel, or the old look and feel if the lfName is not found.
+	 */
+	public static LookAndFeel changeLookAndFeel(String lfName) throws UnsupportedLookAndFeelException {
+		// Iterate down all the installed l&fs looking for the one with the lfName.
+		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
+		for ( int i=0; i<info.length; i++ ) {
+			if ( info[i].getName().equals(lfName) ) {
+				try {
+					String className = info[i].getClassName();
+					UIManager.installLookAndFeel(info[i]);
+					UIManager.setLookAndFeel(className);
+					break;
+				} catch ( Throwable err ) {
+					JOptionPane.showMessageDialog(sqlide.getFrame(), "Could not change the look and feel due to the following error: "+err.getMessage(), "Could not change look and feel", JOptionPane.ERROR_MESSAGE);
+					err.printStackTrace();
+				}
+			}
+		}
+		return UIManager.getLookAndFeel();
 	}
 
 

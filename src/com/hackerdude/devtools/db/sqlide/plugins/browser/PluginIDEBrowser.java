@@ -404,24 +404,30 @@ public boolean executeAction( String action ) {
 		}
 
 		void browserTree_mouseClicked(MouseEvent e) {
-			if ( e.getModifiers() == e.BUTTON3_MASK ) {
-
-				TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
-				NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
-				for ( int i=0; i<selectedPaths.length; i++ ) {
-					selectedNodes[i] = (NodeIDEBase)selectedPaths[i].getLastPathComponent();
-				}
-				Action[] actions = ide.getActionsFor(selectedNodes);
-				if ( actions == null || actions.length > 0 ) {
-					JPopupMenu thisMenu = new JPopupMenu("Actions");
-					for ( int i=0; i<actions.length; i++) thisMenu.add(actions[i]);
-					if ( thisMenu != null ) {
-						Double theX = new Double(e.getPoint().getX());
-						Double theY = new Double(e.getPoint().getY());
-						thisMenu.show(browserTree, theX.intValue(), theY.intValue());
+			try {
+				if ( e.getModifiers() == e.BUTTON3_MASK ) {
+					TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
+					NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
+					for ( int i=0; i<selectedPaths.length; i++ ) {
+						Object lastPathComponent = selectedPaths[i].getLastPathComponent();
+						selectedNodes[i] = (NodeIDEBase)lastPathComponent;
+					}
+					Action[] actions = ide.getActionsFor(selectedNodes);
+					if ( actions == null || actions.length > 0 ) {
+						JPopupMenu thisMenu = new JPopupMenu("Actions");
+						for ( int i=0; i<actions.length; i++) thisMenu.add(actions[i]);
+						if ( thisMenu != null ) {
+							Double theX = new Double(e.getPoint().getX());
+							Double theY = new Double(e.getPoint().getY());
+							thisMenu.show(browserTree, theX.intValue(), theY.intValue());
+						}
 					}
 				}
 			}
+			catch (Exception ex) {
+
+			}
+
 		}
 	}
 
