@@ -8,7 +8,13 @@ import java.util.*;
 import com.hackerdude.apps.sqlide.dataaccess.QueryResults;
 
 /**
- * A cached Resultset table model.
+ * A cached Resultset table model for forward-only resultsets.
+ *
+ * <P>A cached resultset table model reads the resultset in small increments.
+ * As the user scrolls down, rows are added.
+ *
+ * <P>This is useful for showing forward-only result sets. It requires
+ * potentially as much memory as the resultset itself.
  */
 public class CachedResultSetTableModel extends DefaultTableModel {
 
@@ -20,7 +26,10 @@ public class CachedResultSetTableModel extends DefaultTableModel {
 	QueryResults queryResults;
 	boolean readingDone = false;
 
-	public static final int bufferIncrements = 200;
+	/**
+	 * The maximum amount of rows to fetch every time more rows are needed.
+	 */
+	public static final int BUFFER_INCREMENT = 200;
 
 	public CachedResultSetTableModel(QueryResults queryResults, int initialRows) {
 		this.queryResults = queryResults;
@@ -28,7 +37,7 @@ public class CachedResultSetTableModel extends DefaultTableModel {
 			this.columnNames = queryResults.getColumnNames();
 			this.columnClasses = queryResults.getColumnClasses();
 			columnCount = columnNames.length;
-			getMoreRows(bufferIncrements);
+			getMoreRows(BUFFER_INCREMENT);
 		} catch ( SQLException exc ) {
 			JOptionPane.showMessageDialog(null, "SQL Error while retrieving query results:"+exc.toString(), "Query Results Table", JOptionPane.ERROR_MESSAGE);
 		}

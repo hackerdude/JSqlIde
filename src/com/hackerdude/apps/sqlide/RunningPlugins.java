@@ -114,4 +114,16 @@ public class RunningPlugins {
 		return nodePlugins;
 	}
 
+	public BrowserExtensionPluginIF[] getBrowserExtensionPlugins() {
+		BrowserExtensionPluginIF[] plugins = new BrowserExtensionPluginIF[browserExtensionPlugins.size()];
+		plugins = (BrowserExtensionPluginIF[]) browserExtensionPlugins.toArray(plugins);
+		return plugins;
+	}
+
+	public IDEPluginIF[] getPluginInstances() {
+		IDEPluginIF[] plugins = new IDEPluginIF[pluginInstances.size()];
+		plugins = (IDEPluginIF[]) pluginInstances.toArray(plugins);
+		return plugins;
+	}
+
 }

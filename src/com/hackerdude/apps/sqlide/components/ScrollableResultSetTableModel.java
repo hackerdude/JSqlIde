@@ -7,14 +7,13 @@ import javax.swing.*;
 import java.sql.*;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
+ * Table Model for a Scrollable ResultSet.
+ *
+ * <P>This table model uses a JDBC 2.0 resultset of type TYPE_SCROLL*.
+ *
+ * @author David Martinez <A HREF="mailto:david@hackerdude.com">david@hackerdude.com</A>
  * @version 1.0
  */
-
 public class ScrollableResultSetTableModel extends AbstractTableModel {
 
 	QueryResults queryResults;
@@ -50,10 +49,11 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 			result = resultSet.getObject(column+1);
 			if ( result == null ) result = resultSet.getString(column+1);
 		} catch (SQLException exc) {
-//			exc.printStackTrace();
+			return "SQLException";
 		}
 		return result;
 	}
+
 	public int getRowCount() {
 		return rowCount;
 	}

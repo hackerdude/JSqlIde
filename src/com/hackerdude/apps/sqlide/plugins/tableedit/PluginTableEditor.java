@@ -72,6 +72,8 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 	Action ACTION_DELETEFIELD = new ActionDeleteField();
 	Action ACTION_PREVIEW     = new ActionPreview();
 
+	Action ACTION_CREATETABLE = new ActionCreateTable();
+
 	/**
 	 * Constructor.
 	 */
@@ -233,9 +235,9 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 
 	  frm.getContentPane().setLayout(new BorderLayout());
 	  Panel okPanel = new Panel();
-	  JButton okButton = new JButton("OK");
+	  JButton okButton = new JButton(ACTION_CREATETABLE);
 	  JButton cancelButton = new JButton("Cancel");
-	  okButton.setMnemonic('O');
+	  okButton.setMnemonic('C');
 	  cancelButton.setMnemonic('C');
 
 	  cancelButton.addActionListener(
@@ -245,18 +247,6 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 			}
 		 });
 
-	  okButton.addActionListener(
-		 new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-			   ideprocess.changeCatalog( (String)cbDatabases.getSelectedItem() );
-			   try {
-				   ideprocess.runQuery(theStatement.getText(), true, false, false);
-				} catch ( java.sql.SQLException exc ) {
-					JOptionPane.showMessageDialog(null, exc.toString(), "SQL Error", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		 }
-	  );
 
 	  okPanel.add(okButton);
 	  okPanel.add(cancelButton);
@@ -271,7 +261,21 @@ public class PluginTableEditor extends JPanel implements IDEVisualPluginIF {
 
    }
 
+   class ActionCreateTable extends AbstractAction {
+	   public ActionCreateTable() {
+		   super("Create!");
+	   }
 
+	   public void actionPerformed(ActionEvent ae) {
+		  ideprocess.changeCatalog( (String)cbDatabases.getSelectedItem() );
+		  try {
+			  ideprocess.runQuery(theStatement.getText(), true, false, false);
+		   } catch ( java.sql.SQLException exc ) {
+			   JOptionPane.showMessageDialog(null, exc.toString(), "SQL Error", JOptionPane.ERROR_MESSAGE);
+		   }
+	   }
+
+   }
 
 	// Set up the editor for the file cells.
 	private void setUpComboBoxEditor(JTable table) {
