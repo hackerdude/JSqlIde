@@ -30,45 +30,26 @@ a wizard and a container.
 
 <H2>Installing SQLIDE</H2>
 
-<P>You can install SQLIDE from source or from the binaries.
+<P>If you have a JRE 1.3 or later, you can run JSQLIDE from its single binary JAR or build it from source.
 
-<H3>Installing from Source</H3>
-<UL>
-<LI>You will need a good, working copy of Ant, the build tool.
-</UL>
+<H3>Building from source</H3>
+<P>You will need a good, working copy of Ant, the build tool.
+<BR/>Unzip the JSQLIDE distribution, and run Ant from within the directory with the build.xml file.
+After the build is succesful, it will drop a jsqlide.jar on the build directory. You can then run java -jar build/jsqlide.jar</P>
 
-<H3>Installing from Binaries</H3>
+<H3>Installing from Web start</H3>
 
-<UL>
-	<LI>Put SQLIDE in a directory that you can remember.
+<P>You can now run the application using Java Web Start technology. Simply
+click on the JNLP link with your webstart enabled browser to run the
+application. The application will automatically upgrade itself when necessary.
 
-	<LI>Go to
-<FONT COLOR="000088"><B>jsqlide/bin</B></FONT>, which is where the startup scripts can be found.
-
-	<LI>Edit
-<FONT COLOR="000088"><B>jsqlide.sh</B></FONT>
-or
-<FONT COLOR="000088"><B>jsqlide.bat </B></FONT>
-
-to add your JDBC classes as necessary.  MySQL is already included with this
-distribution, and if you have a JDBC driver already in your
-
-<FONT COLOR="000088"><B>CLASSPATH</B></FONT>,
-
-it will be available automatically.
-
-	<LI>Run jsqlide.sh or jsqlide.bat
-
-</UL>
-
-<H2>Running sqlide</H2>
-
-<P>From the SQLIDE bin/ directory, simply type jsqlide, or ./jsqlide.sh if on Unix.
+<H2>Running sqlide for the first time</H2>
 
 <P>The first time you run SQLIDE you will be prompted to specify the default
-database connection. Select the database that resembles the most to your actual
-db server and edit the fields as you need them. You can change all the
-properties that get sent on the connection, so any JDBC standard connection
+database connection, including the JAR files that are used by said connection.
+Select the database that resembles the most to your actual db server and edit
+the fields as you need them. You can change all the properties that get sent
+on the connection, so any JDBC standard connection (but not JDBC-ODBC bridge)
 should be available.
 
 <P>Afterwards, you will be able to connect to the database and start working.
