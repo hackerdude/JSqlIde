@@ -34,8 +34,7 @@ public class NewServerWizard extends Wizard {
 
 	public NewServerWizard(JFrame owner, boolean modal) {
 		super(owner, "New Server Profile",
-			  "This wizard will guide you step by step on how to add a server profile "
-	 +"to your configuration.", modal );
+			  "Add a new server profile to your environment", modal );
 		databaseSpec = HostConfigFactory.createHostConfig();
 		pageNewServer = new NewServerWizSelectServerType();
 		pageServerDetails = new ServerDetailsWizardPage();

@@ -1,6 +1,7 @@
 package com.hackerdude.apps.sqlide.dataaccess;
 
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import java.util.*;
 
 /**
  * Database Service. It Database Process creation. Eventually it will also
@@ -11,23 +12,50 @@ public class DatabaseService {
 
 	private static DatabaseService instance = null;
 
+	private Hashtable serviceList = new Hashtable();
+
+	CredentialsProvider credentialsProvider;
+
     private DatabaseService() {
     }
 
+	/**
+	 * Singleton access method.
+	 * @return The database service instance.
+	 */
 	public static synchronized DatabaseService getInstance() {
 		if ( instance == null ) instance = new DatabaseService();
 		return instance;
 	}
 
 	/**
-	 * Creates or returns an existing database spec.
+	 * Creates or returns an existing database spec. It never constructs a
+	 * spec for the same instance twice.
+	 *
 	 * @param hostConfig
-	 * @return
+	 * @return The specified database process.
 	 */
-	public DatabaseProcess getDatabaseProcess(SqlideHostConfig hostConfig) {
-		DatabaseProcess result = new DatabaseProcess( hostConfig );
-		return result;
+	public synchronized DatabaseProcess getDatabaseProcess(SqlideHostConfig hostConfig) {
+
+		String key = hostConfig.getFileName();
+		DatabaseProcess process = (DatabaseProcess)serviceList.get(key);
+		if ( process == null ) {
+			process = new DatabaseProcess(hostConfig, credentialsProvider);
+			serviceList.put(key, process);
+		}
+		return process;
+
 	}
 
+
+	/**
+	 * Registers a credentials provider with the database service.
+	 *
+	 * @param provider The provider to register
+	 * @see CredentialsProvider
+	 */
+	public void setCredentialsProvider(CredentialsProvider provider) {
+		this.credentialsProvider = provider;
+	}
 
 }

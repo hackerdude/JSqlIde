@@ -138,12 +138,13 @@ public class Wizard extends JDialog {
       taPageText.setLineWrap(true);
       taPageText.setWrapStyleWord(true);
       taPageText.setDisabledTextColor(SystemColor.controlText);
-      taPageText.setBackground(getRootPane().getBackground());
+      taPageText.setBackground(jPanel1.getBackground());
       taPageText.setSelectionColor(SystemColor.control);
       taPageText.setEnabled(false);
       taPageText.setText("Welcome to this wizard dude. This is just an example of the kind " +
     "of stuff we can do to create this wizard and blah blah blah...");
       taPageText.setEditable(false);
+	  taPageText.setFont(getFont());
       lblWizardTitle.setFont(new java.awt.Font("Dialog", 1, 18));
       lblWizardTitle.setHorizontalAlignment(SwingConstants.CENTER);
       lblWizardTitle.setText("Wizard Title, Dude");
@@ -193,7 +194,6 @@ public class Wizard extends JDialog {
           "This wizard will help you create a new Database Entry.\n"
           +"\nRayando el sol, desesperacion, es mas facil llegar al sol que a tu corazon", true
           );
-      wiz.setVisible(true);
       wiz.setEnabled(true);
       wiz.pack();
       wiz.show();

@@ -60,7 +60,9 @@ public class HostConfigFactory {
 
 
 	public static Properties connectionPropertiesToMap(ConnectionProperties props) {
+
 		Properties result = new Properties();
+		if ( props == null ) return result;
 		for ( int i=0; i<props.getPropertyCount(); i++) {
 			String key = props.getProperty(i).getName();
 			String value = props.getProperty(i).getValue();

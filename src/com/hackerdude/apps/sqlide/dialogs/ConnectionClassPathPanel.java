@@ -68,7 +68,8 @@ public class ConnectionClassPathPanel extends JPanel {
 	}
 
 	public void readFromModel() {
-		String[] jarFiles = databaseSpec.getJdbc().getClassPath().getPathelement();
+
+		String[] jarFiles = databaseSpec.getJdbc().getClassPath()==null?null:databaseSpec.getJdbc().getClassPath().getPathelement();
 		listModel.clear();
 		if ( (jarFiles != null) && jarFiles.length>0 ) {
 			for ( int i=0; i<jarFiles.length; i++ ) listModel.addElement(jarFiles[i]);
@@ -81,6 +82,9 @@ public class ConnectionClassPathPanel extends JPanel {
 		synchronized ( newJarFiles ) {
 			String[] jarFiles = new String[newJarFiles.size()];
 			jarFiles = (String[])newJarFiles.toArray(jarFiles);
+			if ( databaseSpec.getJdbc().getClassPath() != null ) {
+				databaseSpec.getJdbc().setClassPath(new ClassPath());
+			}
 			databaseSpec.getJdbc().getClassPath().setPathelement(jarFiles);
 		}
 

@@ -4,6 +4,7 @@ import com.hackerdude.apps.sqlide.pluginapi.*;
 import javax.swing.tree.*;
 import java.util.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.SqlIdeApplication;
 
 /**
  * This node represents a specific Server Connection.
@@ -13,7 +14,7 @@ public class ItemServerNode extends NodeIDEBase {
 	SqlideHostConfig spec;
 
 	public ItemServerNode(SqlideHostConfig spec) {
-		super(spec.getName(), new DatabaseProcess(spec));
+		super(spec.getName(), DatabaseService.getInstance().getDatabaseProcess(spec));
 		this.spec = spec;
 	}
 
