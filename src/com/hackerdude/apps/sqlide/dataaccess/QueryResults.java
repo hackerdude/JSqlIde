@@ -15,6 +15,7 @@ public class QueryResults {
 
 	private ArrayList columnNames;
 	private ArrayList columnTypes;
+	private int[] columnSQLTypes;
 	private int[] columnSizes;
 
 	private int columnCount;
@@ -76,17 +77,25 @@ public class QueryResults {
 	private void readColumnNames() throws SQLException {
 		columnCount = metaData.getColumnCount();
 		columnSizes = new int[columnCount];
+		columnSQLTypes = new int[columnCount];
 		for ( int i=0; i<columnCount; i++ ) {
 			int colIndex = i+1;
 			String columnName = metaData.getColumnLabel(colIndex);
 			columnNames.add(columnName);
+			int sqlType = metaData.getColumnType(colIndex);
+			columnSQLTypes[i] = sqlType;
 			try {
 				String columnClassName = metaData.getColumnClassName(colIndex);
 				Class theClass =Class.forName(columnClassName);
 				columnTypes.add(theClass);
 			} catch ( Throwable exc ) {
-				columnTypes.add(String.class);
+				if ( sqlType == java.sql.Types.CLOB ) {
+					columnTypes.add(java.sql.Clob.class);
+				} else {
+					columnTypes.add(String.class);
+				}
 			}
+
 			int displaySize = 20;
 			try {
 				columnSizes[i] = metaData.getColumnDisplaySize(colIndex);
