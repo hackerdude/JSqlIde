@@ -156,7 +156,7 @@
 			</fileset>
 			<fileset dir="${unjar.cache}"/>
 			<manifest>
-				<attribute name="Main-Class" value="com.hackerdude.devtools.db.sqlide.sqlide" />
+				<attribute name="Main-Class" value="com.hackerdude.apps.sqlide.SqlIdeApplication" />
 				<attribute name="Class-Path" value="/xerces.jar" />
 				<attribute name="Built-By" value="${user.name}"/>
 				<section name="common">
