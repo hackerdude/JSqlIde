@@ -74,27 +74,30 @@ public class MainISQLPanel extends JPanel {
   }
 
   void jbInit() throws Exception {
-    this.setLayout(blMainLayout);
-    pnlCenter.setLayout(borderLayout1);
-    jSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
-    lblCatalog.setText("Catalog:");
-    btnGo.setText("Go!");
-    cbAsUpdate.setText("As Update");
-    cbAsUpdate.setMnemonic('U');
-    cbUpdatable.setActionCommand("updatable");
-	cbUpdatable.setText("Updatable");
-	this.add(pnlBottomPanel, BorderLayout.SOUTH);
-    this.add(pnlTopPanel, BorderLayout.NORTH);
-    pnlTopPanel.add(lblCatalog, null);
-    pnlTopPanel.add(cbCatalogs, null);
-    pnlTopPanel.add(btnGo, null);
-    pnlTopPanel.add(cbAsUpdate, null);
-	pnlTopPanel.add(cbUpdatable, null);
-    this.add(pnlCenter, BorderLayout.CENTER);
-    pnlCenter.add(jSplitPane1, BorderLayout.CENTER);
-    jSplitPane1.add(sqlTextArea, JSplitPane.TOP);
-    jSplitPane1.add(resultSetPanel, JSplitPane.BOTTOM);
-    jSplitPane1.setDividerLocation(100);
+
+
+	  sqlTextArea.setMinimumSize(new Dimension(200, 150));
+	  this.setLayout(blMainLayout);
+	  pnlCenter.setLayout(borderLayout1);
+	  jSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
+	  lblCatalog.setText("Catalog:");
+	  btnGo.setText("Go!");
+	  cbAsUpdate.setText("As Update");
+	  cbAsUpdate.setMnemonic('U');
+	  cbUpdatable.setActionCommand("updatable");
+	  cbUpdatable.setText("Updatable");
+	  this.add(pnlBottomPanel, BorderLayout.SOUTH);
+	  this.add(pnlTopPanel, BorderLayout.NORTH);
+	  pnlTopPanel.add(lblCatalog, null);
+	  pnlTopPanel.add(cbCatalogs, null);
+	  pnlTopPanel.add(btnGo, null);
+	  pnlTopPanel.add(cbAsUpdate, null);
+	  pnlTopPanel.add(cbUpdatable, null);
+	  this.add(pnlCenter, BorderLayout.CENTER);
+	  pnlCenter.add(jSplitPane1, BorderLayout.CENTER);
+	  jSplitPane1.add(sqlTextArea, JSplitPane.TOP);
+	  jSplitPane1.add(resultSetPanel, JSplitPane.BOTTOM);
+	  jSplitPane1.setDividerLocation(100);
   }
 
   /**
@@ -122,7 +125,7 @@ public class MainISQLPanel extends JPanel {
             queryResults, theFont, this);
         setDefaultEditors(ideprocess.getTableModel(), newColumnModel);
         TableModel tableModel = ideprocess.getTableModel();
-        resultSetPanel.setResultSetModel(newColumnModel, tableModel);
+        resultSetPanel.setResultSetModel(newColumnModel, tableModel, queryResults.getResultSet());
         setClobEditors(queryResults, newColumnModel);
       }
       resultSetPanel.addWarningText("Ran " + (asUpdate ? " update." : "query"));
