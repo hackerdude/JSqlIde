@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * @author David Martinez <davidmartinez@home.net>
+ * @author David Martinez <david@hackerdude.com>
  * @version $Id$
  *
  */
@@ -29,82 +29,85 @@ import java.util.*;
 
 /**
  * This is sqlIDE's very own menu generator class.
- * @author David Martinez <davidmartinez@home.net>
+ * @author David Martinez <david@hackerdude.com>
  * @version $Revision$
  */
 public class MenuBroker {
 
-    /**
-     * This function assembles menu items starting with an array of
-     * strings, character shortcuts, Control-character accelerators,
-     * and Alt-character accelerators (Alt taking precedence). It also
-     * adds an actionlistener to the menu that it assembles.
-     *
-     * @param menu The menu we want to add these arrays to.
-     * @param menuItems An array of strings with the menu items.
-     * @param menuShorts An array of chars specifying the shortcuts to use.
-     * @param CtrlAccel An array of chars specifying what Control-<char> keys to use for keyboard shortcut. May be null.
-     * @param AltAccel An array of chars specifying what Alt-<char> keys to use for keyboard shortcut. May be null.
-     * @param listener An ActionListener to attach to these menu items.
-     *
-     * This function very probably will evolve into something cooler.
-     * Images of GTK+-style menu definitions cross through my mind. It also
-     * might move to a menu generator.
-     */
-    public static void assembleMenu( JMenu menu, String[] menuItems, char[] menuShorts, char[] CtrlAccel, char[] AltAccel, ActionListener listener ) {
+	/**
+	 * This function assembles menu items starting with an array of
+	 * strings, character shortcuts, Control-character accelerators,
+	 * and Alt-character accelerators (Alt taking precedence). It also
+	 * adds an actionlistener to the menu that it assembles.
+	 *
+	 * @param menu The menu we want to add these arrays to.
+	 * @param menuItems An array of strings with the menu items.
+	 * @param menuShorts An array of chars specifying the shortcuts to use.
+	 * @param CtrlAccel An array of chars specifying what Control-<char> keys to use for keyboard shortcut. May be null.
+	 * @param AltAccel An array of chars specifying what Alt-<char> keys to use for keyboard shortcut. May be null.
+	 * @param listener An ActionListener to attach to these menu items.
+	 *
+	 * This function very probably will evolve into something cooler.
+	 * Images of GTK+-style menu definitions cross through my mind. It also
+	 * might move to a menu generator.
+	 */
+	public static void assembleMenu( JMenu menu, String[] menuItems, char[] menuShorts, char[] CtrlAccel, char[] AltAccel, ActionListener listener ) {
 
 	menuFactory(menu, menuItems, menuShorts, CtrlAccel,
-		    AltAccel, listener, null);
+			AltAccel, listener, null);
 
 	};
 
-    /**
-     * This function is like assembleMenu, but it also adds the
-     * generated items to a factory.
-     *
-     * @param menu The menu we want to add these arrays to.
-     * @param menuItems An array of strings with the menu items.
-     * @param menuShorts An array of chars specifying the shortcuts to use.
-     * @param CtrlAccel An array of chars specifying what Control-<char> keys to use for keyboard shortcut. May be null.
-     * @param AltAccel An array of chars specifying what Alt-<char> keys to use for keyboard shortcut. May be null.
-     * @param listener An ActionListener to attach to these menu items.
-     * @param items A vector that will be filled with the menu items.
-     */
-    public static void menuFactory( JMenu menu, String[] menuItems, char[] menuShorts, char[] CtrlAccel, char[] AltAccel, ActionListener listener, Vector items )
-    {
+	/**
+	 * This function is like assembleMenu, but it also adds the
+	 * generated items to a factory.
+	 *
+	 * @param menu The menu we want to add these arrays to.
+	 * @param menuItems An array of strings with the menu items.
+	 * @param menuShorts An array of chars specifying the shortcuts to use.
+	 * @param CtrlAccel An array of chars specifying what Control-<char> keys to use for keyboard shortcut. May be null.
+	 * @param AltAccel An array of chars specifying what Alt-<char> keys to use for keyboard shortcut. May be null.
+	 * @param listener An ActionListener to attach to these menu items.
+	 * @param items A vector that will be filled with the menu items.
+	 */
+	public static void menuFactory( JMenu menu, String[] menuItems, char[] menuShorts, char[] CtrlAccel, char[] AltAccel, ActionListener listener, Vector items )
+	{
 
 	for ( int i=0; i<menuItems.length; i++ ) {
 
-	    if ( menuItems[i].equals("-") ) {
+		if ( menuItems[i].equals("-") ) {
 		menu.addSeparator();
-	        // items.add(mitem);
-	    } else {
+			// items.add(mitem);
+		} else {
 		JMenuItem mitem = new JMenuItem(menuItems[i], menuShorts[i]);
 		if ( CtrlAccel != null )
-		    mitem.setAccelerator( KeyStroke.getKeyStroke(CtrlAccel[i],
+			mitem.setAccelerator( KeyStroke.getKeyStroke(CtrlAccel[i],
 								 java.awt.Event.CTRL_MASK, false) );
 		if ( AltAccel != null )
-		    mitem.setAccelerator( KeyStroke.getKeyStroke(AltAccel[i],
+			mitem.setAccelerator( KeyStroke.getKeyStroke(AltAccel[i],
 								 java.awt.Event.ALT_MASK, false) );
 
 		if ( listener != null )
-		    mitem.addActionListener(listener);
+			mitem.addActionListener(listener);
 		if ( items != null )
-		    items.add(mitem);
+			items.add(mitem);
 			menu.add(mitem);
-	    };
+		};
 	};
 
 
-    };
+	};
 
 }
 
 /*
 
   $Log$
-  Revision 1.1  2001/09/07 02:50:50  davidmartinez
-  Initial revision
+  Revision 1.2  2001/09/07 03:15:33  davidmartinez
+  Changed e-mail address.
+
+  Revision 1.1.1.1  2001/09/07 02:50:50  davidmartinez
+  Initial Checkin of the Alpha tree
 
   Revision 1.1.1.1  2000/04/27 10:57:07  david
   Initial Import

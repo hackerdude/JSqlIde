@@ -23,7 +23,7 @@ import com.hackerdude.devtools.db.sqlide.dataaccess.*;
  * Please read hacking.html for overview information if you want
  * to modify.
  *
- * @author David Martinez <davidmartinez@home.net>
+ * @author David Martinez <david@hackerdude.com>
  * @version $Id$
 */
 
