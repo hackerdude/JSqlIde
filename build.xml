@@ -10,7 +10,7 @@
 	<!-- Set some basic values locations -->
 	<property name="Name" value="jsqlide"/>
 	<property name="name" value="jsqlide"/>
-	<property name="version" value="0.1.5"/>
+	<property name="version" value="0.7"/>
 
 	<!-- Set some basic directory locations -->
 	<property name="jsqlide.home" value="."/>
@@ -28,7 +28,7 @@
 	<property name="build.tests" value="${build.dir}/testcases"/>
 	<property name="temp.dir" value="tmp"/>
 	<property name="unjar.cache" value="${temp.dir}/unjar_cache"/>
-	<property name="jsqlide.dist.dir" value="dist"/>
+	<property name="jsqlide.dist.dir" value="dist-${version}"/>
 	<property name="jsqlide.signjar.alias" value="jarsignalias"/>
 	<property name="jsqlide.signjar.storepass" value="password"/>
 	<property name="jsqlide.j2se.version" value="1.4.0+"/>
@@ -197,7 +197,7 @@ jsqlide.version=${version}
 	<!-- =================================================================== -->
 	<!-- Creates the distribution                                            -->
 	<!-- =================================================================== -->
-	<target name="dist" depends="main,jar" description="Creates the distribution">
+	<target name="dist" depends="main,jar,javadocs" description="Creates the distribution">
 		<mkdir dir="${jsqlide.dist.dir}"/>
 		<mkdir dir="${jsqlide.dist.dir}/bin"/>
 		<mkdir dir="${jsqlide.dist.dir}/lib"/>
@@ -227,17 +227,17 @@ jsqlide.version=${version}
 				<patternset refid="chmod.patterns"/>
 			</fileset>
 		</chmod>
-		<copy file="docs/README.html" tofile="${jsqlide.dist.dir}/docs/README.html"/>
-		<copy file="docs/CHANGES.html" tofile="${jsqlide.dist.dir}/docs/CHANGES.html"/>
-		<copy file="docs/TODO.html" tofile="${jsqlide.dist.dir}/docs/TODO.html"/>
-		<copy file="docs/LICENSE.html" tofile="${jsqlide.dist.dir}/LICENSE.html"/>
+		<copy file="src/docs/README.html" tofile="${jsqlide.dist.dir}/docs/README.html"/>
+		<copy file="src/docs/CHANGES.html" tofile="${jsqlide.dist.dir}/docs/CHANGES.html"/>
+		<copy file="src/docs/TODO.html" tofile="${jsqlide.dist.dir}/docs/TODO.html"/>
+		<copy file="src/docs/LICENSE.html" tofile="${jsqlide.dist.dir}/LICENSE.html"/>
 	</target>
 
 	<!-- =================================================================== -->
 	<!-- Packages the distribution with ZIP                                  -->
 	<!-- =================================================================== -->
 	<target name="dist-zip" depends="dist,javadocs">
-		<zip zipfile="${Name}-${version}.zip" basedir="${jsqlide.dist.dir}" includes="**"/>
+		<zip zipfile="${Name}-${version}.zip" basedir="${jsqlide.dist.dir}/.." includes="${jsqlide.dist.dir}}/**"/>
 	</target>
 
 	<!-- =================================================================== -->
