@@ -5,18 +5,7 @@ import java.util.*;
 import javax.swing.Action;
 
 /**
- * Title:        JSqlIde
- * Description:  A Java SQL Integrated Development Environment
- * Copyright:    Copyright (c) David Martinez
- * Company:
- * @author David Martinez
- * @version 1.0
- */
-
-
-/**
  * This class encapsulates the currently running plugins.
- *
  */
 public class RunningPlugins {
 
@@ -94,7 +83,9 @@ public class RunningPlugins {
 		while (iContextPlugins.hasNext() ) {
 			IDENodeContextPluginIF currentContextPlugin = (IDENodeContextPluginIF)iContextPlugins.next();
 			Action[] actions = currentContextPlugin.getActionsFor(selectedNodes);
-			for ( int i=0; i<actions.length; i++ ) allActions.add(actions[i]);
+			if ( actions != null ) {
+				for ( int i=0; i<actions.length; i++ ) allActions.add(actions[i]);
+			}
 		}
 		Action[] result = new Action[allActions.size()];
 		result = (Action[])allActions.toArray(result);
@@ -112,4 +103,15 @@ public class RunningPlugins {
 			current.requestAddSubNodes(parentNode);
 		}
 	}
+
+	/**
+	 * This function returns all the running node context plugins.
+	 * @return The running node context plugins.
+	 */
+	public IDENodeContextPluginIF[] getNodeContextPlugins() {
+		IDENodeContextPluginIF[] nodePlugins = new IDENodeContextPluginIF[nodeContextPlugins.size()];
+		nodePlugins = (IDENodeContextPluginIF[]) nodeContextPlugins.toArray(nodePlugins);
+		return nodePlugins;
+	}
+
 }

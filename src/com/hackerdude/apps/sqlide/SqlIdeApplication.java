@@ -33,6 +33,7 @@ import com.hackerdude.apps.sqlide.plugins.definitions.*;
 import com.hackerdude.apps.sqlide.plugins.browser.*;
 import com.hackerdude.apps.sqlide.plugins.browser.browsejdbc.BasicJDBCIntrospector;
 import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.swing.SwingUtils;
 
 
 import java.awt.*;
@@ -292,7 +293,7 @@ public class SqlIdeApplication  {
 	public static void main(String s[]) {
 
 		initializeUI();
-		instance = new SqlIdeApplication();
+		getInstance();
 		// Create the sqlide and put it on a frame.
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) { System.exit(0); }
@@ -320,12 +321,17 @@ public class SqlIdeApplication  {
 		insetD = new Double(screenSize.height * (inset*0.01));
 		int insety = insetD.intValue();
 
-		frame.setBounds( insetx, insety, screenSize.width - insetx, screenSize.height - insety);
+		frame.setSize(screenSize.width - insetx, screenSize.height - insety);
+		Point point = SwingUtils.getCenteredWindowPoint(frame);
+		frame.setLocation(point);
 		frame.setVisible(true);
 
 	}
 
-	public static SqlIdeApplication getInstance() { return instance; }
+	public static synchronized SqlIdeApplication getInstance() {
+		if ( instance == null ) instance = new SqlIdeApplication();
+		return instance;
+	}
 
 	private class TabChangeListener implements ChangeListener{
 
@@ -770,6 +776,8 @@ public class SqlIdeApplication  {
 		}
 		return UIManager.getLookAndFeel();
 	}
+
+	public RunningPlugins getRunningPlugins() { return runningPlugins; }
 
 
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databasespec name="Local MySQL">
+	<jdbc>
+		<driver>interbase.interclient.Driver</driver>
+		<url>jdbc:mysql://localhost:3306/mysql?user=david</url>
+	</jdbc>
+	<sqlidespecific ideDriver="Database_MSQL">
+		<hostname>localhost</hostname>
+		<username>david</username>
+		<defaultcatalog>test</defaultcatalog>
+	</sqlidespecific>
+	<connection numconnections="2">
+		<property name="username"/>
+		<property value=""/>
+	</connection>
+	<sqlgeneration dotnotation="false"/>
+</databasespec>
