@@ -77,21 +77,21 @@ public class QueryResults {
 		columnCount = metaData.getColumnCount();
 		columnSizes = new int[columnCount];
 		for ( int i=0; i<columnCount; i++ ) {
-			String columnName = metaData.getColumnLabel(i+1);
+			int colIndex = i+1;
+			String columnName = metaData.getColumnLabel(colIndex);
 			columnNames.add(columnName);
 			try {
-				String columnClassName = metaData.getColumnClassName(i+1);
-				columnTypes.add(Class.forName(columnClassName));
+				String columnClassName = metaData.getColumnClassName(colIndex);
+				Class theClass =Class.forName(columnClassName);
+				columnTypes.add(theClass);
 			} catch ( Throwable exc ) {
-//				System.out.println("[QueryResults]  "+exc.toString()+" while trying to retrieve column class for "+columnName+". Will use String in its place.");
 				columnTypes.add(String.class);
 			}
+			int displaySize = 20;
 			try {
-				columnSizes[i] = metaData.getColumnDisplaySize(i+1);
-			} catch ( Throwable exc ) {
-				exc.printStackTrace();
-				columnSizes[i] = 20;
-			}
+				columnSizes[i] = metaData.getColumnDisplaySize(colIndex);
+			} catch ( Throwable exc ) {	}
+			columnSizes[i] = displaySize;
 		}
 	}
 

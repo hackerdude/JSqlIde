@@ -20,13 +20,14 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 	int columnCount;
 	int rowCount;
 	String[] columnNames;
-	Class[]  getColumnClasses;
+	Class[]  columnClasses;
 	ResultSet resultSet;
 
 	public ScrollableResultSetTableModel(QueryResults queryResults) {
 		this.queryResults = queryResults;
 		resultSet = queryResults.getResultSet();
 		columnNames = queryResults.getColumnNames();
+		columnClasses = queryResults.getColumnClasses();
 		// Since this is a scrollable cursor it's okay to go to the bottom right away.
 		try {
 			resultSet.last();
@@ -39,6 +40,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel {
 
 	public int getColumnCount() {
 			return columnCount;
+	}
+
+	public Class getColumnClass(int col) {
+		return columnClasses[col];
 	}
 
 	public Object getValueAt(int row, int column) {
