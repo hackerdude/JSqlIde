@@ -80,6 +80,14 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 		public void actionPerformed(ActionEvent ev) {
 			SqlideHostConfig spec = itemServerNode.getDatabaseProcess().getHostConfiguration();
 			DlgConnectionConfig.showConfigurationDialog( SqlIdeApplication.getFrame(), spec );
+			SqlIdeApplication.getInstance().refreshPanels();
+			try {
+				HostConfigFactory.saveSqlideHostConfig(spec);
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(null, "Could not save configuration "+spec.getName()+":\n"+"Could not write to "+spec.getFileName()+ex.toString(), "Error while saving", JOptionPane.ERROR_MESSAGE);
+			}
+
 		}
 	}
 

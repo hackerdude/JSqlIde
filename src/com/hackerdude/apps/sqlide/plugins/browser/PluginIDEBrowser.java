@@ -404,6 +404,7 @@ public class PluginIDEBrowser extends JPanel implements IDEVisualPluginIF {  // 
 				/** @todo This does not work on MacOS */
 				if ( e.getModifiers() == e.BUTTON3_MASK || e.getModifiers() == e.CTRL_MASK ) {
 					TreePath[] selectedPaths = browserTree.getSelectionModel().getSelectionPaths();
+					if ( selectedPaths == null ) return;
 					NodeIDEBase[] selectedNodes = new NodeIDEBase[selectedPaths.length];
 					for ( int i=0; i<selectedPaths.length; i++ ) {
 						Object lastPathComponent = selectedPaths[i].getLastPathComponent();
