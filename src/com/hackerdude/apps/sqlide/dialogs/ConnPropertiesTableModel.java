@@ -3,7 +3,7 @@ package com.hackerdude.apps.sqlide.dialogs;
 import javax.swing.table.*;
 import java.util.*;
 import javax.swing.event.TableModelListener;
-import com.hackerdude.apps.sqlide.dataaccess.ConnectionConfig;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * Title:        JSqlIde
@@ -65,16 +65,16 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 	public String getColumnName(int columnIndex) {
 		return (String)colNames.get(columnIndex);
 	}
-	public Class getColumnClass(int columnIndex) {
-		if ( columnIndex == 2  ) return Boolean.class;
-		else return String.class;
-	}
+//	public Class getColumnClass(int columnIndex) {
+//		if ( columnIndex == 2  ) return Boolean.class;
+//		else return String.class;
+//	}
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		if ( columnIndex != 1 ) return true;
 
 		Vector row = (Vector)dataTable.get(rowIndex);
 		String value = (String)row.get(1);
-		if ( value.equals( ConnectionConfig._ASK_) ) return false;
+//		if ( value.equals( SqlideHostConfig._ASK_) ) return false;
 		return true;
 	}
 
@@ -85,11 +85,11 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 		if ( columnIndex == 2 ) {
 			value = (String)row.get(1);
 			/** @todo Reduce object creation by putting these in the actual vector. */
-			if ( value.equals(ConnectionConfig._ASK_) ) { return new Boolean(true); }
-			else return new Boolean(false);
+//			if ( value.equals(SqlideHostConfig._ASK_) ) { return new Boolean(true); }
+//			else return new Boolean(false);
 		} else
 		value = (String)row.get(columnIndex);
-		if ( columnIndex == 1 && value.equals(ConnectionConfig._ASK_) ) { value = ""; }
+//		if ( columnIndex == 1 && value.equals(SqlideHostConfig._ASK_) ) { value = ""; }
 		return value;
 
 	}
@@ -101,9 +101,9 @@ public class ConnPropertiesTableModel extends AbstractTableModel  {
 
 		if ( columnIndex == 2 ) {
 			row.remove(1);
-			if ( ((Boolean)aValue).booleanValue() )
-				row.add(1, ConnectionConfig._ASK_);
-			else row.add(1, "");
+//			if ( ((Boolean)aValue).booleanValue() )
+//				row.add(1, SqlideHostConfig._ASK_);
+//			else row.add(1, "");
 		} else {
 			row.set(columnIndex, aValue);
 

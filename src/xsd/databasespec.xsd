@@ -20,7 +20,7 @@ This schema specifies the syntax of the SQLIDE database specifications.
 	============================================================
 -->
 
-<xsd:complexType name="PROPERTIESType">
+<xsd:complexType name="GENERICPROPERTIESType">
  <xsd:annotation>
 	 <xsd:documentation>
 A collaction of properties.
@@ -28,7 +28,7 @@ A collaction of properties.
  </xsd:annotation>
 
 	<xsd:sequence>
-		<xsd:element name="property" type="PROPERTYType" minOcurrs="0" maxOcurrs="unbounded"/>
+		<xsd:element name="property" type="PROPERTYType" minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -57,15 +57,15 @@ The JDBC Type allows us to specify values for JDBC connectivity.
 		<xsd:element name="driver" type="xsd:string"/>
 		<xsd:element name="url" type="xsd:string"/>
 		<xsd:element name="userName" type="xsd:string"/>
-		<xsd:element name="properties" type="PROPERTIESType" minOcurrs="0" maxOcurrs="unbounded"/>
-		<xsd:element name="classPath" type="CLASSPATHType" minOcurrs="0" maxOcurrs="unbounded"/>
+		<xsd:element name="connectionProperties" type="GENERICPROPERTIESType"/>
+		<xsd:element name="classPath" type="CLASSPATHType"/>
 	</xsd:sequence>
 
 </xsd:complexType>
 
 <xsd:complexType name="CLASSPATHType">
 	<xsd:sequence>
-		<xsd:element name="fileName" type="xsd:string" minOcurrs="0" maxOcurrs="unbounded"/>
+		<xsd:element name="pathelement" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -99,29 +99,30 @@ database specification).
  </xsd:annotation>
 
 	<xsd:sequence>
-		<xsd:element name="properties" type="PROPERTIESType"/>
+		<xsd:element name="pluginProperties" type="GENERICPROPERTIESType"/>
 	</xsd:sequence>
 	<xsd:attribute name="pluginName" type="xsd:string" use="required"/>
 
 </xsd:complexType>
 
-<xsd:complexType name="DATABASESPECType">
+<xsd:complexType name="SQLIDEHOSTCONFIGType">
  <xsd:annotation>
 	 <xsd:documentation>
 Our root element.
 	 </xsd:documentation>
  </xsd:annotation>
  <xsd:sequence>
+	<xsd:element name="fileName" type="xsd:string"/>
 	<xsd:element name="name" type="xsd:string"/>
 	<xsd:element name="general" type="SQLIDEGENERALType"/>
-	<xsd:element name="jdbc" type="SQLIDEGENERALType"/>
-	<xsd:element name="plugin-specific" type="PLUGINSPECIFICType" minOcurrs="0" maxOcurrs="unbounded"/>
+	<xsd:element name="jdbc" type="JDBCType"/>
+	<xsd:element name="plugin-specific" type="PLUGINSPECIFICType" minOccurs="0" maxOccurs="unbounded"/>
  </xsd:sequence>
 
 </xsd:complexType>
 
 
 	<!-- And here's our root element. -->
-	<xsd:element name="database-spec" type="DATABASESPECType"/>
+	<xsd:element name="sqlide-host-config" type="SQLIDEHOSTCONFIGType"/>
 
 </xsd:schema>

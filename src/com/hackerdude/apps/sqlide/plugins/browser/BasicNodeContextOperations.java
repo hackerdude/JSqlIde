@@ -11,6 +11,7 @@ import com.hackerdude.apps.sqlide.dialogs.*;
 import com.hackerdude.apps.sqlide.nodes.*;
 import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.plugins.isql.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * This plugin returns all the basic Node Context Operations. It is the
@@ -70,7 +71,7 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 			this.itemServerNode = itemServerNode;
 		}
 		public void actionPerformed(ActionEvent ev) {
-			ConnectionConfig spec = itemServerNode.getDatabaseProcess().getConnectionConfig();
+			SqlideHostConfig spec = itemServerNode.getDatabaseProcess().getHostConfiguration();
 			DlgConnectionConfig.showConfigurationDialog( SqlIdeApplication.getFrame(), spec );
 		}
 	}

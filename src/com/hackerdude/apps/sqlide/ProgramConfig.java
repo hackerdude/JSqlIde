@@ -35,6 +35,8 @@ import java.io.*;
 
 import com.hackerdude.apps.sqlide.wizards.NewServerWizard;
 import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 /**
  * The Program Configuration object. This object's job is to maintain
@@ -69,8 +71,8 @@ public class ProgramConfig extends Observable {
 
 	protected String saveDirectory = System.getProperty("user.home")+File.separator+"sqlide";
 
-	protected ConnectionConfig defaultDatabaseSpec;
-	protected ArrayList connectionConfigList;
+	protected SqlideHostConfig defaultDatabaseSpec;
+	protected ArrayList SqlideHostConfigList;
 
 	private static ProgramConfig instance;
 
@@ -188,10 +190,10 @@ public class ProgramConfig extends Observable {
 			setDefaults(userinterface);
 		}
 
-		defaultdbPropsFile = userinterface.getProperty(ConnectionConfig.PROP_DEFAULT_CATALOG)+ConnectionConfig.PROP_DB_CONFIG_SUFFIX;
+//		defaultdbPropsFile = userinterface.getProperty(SqlideHostConfig.PROP_DEFAULT_CATALOG)+SqlideHostConfig.PROP_DB_CONFIG_SUFFIX;
 		iSQLbyDefault = userinterface.getProperty(PROP_ISQL_BY_DEFAULT).equals(new String("yes"));
 
-		readConnectionConfigs();
+		readSqlideHostConfigs();
 
 	}
 
@@ -206,7 +208,7 @@ public class ProgramConfig extends Observable {
 		userinterface.setProperty(PROP_SQL_TABLE_VIEW, "true");
 		userinterface.setProperty(PROP_SQL_FONT_SIZE, "12");
 		userinterface.setProperty(PROP_SQL_FONT_NAME, "MonoSpaced");
-		userinterface.setProperty(ConnectionConfig.PROP_DEFAULT_CATALOG, "default");
+//		userinterface.setProperty(SqlideHostConfig.PROP_DEFAULT_CATALOG, "default");
 
 		File saveDir = new File(saveDirectory);
 		if ( ! saveDir.exists() ) saveDir.mkdir();
@@ -215,12 +217,12 @@ public class ProgramConfig extends Observable {
 
 	}
 
-	public void removeConnectionConfig(ConnectionConfig spec) {
-		connectionConfigList.remove(spec);
+	public void removeSqlideHostConfig(SqlideHostConfig spec) {
+		SqlideHostConfigList.remove(spec);
 	}
 
-	public void addConnectionConfig(ConnectionConfig spec) {
-		connectionConfigList.add(spec);
+	public void addSqlideHostConfig(SqlideHostConfig spec) {
+		SqlideHostConfigList.add(spec);
 		setChanged();
 		notifyObservers(spec);
 	}
@@ -230,8 +232,13 @@ public class ProgramConfig extends Observable {
 	 */
 	public void saveConfiguration() {
 		saveDefaults(userinterface);
-		saveConnectionConfigs();
-	};
+		try {
+			saveSqlideHostConfigs();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	/**
 	 * Saves the defaults (TODO: Why is this here?)
@@ -274,7 +281,7 @@ public class ProgramConfig extends Observable {
 	 * @return The "Polite Name" of the database configuration item
 	 */
 	public String getDbConfigName( int index ) {
-		return( ((ConnectionConfig)connectionConfigList.get(index)).getPoliteName());
+		return( ((SqlideHostConfig)SqlideHostConfigList.get(index)).getName());
 	}
 
 	/**
@@ -288,42 +295,42 @@ public class ProgramConfig extends Observable {
 	 * @return A DatabaseSpec object with the database specification that
 	 * will be used for the default server.
 	 */
-	public ConnectionConfig getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
+	public SqlideHostConfig getDefaultDatabaseSpec() { return(defaultDatabaseSpec); };
 
-	public void setDefaultDatabaseSpec(ConnectionConfig config) { defaultDatabaseSpec = config; };
+	public void setDefaultDatabaseSpec(SqlideHostConfig config) { defaultDatabaseSpec = config; };
 
 	/**
 	 * Get a database spec by number
 	 * @param index The number of database spec we want to retrieve
 	 * @return A reference to the DatabaseSpec object with order in index.
 	 */
-	public ConnectionConfig getConnectionConfig( int index ) { return((ConnectionConfig)connectionConfigList.get(index)); }
+	public SqlideHostConfig getSqlideHostConfig( int index ) { return((SqlideHostConfig)SqlideHostConfigList.get(index)); }
 
 	/**
 	 * Returns the number of database specs.
 	 */
-	public int getConnectionCount() { return connectionConfigList.size(); }
+	public int getConnectionCount() { return SqlideHostConfigList.size(); }
 
 
 	/**
 	 * Read all the database configurations for this user.
 	 *
 	 */
-	public synchronized void readConnectionConfigs() {
+	public synchronized void readSqlideHostConfigs() {
 
 		File findFiles = new File(getUserProfilePath());
-		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(ConnectionConfig.PROP_DB_CONFIG_SUFFIX));
+		String[] dbPropFileNames = findFiles.list(new FileSuffixChecker(HostConfigFactory.PROP_DB_CONFIG_SUFFIX));
 		String fileName;
-		ConnectionConfig dbSpec;
+		SqlideHostConfig dbSpec;
 
-		connectionConfigList = new ArrayList();
+		SqlideHostConfigList = new ArrayList();
 
 		for ( int i=0; i<dbPropFileNames.length; i++) {
 
 			fileName = getUserProfilePath()+dbPropFileNames[i];
 			try {
-				dbSpec = ConnectionConfigFactory.createConnectionConfig(fileName);
-				connectionConfigList.add( dbSpec );
+				dbSpec = HostConfigFactory.createHostConfig(fileName);
+				SqlideHostConfigList.add( dbSpec );
 				if ( dbPropFileNames[i].equals( defaultdbPropsFile ) ) {
 					defaultDatabaseSpec = dbSpec;
 				}
@@ -339,10 +346,10 @@ public class ProgramConfig extends Observable {
 	/**
 	 * Save all the database specifications.
 	 */
-	public void saveConnectionConfigs() {
-		for (int i=0; i<connectionConfigList.size(); i++) {
-			ConnectionConfig currentSpec = ((ConnectionConfig)connectionConfigList.get(i));
-			ConnectionConfigFactory.saveConnectionConfig(currentSpec);
+	public void saveSqlideHostConfigs() throws IOException {
+		for (int i=0; i<SqlideHostConfigList.size(); i++) {
+			SqlideHostConfig currentSpec = ((SqlideHostConfig)SqlideHostConfigList.get(i));
+			HostConfigFactory.saveSqlideHostConfig(currentSpec);
 		}
 	}
 

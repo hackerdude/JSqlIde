@@ -41,6 +41,7 @@ import java.io.*;
 import javax.swing.event.*;
 import com.hackerdude.apps.sqlide.ProgramConfig;
 import com.hackerdude.swing.SwingUtils;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 /**
  * Dialog to configure the database connection profile
@@ -52,7 +53,7 @@ public class DlgConnectionConfig extends JDialog {
 	public final Action ACTION_OK = new OKAction();
 	public final Action ACTION_CANCEL = new CancelAction();
 
-	ConnectionConfig connectionConfig;
+	SqlideHostConfig SqlideHostConfig;
 
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel pnlOkCancel = new JPanel();
@@ -82,9 +83,9 @@ public class DlgConnectionConfig extends JDialog {
 		pnlConnectionPanel.applyToModel();
 	}
 
-	public DlgConnectionConfig( JFrame frame, ConnectionConfig spec ) {
+	public DlgConnectionConfig( JFrame frame, SqlideHostConfig spec ) {
 		super( frame );
-		setConnectionConfig(spec);
+		setSqlideHostConfig(spec);
 		readFromModel();
 		if ( frame != null ) frame.setIconImage( ProgramIcons.getInstance().getDatabaseIcon().getImage() );
 		jbInit();
@@ -92,9 +93,9 @@ public class DlgConnectionConfig extends JDialog {
 		pnlJDBC.readFromModel();
 	}
 
-	public void setConnectionConfig( ConnectionConfig spec ) {
-		this.connectionConfig = spec;
-		pnlConnectionPanel.setConnectionConfig(spec);
+	public void setSqlideHostConfig( SqlideHostConfig spec ) {
+		this.SqlideHostConfig = spec;
+		pnlConnectionPanel.setSqlideHostConfig(spec);
 		pnlJDBC.setDatabaseSpec(spec);
 		pnlClasspathPanel.setDatabaseSpec(spec);
 	}
@@ -122,18 +123,18 @@ public class DlgConnectionConfig extends JDialog {
 
 	// Test function
 	public static void main( String[] args ) {
-		ConnectionConfig spec = ProgramConfig.getInstance().getDefaultDatabaseSpec();
+		SqlideHostConfig spec = ProgramConfig.getInstance().getDefaultDatabaseSpec();
 		showConfigurationDialog( null, spec);
 	}
 
 	/**
 	 * Shows the configuration dialog.
 	 */
-	public static void showConfigurationDialog(JFrame frame, ConnectionConfig s) {
+	public static void showConfigurationDialog(JFrame frame, SqlideHostConfig s) {
 
 		DlgConnectionConfig configuration = new DlgConnectionConfig( frame , s );
 		configuration.setModal(true);
-		configuration.setTitle("Database Spec: "+s.getPoliteName());
+		configuration.setTitle("Database Spec: "+s.getName());
 		configuration.pack();
 		Point location = SwingUtils.getCenteredWindowPoint(configuration);
 		configuration.setLocation(location);
@@ -155,6 +156,9 @@ public class DlgConnectionConfig extends JDialog {
 /*
 
   $Log$
+  Revision 1.2  2002/12/16 21:26:46  davidmartinez
+  Now sqlide uses castor for marshalling the connection configuration information.
+
   Revision 1.1  2002/08/21 21:24:26  davidmartinez
   Refactoring - moved application from devtools.... to apps
 
@@ -162,7 +166,7 @@ public class DlgConnectionConfig extends JDialog {
   Lots of fixes around dialogs and new server wizard.
 
   Revision 1.1  2002/08/14 16:40:07  davidmartinez
-  Refactored- Renamed DatabaseSpec to ConnectionConfig, and dialogs as well.
+  Refactored- Renamed DatabaseSpec to SqlideHostConfig, and dialogs as well.
 
   Revision 1.3  2002/08/14 16:07:18  davidmartinez
   Now database specs use several files and a URL classloader in order to load the classes.

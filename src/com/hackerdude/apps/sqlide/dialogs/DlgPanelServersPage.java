@@ -37,6 +37,8 @@ import java.util.*;
 import java.lang.Object.*;
 import java.lang.Exception.*;
 import java.io.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 
 /**
@@ -137,8 +139,8 @@ public class DlgPanelServersPage extends JPanel {
 		}
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
-			ConnectionConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getConnectionConfig(itemNo); }
+			SqlideHostConfig spec = null;
+			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getSqlideHostConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no Catalog selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -155,12 +157,17 @@ public class DlgPanelServersPage extends JPanel {
 	class ActionAddServer extends AbstractAction {
 		public ActionAddServer() { super("New", ProgramIcons.getInstance().findIcon("images/NewPlug.gif"));}
 		public void actionPerformed(ActionEvent ev) {
-			NewServerWizard wiz = NewServerWizard.showWizard(true);
-			if ( wiz.result == wiz.OK ) {
-				ConnectionConfig spec = wiz.getDBSpec();
-				ConnectionConfigFactory.saveConnectionConfig(spec);
-				ProgramConfig.getInstance().addConnectionConfig(spec);
-				readFromModel();
+			try {
+				NewServerWizard wiz = NewServerWizard.showWizard(true);
+				if ( wiz.result == wiz.OK ) {
+					SqlideHostConfig spec = wiz.getDBSpec();
+					HostConfigFactory.saveSqlideHostConfig(spec);
+					ProgramConfig.getInstance().addSqlideHostConfig(spec);
+					readFromModel();
+				}
+			}
+			catch (IOException ex) {
+				JOptionPane.showMessageDialog(DlgPanelServersPage.this, ex.toString(), "Error saving server", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -172,19 +179,19 @@ public class DlgPanelServersPage extends JPanel {
 		public ActionRemoveServer() { super("Delete", ProgramIcons.getInstance().findIcon("images/UnPlug.gif")); }
 		public void actionPerformed(ActionEvent ev) {
 			int itemNo = tbServers.getSelectedRow();
-			ConnectionConfig spec = null;
-			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getConnectionConfig(itemNo); }
+			SqlideHostConfig spec = null;
+			if ( itemNo >= 0 ) { spec  = ProgramConfig.getInstance().getSqlideHostConfig(itemNo); }
 			if ( spec == null ) {
 				JOptionPane.showMessageDialog(null, "You have no database selected.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if ( JOptionPane.showConfirmDialog(svrDelete, "Delete "+spec.getPoliteName()+"?",
+			if ( JOptionPane.showConfirmDialog(svrDelete, "Delete "+spec.getName()+"?",
 									"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE )
 							== JOptionPane.YES_OPTION ) {
 				File f = new File(spec.getFileName());
 				if ( ! f.delete() ) JOptionPane.showMessageDialog(svrDelete, "Couldn't delete "+spec.getFileName(), "Error deleting file", JOptionPane.ERROR_MESSAGE);
 				else {
-						ProgramConfig.getInstance().removeConnectionConfig(spec);
+						ProgramConfig.getInstance().removeSqlideHostConfig(spec);
 						readFromModel();
 				}
 			}

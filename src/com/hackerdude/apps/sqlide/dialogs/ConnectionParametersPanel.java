@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import com.hackerdude.apps.sqlide.dataaccess.ConnectionConfig;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 public class ConnectionParametersPanel extends JPanel {
 
@@ -12,7 +13,7 @@ public class ConnectionParametersPanel extends JPanel {
 	public final Action ACTION_DELETE_CONNECTION = new DeleteConnectionAction();
 
 	ConnPropertiesTableModel connModel = null;
-	ConnectionConfig connectionConfig;
+	SqlideHostConfig SqlideHostConfig;
 
     private BorderLayout borderLayout1 = new BorderLayout();
     private JButton btnDeleteConnection = new JButton(ACTION_DELETE_CONNECTION);
@@ -70,12 +71,12 @@ public class ConnectionParametersPanel extends JPanel {
 		}
 	}
 
-	public void setConnectionConfig(ConnectionConfig databaseSpec) {
-		this.connectionConfig = databaseSpec;
+	public void setSqlideHostConfig(SqlideHostConfig databaseSpec) {
+		this.SqlideHostConfig = databaseSpec;
 	}
 
 	public void readFromModel() {
-		connModel = new ConnPropertiesTableModel(connectionConfig.getConnectionProperties(), "Parameter");
+		connModel = new ConnPropertiesTableModel(HostConfigFactory.connectionPropertiesToMap(SqlideHostConfig.getJdbc().getConnectionProperties()), "Parameter");
 		tblConnectionParams.setModel(connModel);
 	}
 
@@ -84,7 +85,7 @@ public class ConnectionParametersPanel extends JPanel {
 	 * TODO: Apply the data model for connection Properties
 	 */
 	public void applyToModel() {
-		connectionConfig.setConnectionProperties(connModel.getProperties());
+		SqlideHostConfig.getJdbc().setConnectionProperties(HostConfigFactory.mapToConnectionProperties(connModel.getProperties()));
 	}
 
 }

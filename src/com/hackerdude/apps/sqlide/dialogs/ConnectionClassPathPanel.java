@@ -6,13 +6,14 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 import com.hackerdude.apps.sqlide.dataaccess.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 
 public class ConnectionClassPathPanel extends JPanel {
 
 	public final Action ACTION_ADD = new AddAction();
 	public final Action ACTION_REMOVE = new RemoveAction();
 
-	private ConnectionConfig databaseSpec;
+	private SqlideHostConfig databaseSpec;
 	ClassPathListModel listModel = new ClassPathListModel();
 
     private BorderLayout borderLayout1 = new BorderLayout();
@@ -53,18 +54,18 @@ public class ConnectionClassPathPanel extends JPanel {
         fileScroller.getViewport().add(lstFileList, null);
         pnlTop.add(lblInstruction, BorderLayout.CENTER);
     }
-    public void setDatabaseSpec(ConnectionConfig databaseSpec) {
+    public void setDatabaseSpec(SqlideHostConfig databaseSpec) {
         this.databaseSpec = databaseSpec;
 		readFromModel();
     }
 
 
-    public ConnectionConfig getDatabaseSpec() {
+    public SqlideHostConfig getDatabaseSpec() {
         return databaseSpec;
     }
 
 	public void readFromModel() {
-		String[] jarFiles = databaseSpec.getJarFileNames();
+		String[] jarFiles = databaseSpec.getJdbc().getClassPath().getPathelement();
 		listModel.clear();
 		if ( (jarFiles != null) && jarFiles.length>0 ) {
 			for ( int i=0; i<jarFiles.length; i++ ) listModel.addElement(jarFiles[i]);
@@ -77,7 +78,7 @@ public class ConnectionClassPathPanel extends JPanel {
 		synchronized ( newJarFiles ) {
 			String[] jarFiles = new String[newJarFiles.size()];
 			jarFiles = (String[])newJarFiles.toArray(jarFiles);
-			databaseSpec.setJarFileName(jarFiles);
+			databaseSpec.getJdbc().getClassPath().setPathelement(jarFiles);
 		}
 
 	}

@@ -201,7 +201,7 @@ public class ContextCommandRunner implements IDENodeContextPluginIF {
 		}
 		// If we support dot notation and there is a catalog, use the fully qualified name
 		boolean isCatalogEmpty = catalog==null || catalog.equals("");
-		if ( node.getDatabaseProcess().getConnectionConfig().isSupportsDotNotation() && ! isCatalogEmpty )
+		if ( node.getDatabaseProcess().getHostConfiguration().getGeneral().getSupportsDotNotation() && ! isCatalogEmpty )
 		{
 			result = catalog+"."+table;
 

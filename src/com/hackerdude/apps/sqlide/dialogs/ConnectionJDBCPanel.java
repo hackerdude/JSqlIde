@@ -3,12 +3,13 @@ package com.hackerdude.apps.sqlide.dialogs;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.hackerdude.apps.sqlide.dataaccess.ConnectionConfig;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+
 
 public class ConnectionJDBCPanel extends JPanel {
 
 
-	ConnectionConfig databaseSpec;
+	SqlideHostConfig databaseSpec;
 
     private BorderLayout mainBL = new BorderLayout();
     private JTextField fFileName = new JTextField();
@@ -130,39 +131,39 @@ public class ConnectionJDBCPanel extends JPanel {
 
     }
 
-	public void setDatabaseSpec(ConnectionConfig spec) {
+	public void setDatabaseSpec(SqlideHostConfig spec) {
 		this.databaseSpec = spec;
 	}
 
 	public void applyToModel() {
-		databaseSpec.setDriverClassName(fDriver.getText());
-		databaseSpec.setPoliteName(fDisplayName.getText());
-		databaseSpec.setDefaultCatalog(fDefaultCatalog.getText());
+		databaseSpec.getJdbc().setDriver(fDriver.getText());
+		databaseSpec.setName(fDisplayName.getText());
+//		databaseSpec.setDefaultCatalog(fDefaultCatalog.getText());
 		databaseSpec.setFileName(fFileName.getText());
-		databaseSpec.setDbIntfClassName(fIDEManager.getText());
-		databaseSpec.setJDBCURL(fURLForm.getText());
-		databaseSpec.setSupportsDotNotation(cbSupportsDotNotation.isSelected());
+//		databaseSpec.setDbIntfClassName(fIDEManager.getText());
+		databaseSpec.getJdbc().setUrl(fURLForm.getText());
+		databaseSpec.getGeneral().setSupportsDotNotation(cbSupportsDotNotation.isSelected());
 	}
 
 
 	public void readFromModel() {
-		fDriver.setText(databaseSpec.getDriverClassName());
-		fDisplayName.setText(databaseSpec.getPoliteName());
-		fDefaultCatalog.setText(databaseSpec.getDefaultCatalog());
+		fDriver.setText(databaseSpec.getJdbc().getDriver());
+		fDisplayName.setText(databaseSpec.getName());
+//		fDefaultCatalog.setText(databaseSpec.getDefaultCatalog());
 		fFileName.setText(databaseSpec.getFileName());
-		fIDEManager.setText(databaseSpec.getDbIntfClassName());
-		fURLForm.setText(databaseSpec.getJDBCURL());
-		cbSupportsDotNotation.setSelected(databaseSpec.isSupportsDotNotation());
+//		fIDEManager.setText(databaseSpec.getDbIntfClassName());
+		fURLForm.setText(databaseSpec.getJdbc().getUrl());
+		cbSupportsDotNotation.setSelected(databaseSpec.getGeneral().getSupportsDotNotation());
 		updateMessageLabel();
 	}
 
 	void fDriver_focusLost(FocusEvent e) {
-		databaseSpec.setDriverClassName(fDriver.getText());
+		databaseSpec.getJdbc().setDriver(fDriver.getText());
 		updateMessageLabel();
 	}
 
 	void updateMessageLabel() {
-		String userMessage = databaseSpec.getUserMessage();
+		String userMessage = "";//databaseSpec.getUserMessage();/** @todo Reimplement */
 		lblDriverMessage.setText(userMessage);
 		if ( userMessage.toLowerCase().startsWith("warning:") ) {
 				lblDriverMessage.setForeground(new Color(255, 0, 0));

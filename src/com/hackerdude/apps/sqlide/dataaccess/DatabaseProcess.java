@@ -37,6 +37,8 @@ import java.util.*;
 import java.lang.Object.*;
 import java.io.*;
 import java.sql.*;
+import com.hackerdude.apps.sqlide.xml.hostconfig.*;
+import com.hackerdude.apps.sqlide.xml.*;
 
 /**
  * A Database Process is the db access backend for all the sqlIDE
@@ -44,7 +46,7 @@ import java.sql.*;
  * db profile you want to use for the connection) and call its methods!
  *
  * @copyright (C) 1998-2002 Hackerdude (David Martinez). All Rights Reserved.
- * @author David Martinez
+DatabaseSpec * @author David Martinez
  * @version 1.0
  */
 public class DatabaseProcess {
@@ -70,7 +72,7 @@ public class DatabaseProcess {
 	private String serverCatalogName;
 	private String urlform;
 
-	private ConnectionConfig connectionConfig;
+	private SqlideHostConfig hostConfiguration;
 
 	public TableModel getTableModel() {
 		return lastResultTable;
@@ -80,41 +82,8 @@ public class DatabaseProcess {
 		return lastQueryResults;
 	}
 
-	/**
-	 * Constructor
-	 * @param svr The database Specification to use for the connection..
-	 */
-	public DatabaseProcess(ConnectionConfig svr) {
-
-		connectionConfig = svr;
-		currentCatalog  = connectionConfig.getDefaultCatalog();
-		userName   = connectionConfig.getUserName();
-		serverCatalogName = connectionConfig.getDbIntfClassName();
-
-		// This tries to load the class and put it in the
-		// dbInterface member. Once this is done, the
-		// Application's UI components should be able to
-		// call the methods to find out stuff about the
-		// class.
-
-		if ( serverCatalogName == null || serverCatalogName.equals("null") ) {
-			System.err.println("[DatabaseProcess] Warning: DB Interface Class for "+connectionConfig.getPoliteName()+" not specified");
-		} else {
-			String fullyQualName = "com.hackerdude.apps.sqlide.dbspecific."+serverCatalogName;
-//			System.out.println("[DatabaseProcess] Loading class "+fullyQualName);
-			try {
-				Class interfaceClass = Class.forName(fullyQualName);
-				dbInterface = (SQLIDEDBInterface)interfaceClass.newInstance();
-			} catch ( IllegalAccessException exc) {
-			} catch ( InstantiationException exc) {
-			} catch( java.lang.ClassNotFoundException e ) {
-				dbInterface = null;
-			}
-		}
-
-		lastQuery = "";
-		passWord = null;
-
+	public DatabaseProcess(SqlideHostConfig hostConfiguration) {
+		this.hostConfiguration = hostConfiguration;
 	}
 
 
@@ -335,7 +304,7 @@ public class DatabaseProcess {
 	public synchronized void loadDriver() {
 		if ( currentDriver == null ) {
 			try {
-				Class theClass = connectionConfig.resolveDriverClass();
+				Class theClass = resolveDriverClass(hostConfiguration);
 				currentDriver = (Driver)theClass.newInstance();
 				DriverManager.registerDriver( currentDriver );
 			} catch(Exception exc) {
@@ -369,9 +338,9 @@ public class DatabaseProcess {
 			while (TryAgain) {
 				TryAgain = showLoginBox();
 				if (TryAgain) {
-					theurl = connectionConfig.getJDBCURL();
+					theurl = hostConfiguration.getJdbc().getUrl();
 					loadDriver();
-					connProps = new Properties(connectionConfig.getProperties());
+					connProps = new Properties(HostConfigFactory.connectionPropertiesToMap(hostConfiguration.getJdbc().getConnectionProperties()));
 
 					/** @hack This is still not right...  */
 					connProps.setProperty("user", userName);
@@ -420,7 +389,7 @@ public class DatabaseProcess {
 
 		JOptionPane pane = new JOptionPane();
 		pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
-		message[0] = connectionConfig.getPoliteName()+" ("+connectionConfig.getHostName()+")"
+		message[0] = hostConfiguration.getName()
 			 +"\nDatabase: "+currentCatalog;
 		message[1] = lUserName;
 		message[2] = name;
@@ -453,11 +422,11 @@ public class DatabaseProcess {
 	}
 
 	public String toString() {
-		if ( connectionConfig.getPoliteName() == null ) return "Unknown Server";
-		return(connectionConfig.getPoliteName());
+		if ( hostConfiguration.getName() == null ) return "Unknown Server";
+		return(hostConfiguration.getName());
 	}
 
-	public ConnectionConfig getConnectionConfig() { return connectionConfig; }
+	public SqlideHostConfig getHostConfiguration() { return hostConfiguration; }
 
 	/**
 	 * Get a connection pool for this Process
@@ -465,7 +434,7 @@ public class DatabaseProcess {
 	 */
 	public synchronized ConnectionPool getPool() {
 		if ( pool == null ) {
-			pool = new ConnectionPool(connectionConfig.getPoliteName(), connProps);
+			pool = new ConnectionPool(hostConfiguration.getName(), connProps);
 		}
 		return(pool);
 	}
@@ -478,5 +447,33 @@ public class DatabaseProcess {
 		}
 		return buffer.toString();
 	}
+
+	public static Class resolveDriverClass(SqlideHostConfig configuration) throws ClassNotFoundException, MalformedURLException {
+		Class theClass;
+
+		String driverClassName = configuration.getJdbc().getDriver();
+
+		if ( (configuration.getJdbc().getClassPath().getPathelementCount() == 0 ) ) {
+			theClass = Class.forName(driverClassName);
+		} else {
+			String[] classPath = configuration.getJdbc().getClassPath().getPathelement();
+			ArrayList al = new ArrayList();
+			for ( int i=0; i<classPath.length; i++ ) {
+				String jarFile = classPath[i];
+				File file = new File(jarFile);
+				URL url = file.toURL();
+				al.add(url);
+			}
+			URL[] urls = new URL[al.size()];
+			urls = (URL[])al.toArray(urls);
+			URLClassLoader urlClassLoader = new URLClassLoader(urls);
+			theClass = urlClassLoader.loadClass(driverClassName);
+			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
+		}
+		System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName);
+		return theClass;
+	}
+
+
 
 }
