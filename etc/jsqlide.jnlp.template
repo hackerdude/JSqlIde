@@ -14,5 +14,5 @@
 	<j2se version="@HACKERDUDE_JSQLIDE_J2SE_VERSION" />
 	<jar href="jsqlide.jar"/>
   </resources>
-  <application-desc main-class="com.hackerdude.devtools.db.sqlide.sqlide"/>
+  <application-desc main-class="com.hackerdude.apps.sqlide.SqlIdeApplication"/>
 </jnlp>

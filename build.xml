@@ -379,7 +379,7 @@
 
 	<target name="publish" depends="release">
 	    <exec executable="scp">
-		    <arg value="${build.dir}/jsqlide.j* ${jsqlide.scp.user.name}@${jsqlide.publish.server.name}:${jsqlide.publish.server.path}"/>
+		    <arg line="${build.dir}/jsqlide.jar ${build.dir}/jsqlide.jnlp ${jsqlide.scp.user.name}@${jsqlide.publish.server.name}:${jsqlide.publish.server.path}"/>
 		</exec>
 	</target>
 
