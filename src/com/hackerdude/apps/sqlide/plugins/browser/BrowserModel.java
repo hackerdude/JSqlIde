@@ -48,7 +48,6 @@ public class BrowserModel implements Observer {
 
 	DatabaseProcess[] processes;
 	Vector servers;
-	int serverCount;
 	DefaultMutableTreeNode topNode;
 
 	/**
@@ -72,7 +71,7 @@ public class BrowserModel implements Observer {
 	}
 
 	private void fillBrowser() {
-		serverCount   = ProgramConfig.getInstance().getConnectionCount();
+		int serverCount   = ProgramConfig.getInstance().getConnectionCount();
 		servers.clear();
 		for ( int i=0; i<serverCount; i++) {
 			DatabaseProcess db = new DatabaseProcess( ProgramConfig.getInstance().getSqlideHostConfig(i) );
@@ -88,6 +87,7 @@ public class BrowserModel implements Observer {
 		DefaultMutableTreeNode server;
 		DefaultMutableTreeNode theNode;
 		DatabaseProcess dbProcess;
+		int serverCount = ProgramConfig.getInstance().getConnectionCount();
 		for ( int i=0; i<serverCount; i++) {
 			server =  new ItemServerNode( ProgramConfig.getInstance().getSqlideHostConfig(i) );
 			topNode.add(server);

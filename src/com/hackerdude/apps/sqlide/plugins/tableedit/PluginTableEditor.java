@@ -71,6 +71,8 @@ public class PluginTableEditor extends JPanel
 	TableColumnsEditor tbFields;
 	JButton btnSQL;
 
+	ArrayList originalFields = null;
+
 	Action ACTION_INSERTFIELD = new ActionInsertField();
 	Action ACTION_DELETEFIELD = new ActionDeleteField();
 	Action ACTION_PREVIEW = new ActionPreview();
@@ -263,7 +265,10 @@ public class PluginTableEditor extends JPanel
 		okPanel.add(okButton);
 		okPanel.add(cancelButton);
 
-		theStatement.setText(fieldCollection.writeStatement(fldTableName.getText()));
+		String statement;
+		if ( originalFields == null ) statement = fieldCollection.writeCreateStatement(fldTableName.getText());
+		else statement = fieldCollection.writeAlterStatement(fldTableName.getText(), originalFields);
+		theStatement.setText(statement);
 		frm.getContentPane().add(theStatement, BorderLayout.CENTER);
 		frm.getContentPane().add(okPanel, BorderLayout.SOUTH);
 		frm.pack();
@@ -341,10 +346,11 @@ public class PluginTableEditor extends JPanel
 		public ActionDeleteField() {
 			super("Delete Column", ProgramIcons.getInstance().findIcon("images/DeleteColumn.gif"));
 			putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.SHIFT_MASK | KeyEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.SHIFT_MASK | KeyEvent.CTRL_MASK));
 		}
 
 		public void actionPerformed(ActionEvent ev) {
+			int row = tbFields.getEditingRow();
 			fieldCollection.deleteField(tbFields.getEditingRow());
 		}
 	}
@@ -359,25 +365,13 @@ public class PluginTableEditor extends JPanel
 		}
 	}
 
-	/*
-	  class ActionEditTable extends AbstractAction {
-		String tableName;
-		public ActionEditTable(String tableName) {
-		  super("Edit Table " + tableName, ProgramIcons.getInstance().getStoredProcIcon());
-		  this.tableName = tableName;
-		}
-		public void actionPerformed(ActionEvent ev) {
-		  JOptionPane.showMessageDialog(null, "Not Implemented Yet", "Not Implemented Yet", JOptionPane.ERROR_MESSAGE);
-		}
-	  }
-	 */
-
 	public boolean executeStandardAction(ActionEvent evt) {
 		/** @todo Implement. */
 		return false;
 	}
 
 	public void setTableNode(ItemTableNode tableNode) throws SQLException {
+		originalFields = new ArrayList();
 		fldTableName.setText(tableNode.toString());
 		Connection conn = null;
 		ResultSet resultSet = null;
@@ -394,6 +388,9 @@ public class PluginTableEditor extends JPanel
 				tableField.primaryKey = new Boolean(false);
 				if ( (! (tableField.fieldName == null)) && !tableField.fieldName.equals("") )
 					fieldCollection.insertField(tableField);
+				tableField.readOnly = true;
+				TableField original = (TableField)tableField.clone();
+				originalFields.add(original);
 			}
 		} finally {
 			if ( resultSet != null ) try { resultSet.close(); } catch ( Throwable thr) {}

@@ -436,8 +436,12 @@ public class PluginIDEBrowser extends JPanel
 	}
 
 	public void refreshPanel() {
-		serverBrowser = new BrowserModel(rootNode);
-		createBrowserTree();
+//		serverBrowser = new BrowserModel(rootNode);
+//		createBrowserTree();
+		DefaultTreeModel model = (DefaultTreeModel)browserTree.getModel();
+		serverBrowser.createDBNodes();
+		model.nodeStructureChanged(rootNode);
+		browserTree.setFont(ProgramConfig.getInstance().getFont(ProgramConfig.PROP_FONT_FOR_BROWSER));
 	}
 
 	/**
