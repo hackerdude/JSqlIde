@@ -74,6 +74,8 @@ public class SqlIdeApplication  {
 		public void actionPerformed(ActionEvent evt) {}
 	};
 
+	public final InteractiveCredentialsProvider credentialsProvider = new InteractiveCredentialsProvider();
+
 	public final Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
 	public final Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
 	public final Action FILE_EXIT = new ActionProgramExit();
@@ -155,6 +157,8 @@ public class SqlIdeApplication  {
 		mainProgressValue = 0;
 		mainProgress.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
+		DatabaseService.getInstance().setCredentialsProvider(credentialsProvider);
+
 		// Read the configuration
 		mainProgress.changeMessage("Reading Configuration...");
 
@@ -170,7 +174,11 @@ public class SqlIdeApplication  {
 		// Add the IDE browser.
 		mainProgress.changeMessage("Creating Browser...");
 		idebrowser.setVisible(true);
-		idebrowser.initPlugin();
+//		SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+				idebrowser.initPlugin();
+//			}
+//		});
 
 
 		mainProgress.changeMessage("Bootstrapping plugins...");
@@ -181,7 +189,7 @@ public class SqlIdeApplication  {
 		}
 
 //		mainProgress.changeMessage("Creating Default Interactive SQL");
-//		DatabaseProcess ideserver = new DatabaseProcess(ProgramConfig.getInstance().getDefaultDatabaseSpec());
+//		DatabaseProcess ideserver = DatabaseService.getInstance.getDatabaseProcess(ProgramConfig.getInstance().getDefaultDatabaseSpec());
 //		mainProgress.setValue(++mainProgressValue);
 
 //

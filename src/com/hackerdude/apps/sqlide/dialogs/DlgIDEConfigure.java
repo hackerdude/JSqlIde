@@ -128,7 +128,11 @@ public class DlgIDEConfigure extends JDialog implements Observer {
 		pgEditor.applyToModel();
 		ProgramConfig.getInstance().setUILookandFeel( pgGeneral.cbLookFeel.getSelectedItem().toString() );
 		ProgramConfig.getInstance().saveConfiguration();
-
+		try {
+			HostConfigRegistry.getInstance().saveSqlideHostConfigs();
+		} catch ( IOException exc ) {
+			JOptionPane.showMessageDialog(this, "Could not save a host config:"+exc.toString(), "Could not save a host config", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**

@@ -39,15 +39,15 @@ public class NewServerWizSelectServerType extends WizardPage {
 	BorderLayout borderLayout2 = new BorderLayout();
 	JPanel jPanel2 = new JPanel();
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
-	JPanel jPanel3 = new JPanel();
+	JPanel pnlSelectType = new JPanel();
 	JLabel jLabel2 = new JLabel();
 	JComboBox cmbServerType = new JComboBox();
 	BorderLayout borderLayout3 = new BorderLayout();
-	JPanel jPanel4 = new JPanel();
+	JPanel pnlHostName = new JPanel();
 	BorderLayout borderLayout4 = new BorderLayout();
 	JLabel lblHostName = new JLabel();
 	JTextField fHostName = new JTextField();
-	JPanel jPanel5 = new JPanel();
+	JPanel pnlURL = new JPanel();
 	BorderLayout borderLayout5 = new BorderLayout();
 	JLabel lblURL = new JLabel();
 	JTextField fURL = new JTextField();
@@ -91,8 +91,8 @@ public class NewServerWizSelectServerType extends WizardPage {
 		jLabel2.setDisplayedMnemonic('T');
 		jLabel2.setLabelFor(cmbServerType);
 		jLabel2.setText("Select Server type:");
-		jPanel3.setLayout(borderLayout3);
-		jPanel4.setLayout(borderLayout4);
+		pnlSelectType.setLayout(borderLayout3);
+		pnlHostName.setLayout(borderLayout4);
 		lblHostName.setDisplayedMnemonic('N');
 		lblHostName.setLabelFor(fHostName);
 		lblHostName.setText("Host Name:");
@@ -102,7 +102,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 				cmbServerType_actionPerformed(e);
 			}
 		});
-		jPanel5.setLayout(borderLayout5);
+		pnlURL.setLayout(borderLayout5);
 		lblURL.setDisplayedMnemonic('U');
 		lblURL.setText("URL: ");
 		jPanel6.setLayout(borderLayout6);
@@ -137,18 +137,18 @@ public class NewServerWizSelectServerType extends WizardPage {
         this.add(jPanel1, BorderLayout.NORTH);
 		jPanel1.add(jLabel1, BorderLayout.CENTER);
 		this.add(jPanel2, BorderLayout.CENTER);
-		jPanel2.add(jPanel3,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+		jPanel2.add(pnlSelectType,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-		jPanel3.add(jLabel2, BorderLayout.WEST);
-		jPanel3.add(cmbServerType, BorderLayout.CENTER);
-		jPanel2.add(jPanel4,           new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+		pnlSelectType.add(jLabel2, BorderLayout.WEST);
+		pnlSelectType.add(cmbServerType, BorderLayout.CENTER);
+		jPanel2.add(pnlHostName,           new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-		jPanel4.add(lblHostName, BorderLayout.WEST);
-		jPanel4.add(fHostName, BorderLayout.CENTER);
-		jPanel2.add(jPanel5,           new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+		pnlHostName.add(lblHostName, BorderLayout.WEST);
+		pnlHostName.add(fHostName, BorderLayout.CENTER);
+		jPanel2.add(pnlURL,           new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
-		jPanel5.add(lblURL, BorderLayout.WEST);
-		jPanel5.add(fURL, BorderLayout.CENTER);
+		pnlURL.add(lblURL, BorderLayout.WEST);
+		pnlURL.add(fURL, BorderLayout.CENTER);
 		jPanel2.add(jPanel6,           new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 100, 0));
 		jPanel6.add(lblClassName, BorderLayout.WEST);

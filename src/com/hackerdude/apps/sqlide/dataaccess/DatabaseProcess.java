@@ -39,6 +39,8 @@ import java.io.*;
 import java.sql.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.apps.sqlide.xml.*;
+import java.util.HashMap;
+import com.hackerdude.lib.dataaccess.ConnectionFactory;
 
 /**
  * A Database Process is the db access backend for all the sqlIDE
@@ -49,14 +51,13 @@ import com.hackerdude.apps.sqlide.xml.*;
 DatabaseSpec * @author David Martinez
  * @version 1.0
  */
-public class DatabaseProcess {
+public class DatabaseProcess implements CredentialsProvider.CredentialsVerifier, ConnectionFactory {
 
 	public String currentCatalog;
 	public Vector dbList;
 
 	public String lastQuery;
 	private TableModel lastResultTable;
-	String userName;
 
 	private Connection lastConnection;
 	private QueryResults lastQueryResults;
@@ -68,11 +69,14 @@ public class DatabaseProcess {
 
 	public SQLIDEDBInterface dbInterface;
 
-	private String passWord;
 	private String serverCatalogName;
 	private String urlform;
 
+	private Map properCredentials = null;
+
 	private SqlideHostConfig hostConfiguration;
+
+	public CredentialsProvider credentialsProvider;
 
 	public TableModel getTableModel() {
 		return lastResultTable;
@@ -82,12 +86,13 @@ public class DatabaseProcess {
 		return lastQueryResults;
 	}
 
-	protected DatabaseProcess(SqlideHostConfig hostConfiguration) {
+	protected DatabaseProcess(SqlideHostConfig hostConfiguration, CredentialsProvider credentialsProvider) {
 		this.hostConfiguration = hostConfiguration;
+		this.credentialsProvider = credentialsProvider;
 	}
 
 
-	public Connection getConnection() {
+	public Connection getConnection() throws SQLException {
 		if ( ! doConnect() ) return null;
 		Connection conn = null;
 		try {
@@ -101,7 +106,7 @@ public class DatabaseProcess {
 		return conn;
 	}
 
-	public SQLIDEDBInterface getDBInterface() {
+	public SQLIDEDBInterface getDBInterface() throws SQLException {
 		if ( ! doConnect() ) return null;
 		else return dbInterface;
 	}
@@ -133,8 +138,8 @@ public class DatabaseProcess {
 	public Vector getSQLTypes( String database ) {
 
 		Vector types = new Vector();
-		if ( ! doConnect() )  return types;
 		try {
+			if ( ! doConnect() )  return types;
 			Connection conn = getPool().getConnection();
 			changeCatalog(conn);
 			try {
@@ -156,8 +161,9 @@ public class DatabaseProcess {
 	 */
 	public Vector getTablesIn( String schemaName, String catalogName ) {
 		Vector tbls = new Vector();
-		Connection conn = getConnection();
+		Connection conn = null;
 		try {
+			conn = getConnection();
 			ResultSet rs = conn.getMetaData().getTables( catalogName, schemaName, null, null );
 			while(rs.next()) {
 				String tableSchema = rs.getString(2);
@@ -197,8 +203,8 @@ public class DatabaseProcess {
 	 */
 	public Vector getStoredProcedures(String schema) {
 		Vector v = new Vector();
-		if ( ! doConnect() ) return v;
 		try {
+			if ( ! doConnect() ) return v;
 			Connection conn = getPool().getConnection();
 			changeCatalog(conn);
 			try {
@@ -355,9 +361,7 @@ public class DatabaseProcess {
 	 * Connects to the server, showing a dialog box if necessary.
 	 * @return true if the connection was succesful, false otherwise.
 	 */
-	public synchronized boolean doConnect() {
-		String theurl = new String();
-		boolean keepTrying = true;
+	public synchronized boolean doConnect() throws SQLException {
 		Connection conn = null;
 		Connection poolConn = null;
 
@@ -366,93 +370,29 @@ public class DatabaseProcess {
 		} catch ( SQLException exc ) {
 			doDisconnect();
 		}
-		if ( poolConn !=null) { return( true ); } // We are connected.
 
-		// Otherwise, try to start a new connection
-		try {
-			while (keepTrying) {
-				keepTrying = showLoginBox();
-				if (keepTrying) {
-					theurl = hostConfiguration.getJdbc().getUrl();
-					loadDriver();
-					connProps = new Properties(HostConfigFactory.connectionPropertiesToMap(hostConfiguration.getJdbc().getConnectionProperties()));
+		if ( poolConn !=null ) { return( true ); } // We are connected.
 
-					/** @hack This is still not right...  */
-					connProps.setProperty("user", userName);
-					connProps.setProperty("password", passWord);
-					conn = currentDriver.connect(theurl, connProps );
+		if ( credentialsProvider.areCredentialsAvailable(hostConfiguration, this) ) {
+			properCredentials = credentialsProvider.getCredentials();
+			if ( pool == null ) {
+				pool = new ConnectionPool(hostConfiguration.getFileName(), this);
+			}
 
-					// TODO: Create the maxconnections here. Later I'll have to refactor this entire class so the it automatically grows new connections.
-					if ( conn !=null ) {
-						getPool().addConnection(conn);
-						keepTrying = false;
-					}
-				}  // if tryagain
-			} // while
-		} catch(SQLWarning exc) {
-			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), getMessageFromWarnings(exc), "SQL Warning",
-					JOptionPane.ERROR_MESSAGE);
-		} catch(SQLException exc) {
-			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), getMessageFromWarnings(exc), "SQL Exception",
-					JOptionPane.ERROR_MESSAGE);
-		} catch(Throwable exc) {
-			JOptionPane.showMessageDialog(SqlIdeApplication.getFrame(), exc.toString(), "Java Exception",
-					JOptionPane.ERROR_MESSAGE);
+			return true;
+		} else {
+			return false;
 		}
-		boolean retValue = conn==null?false:true;
-		return retValue;
 	}
 
-	/**
-	 * Shows the Login Box.
-	 * @return <code>true</code> if the login was successful.
-	 */
-	public boolean showLoginBox() {
-
-		boolean bresult = false;
-
-		Object[]      message = new Object[5];
-		userName = hostConfiguration.getJdbc().getUserName();
-		JTextField name = new JTextField(userName);
-		JPasswordField password = new JPasswordField();
-		JLabel lUserName = new JLabel("User Name:");
-		lUserName.setDisplayedMnemonic('N');
-		lUserName.setLabelFor(name);
-		JLabel lPassword = new JLabel("Password");
-		lPassword.setDisplayedMnemonic('P');
-		lPassword.setLabelFor(password);
-
-		JOptionPane pane = new JOptionPane();
-		pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
-		message[0] = hostConfiguration.getName();
-		message[1] = lUserName;
-		message[2] = name;
-		message[3] = lPassword;
-		message[4] = password;
-		pane.setMessage(message);
-
-		JFrame parentComponent = com.hackerdude.apps.sqlide.SqlIdeApplication.getFrame();
-		JDialog dialog = pane.createDialog(parentComponent, "Database Login");
-		dialog.show();
-
-		Object theValue = pane.getValue();
-		int theintValue;
-
-		theintValue = JOptionPane.CANCEL_OPTION;
-
-		if (theValue instanceof Integer) {
-			theintValue = ((Integer)theValue).intValue();
+	private Properties getConfigProperties() {
+		Properties result = new Properties();
+		ConnectionProperties connectionProps = hostConfiguration.getJdbc().getConnectionProperties();
+		Property[] props = connectionProps.getProperty();
+		for ( int i=0; i<props.length; i++ ) {
+			result.setProperty(props[i].getName(), props[i].getValue());
 		}
-
-		if ( theintValue == JOptionPane.OK_OPTION ) {
-			bresult = true;
-		}
-
-		if (bresult) {
-			userName = name.getText();
-			passWord = new String(password.getPassword());
-		}
-		return(bresult);
+		return result;
 	}
 
 	public String toString() {
@@ -467,9 +407,6 @@ public class DatabaseProcess {
 	 * @return ConnectionPool the connection pool associated with this process.
 	 */
 	public synchronized ConnectionPool getPool() {
-		if ( pool == null ) {
-			pool = new ConnectionPool(hostConfiguration.getName(), connProps);
-		}
 		return(pool);
 	}
 
@@ -487,7 +424,7 @@ public class DatabaseProcess {
 
 		String driverClassName = configuration.getJdbc().getDriver();
 
-		if ( (configuration.getJdbc().getClassPath().getPathelementCount() == 0 ) ) {
+		if ( (configuration.getJdbc().getClassPath() == null || configuration.getJdbc().getClassPath().getPathelementCount() == 0 ) ) {
 			theClass = Class.forName(driverClassName);
 //			System.out.println("[DatabaseProcess] Loaded driver class "+driverClassName+" using base classloader.");
 		} else {
@@ -508,8 +445,6 @@ public class DatabaseProcess {
 		return theClass;
 	}
 
-	public String getUserName() { return userName; }
-
 	public boolean equals(Object obj) {
 		if ( ! ( obj instanceof DatabaseProcess ) ) return false;
 		DatabaseProcess compareTo = (DatabaseProcess)obj;
@@ -529,5 +464,50 @@ public class DatabaseProcess {
 		return theSame;
 
 	}
+
+	/**
+	 * CredentialsProvider code calls this to make a test connection with
+	 * the supplied credentials. The system returns true if it is possible
+	 * to connect, or SQLException/false if it is not possible to connect.
+	 * @param credentials
+	 * @return True if we could make a test connection to the database.
+	 * @throws SQLException If it is not possible to connect, or another error ocurrs
+	 */
+	public boolean areCredentialsCorrect(Map credentials) throws SQLException {
+
+		boolean testOK = false;
+		Connection conn = null;
+		// Otherwise, try to start a new connection
+		try {
+			String theurl = hostConfiguration.getJdbc().getUrl();
+			loadDriver();
+			Properties testConnProps = new Properties(HostConfigFactory.connectionPropertiesToMap(hostConfiguration.getJdbc().getConnectionProperties()));
+			String userName = (String) credentials.get(CredentialsProvider.KEY_USER_NAME);
+			String password = (String) credentials.get(CredentialsProvider.KEY_PASSWORD);
+			testConnProps.putAll(getConfigProperties());
+			testConnProps.setProperty("user", userName);
+			testConnProps.setProperty("password", password);
+			conn = currentDriver.connect(theurl, testConnProps);
+			testOK = true;
+			conn.close();
+		} finally {
+			if ( conn != null ) try { conn.close(); } catch ( Throwable thr ) {}
+		}
+		return testOK;
+
+	}
+
+    public Connection createConnection() throws SQLException {
+		String jdbcURL = hostConfiguration.getJdbc().getUrl();
+		Properties config = new Properties();
+		config.putAll(getConfigProperties());
+		String userName = (String) properCredentials.get(CredentialsProvider.KEY_USER_NAME);
+		String password = (String) properCredentials.get(CredentialsProvider.KEY_PASSWORD);
+		config.setProperty("user", userName);
+		config.setProperty("password", password);
+		loadDriver();
+		return currentDriver.connect(jdbcURL, config);
+    }
+
 
 }

@@ -171,7 +171,9 @@ public class PluginIDEBrowser extends JPanel
 		UIManager.put("Tree.exp andedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
 		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
 		if (currentProcess == null)
-			currentProcess = new DatabaseProcess(HostConfigRegistry.getInstance().getSqlideHostConfig(0));
+			currentProcess = DatabaseService.getInstance().getDatabaseProcess(
+						   HostConfigRegistry.getInstance().getSqlideHostConfig(0)
+						   );
 	}
 
 	public void freePlugin() {
@@ -182,7 +184,7 @@ public class PluginIDEBrowser extends JPanel
 		this.ide = ide;
 	}
 
-/**
+	/**
 	 *  Creates the IdeBrowser-specific menu.
 	 */
 	public JMenu createPanelMenu(JMenu parent) {
