@@ -508,6 +508,8 @@ public class DatabaseProcess {
 		return theClass;
 	}
 
+	public String getUserName() { return userName; }
+
 	public boolean equals(Object obj) {
 		if ( ! ( obj instanceof DatabaseProcess ) ) return false;
 		DatabaseProcess compareTo = (DatabaseProcess)obj;

@@ -362,6 +362,11 @@ public class PluginIDEBrowser extends JPanel
 		protected ImageIcon getIconfor(TreeNode treeNode) {
 			Class nodeClass = treeNode.getClass();
 			ImageIcon icon = null;
+			if ( treeNode instanceof NodeIDEBase ) {
+				icon = ((NodeIDEBase)treeNode).getIcon();
+			}
+			if ( icon != null ) return icon;
+
 			if (nodeClass == ItemCatalogNode.class
 				|| nodeClass == CategoryCatalogsNode.class) {
 				icon = catalogIcon;
@@ -378,9 +383,6 @@ public class PluginIDEBrowser extends JPanel
 				icon = folderIcon;
 			}
 
-			if (nodeClass == CategoryStoredProcedureNode.class) {
-				icon = storedProcIcon;
-			}
 			if (nodeClass == CategoryTriggerNode.class) {
 				icon = triggerIcon;
 			}
@@ -411,9 +413,6 @@ public class PluginIDEBrowser extends JPanel
 			}
 			if (nodeClass == CategoryDbUsersNode.class) {
 				icon = catalogIcon;
-			}
-			if (nodeClass == ItemStoredProcedureNode.class) {
-				icon = storedProcIcon;
 			}
 
 			return icon;
