@@ -3,6 +3,7 @@
 package com.hackerdude.apps.sqlide.pluginapi;
 
 import javax.swing.Icon;
+import javax.swing.*;
 
 /**
  * This is the basic interface for version 2 of the plugin
@@ -24,40 +25,43 @@ import javax.swing.Icon;
  * </UL>
  */
 public interface IDEPluginIF {
-	/**
-	 * This call initializes the plug-in for operation.
-	 * <P>You can trust the SQL-IDE will call this function
-	 * when it is instantiating your plugin for operation,
-	 * as opposed of discovery.
-	 */
-	public void initPlugin();
 
-	/**
-	 * Implement this call to return the plug-in name.
-	 *
-	 * <P>Note: Your plugin might be instantiated several times
-	 * just to find its metadata (name, version, etc). Please try
-	 * to keep your constructors to a minimum.
-	 */
-	public String getPluginName();
+  public final Action[] NULL_ACTIONS = {};
 
-	/**
-	 * Implement this call to return the plug-in version.
-	 *
-	 * <P>Note: Your plugin might be instantiated several times
-	 * just to find its metadata (name, version, etc). Please try
-	 * to keep your constructors to a minimum.
-	 */
-	public String getPluginVersion();
+  /**
+   * This call initializes the plug-in for operation.
+   * <P>You can trust the SQL-IDE will call this function
+   * when it is instantiating your plugin for operation,
+   * as opposed of discovery.
+   */
+  public void initPlugin();
 
-	/**
-	 * Implement this call to free the plugin's resources. This method
-	 * is called when SQLIDE wants this plugin to stop running.
-	 */
-	void freePlugin();
+  /**
+   * Implement this call to return the plug-in name.
+   *
+   * <P>Note: Your plugin might be instantiated several times
+   * just to find its metadata (name, version, etc). Please try
+   * to keep your constructors to a minimum.
+   */
+  public String getPluginName();
 
-	public String getPluginShortName();
+  /**
+   * Implement this call to return the plug-in version.
+   *
+   * <P>Note: Your plugin might be instantiated several times
+   * just to find its metadata (name, version, etc). Please try
+   * to keep your constructors to a minimum.
+   */
+  public String getPluginVersion();
 
-	public Icon getPluginIcon();
+  /**
+   * Implement this call to free the plugin's resources. This method
+   * is called when SQLIDE wants this plugin to stop running.
+   */
+  void freePlugin();
+
+  public String getPluginShortName();
+
+  public Icon getPluginIcon();
 
 }

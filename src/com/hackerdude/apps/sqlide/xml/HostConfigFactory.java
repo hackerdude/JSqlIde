@@ -79,7 +79,7 @@ public class HostConfigFactory {
 		of.setLineWidth( 16384 );
 		XMLSerializer serializer = new XMLSerializer(writer, of);
 		try {
-			config.marshal(serializer.asContentHandler());
+                  config.marshal(serializer.asContentHandler());
 		}
 		catch (MarshalException ex) {
 			throw new IOException(ex.toString());

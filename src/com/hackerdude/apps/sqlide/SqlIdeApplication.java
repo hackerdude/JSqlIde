@@ -687,19 +687,19 @@ public class SqlIdeApplication  {
 			super(name, img);
 		}
 		public void actionPerformed(ActionEvent e) {
-			String politeName = e.getActionCommand();
-			try {
-				frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin(politeName);
-				runningPlugins.startPlugin(plugin);
-				plugin.setDatabaseProcess( idebrowser.getDatabaseProcess() );
-				setRightPanel(plugin);
-				JPanel pluginPanel = (JPanel)plugin;
-				jTabbedPane1.setSelectedComponent(pluginPanel);
-			 } finally {
-				frame.setCursor(Cursor.getDefaultCursor());
-			 }
-		}
+                  String politeName = e.getActionCommand();
+                  try {
+                    frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+                    IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin(politeName);
+                    runningPlugins.startPlugin(plugin);
+                    plugin.setDatabaseProcess( idebrowser.getDatabaseProcess() );
+                    setRightPanel(plugin);
+                    JPanel pluginPanel = (JPanel)plugin;
+                    jTabbedPane1.setSelectedComponent(pluginPanel);
+                  } finally {
+                    frame.setCursor(Cursor.getDefaultCursor());
+                  }
+                }
 	}
 
 	public class ActionSQLIDE extends AbstractAction {

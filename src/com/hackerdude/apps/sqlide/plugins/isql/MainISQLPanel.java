@@ -17,6 +17,7 @@ import com.hackerdude.apps.sqlide.plugins.*;
 import com.hackerdude.apps.sqlide.xml.hostconfig.*;
 import com.hackerdude.swing.table.*;
 import textarea.*;
+import com.hackerdude.apps.sqlide.xml.HostConfigFactory;
 
 /**
  * The main Interactive SQL Panel.
@@ -108,14 +109,7 @@ public class MainISQLPanel extends JPanel {
       QueryResults queryResults = ideprocess.runQuery(queryText, asUpdate, false, false);
       sqlTextArea.setText(ideprocess.lastQuery);
 
-      // Add to the history if the last query is different than the current one.
-      QueryHistory queryHistory = ideprocess.getHostConfiguration().getQueryHistory();
-      if ( queryHistory == null ) {
-        queryHistory = new QueryHistory();
-        ideprocess.getHostConfiguration().setQueryHistory(queryHistory);
-      }
-      String lastQueryInHistory = queryHistory.getHistoryItemCount()<1?"":queryHistory.getHistoryItem(queryHistory.getHistoryItemCount()-1);
-      if ( ! lastQueryInHistory.equalsIgnoreCase(queryText) ) queryHistory.addHistoryItem(queryText);
+      addToHistoryIfNeeded(queryText);
 
       if (queryResults != null) {
         Font theFont = ProgramConfig.getInstance().getResultSetFont();
@@ -135,6 +129,22 @@ public class MainISQLPanel extends JPanel {
     finally {
       setCursor(Cursor.getDefaultCursor());
     }
+  }
+
+  private void addToHistoryIfNeeded(String query) {
+    // Add to the history if the last query is different than the current one.
+    QueryHistory queryHistory = ideprocess.getHostConfiguration().getQueryHistory();
+    if ( queryHistory == null ) {
+      queryHistory = new QueryHistory();
+      ideprocess.getHostConfiguration().setQueryHistory(queryHistory);
+    }
+    String lastQueryInHistory = queryHistory.getHistoryItemCount()<1?"":queryHistory.getHistoryItem(queryHistory.getHistoryItemCount()-1);
+    if ( ! lastQueryInHistory.equalsIgnoreCase(query) ) queryHistory.addHistoryItem(query);
+    try {
+      HostConfigFactory.saveSqlideHostConfig(ideprocess.getHostConfiguration());
+    } catch (IOException ex) {
+    }
+
   }
 
   private void setClobEditors(QueryResults queryResults,
@@ -312,7 +322,8 @@ public class MainISQLPanel extends JPanel {
       QueryHistory queryHistory = ideprocess.getHostConfiguration().getQueryHistory();
       if ( queryHistory == null ) return;
       int historyIndex = queryHistory.getHistoryItemCount()-1+historyBackCount--;
-      if ( historyIndex > queryHistory.getHistoryItemCount()+1 ) return;
+      if ( historyIndex > queryHistory.getHistoryItemCount()-1 ) return;
+      if ( historyIndex < 0 ) { historyBackCount = -1; return; }
       String historyText = queryHistory.getHistoryItem(historyIndex);
       setQueryText(historyText);
     }
@@ -322,8 +333,12 @@ public class MainISQLPanel extends JPanel {
     public void actionPerformed(ActionEvent evt) {
       QueryHistory queryHistory = ideprocess.getHostConfiguration().getQueryHistory();
       if ( queryHistory == null ) return;
-      int historyIndex = queryHistory.getHistoryItemCount()-1+historyBackCount++;
-      if ( historyIndex > queryHistory.getHistoryItemCount()+1 ) return;
+      int historyIndex = queryHistory.getHistoryItemCount()+historyBackCount++;
+      if ( historyIndex > queryHistory.getHistoryItemCount()-1 ) {
+        historyBackCount = 0;
+        setQueryText("");
+        return;
+      }
       String historyText = queryHistory.getHistoryItem(historyIndex);
       setQueryText(historyText);
     }
