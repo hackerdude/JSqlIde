@@ -7,6 +7,7 @@ import java.io.*;
 
 /**
  * This is a simple, custom classloader that can load a class from a Jar.
+ * @deprecated use URLClassLoader.
  */
 public class JdbcJarClassLoader extends ClassLoader {
 
@@ -35,8 +36,14 @@ public class JdbcJarClassLoader extends ClassLoader {
     * defineclass to create a class out of it.
     */
    public Class findClass(String name) throws ClassNotFoundException {
-      byte[] b = loadClassData(name);
-      return defineClass(name, b, 0, b.length);
+	  try {
+		  byte[] b = loadClassData(name);
+		  Class result = defineClass(name, b, 0, b.length);
+		  return result;
+	  } catch ( Exception exc ) {
+		  return super.findSystemClass(name);
+	  }
+
    }
 
    /**
@@ -55,8 +62,9 @@ public class JdbcJarClassLoader extends ClassLoader {
      try {
        InputStream is = file.getInputStream(entry);
 	   int bytesRead = 0;
-
 	   while ( bytesRead > -1 ) {
+		   int offSet = bytesRead;
+		   int length = bytes.length-offSet;
 		   bytesRead = is.read(bytes, offSet, length);
 	   }
      } catch ( IOException exc ) {

@@ -20,6 +20,9 @@ import java.beans.*;
 
 public class ServerDetailsWizardPage extends WizardPage {
 
+	public final Action ACTION_ADD = new AddAction();
+	public final Action ACTION_REMOVE = new RemoveAction();
+
 	private String serverType;
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel jPanel1 = new JPanel();
@@ -29,8 +32,8 @@ public class ServerDetailsWizardPage extends WizardPage {
 	JTable jTable1 = new JTable();
 	ConnPropertiesTableModel propertiesModel = new ConnPropertiesTableModel(new HashMap(), "Properties");
 	JPanel jPanel2 = new JPanel();
-	JButton btnAdd = new JButton();
-	JButton btnRemove = new JButton();
+	JButton btnAdd = new JButton(ACTION_ADD);
+	JButton btnRemove = new JButton(ACTION_REMOVE);
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
 
 	public ServerDetailsWizardPage() {
@@ -55,19 +58,8 @@ public class ServerDetailsWizardPage extends WizardPage {
 	  jLabel1.setText("Connection Parameters");
 	  jPanel1.setLayout(borderLayout2);
 	  btnAdd.setText("Add");
-	  btnAdd.addActionListener(new java.awt.event.ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
-			btnAdd_actionPerformed(e);
-		 }
-	  });
 	  jPanel2.setLayout(gridBagLayout1);
 	  btnRemove.setText("Remove");
-	  btnRemove.addActionListener(new java.awt.event.ActionListener() {
-
-		 public void actionPerformed(ActionEvent e) {
-			btnRemove_actionPerformed(e);
-		 }
-	  });
 	  jScrollPane1.setOpaque(false);
 	  this.setToolTipText("");
 	  this.add(jPanel1, BorderLayout.NORTH);
@@ -90,16 +82,20 @@ public class ServerDetailsWizardPage extends WizardPage {
 
    }
 
-   void btnAdd_actionPerformed(ActionEvent e) {
+   class AddAction extends AbstractAction {
+   public void actionPerformed(ActionEvent e) {
 	  propertiesModel.addRow();
    }
+   }
 
-   void btnRemove_actionPerformed(ActionEvent e) {
-	 int selectedRow = jTable1.getSelectedRow();
-	 propertiesModel.removeRow(selectedRow);
-	 propertiesModel.fireTableDataChanged();
-	 if ( selectedRow < jTable1.getRowCount() ) { jTable1.getSelectionModel().setSelectionInterval(selectedRow, selectedRow); }
-	 updateControlState();
+   class RemoveAction extends AbstractAction {
+	   public void actionPerformed(ActionEvent e) {
+		   int selectedRow = jTable1.getSelectedRow();
+		   propertiesModel.removeRow(selectedRow);
+		   propertiesModel.fireTableDataChanged();
+		   if ( selectedRow < jTable1.getRowCount() ) { jTable1.getSelectionModel().setSelectionInterval(selectedRow, selectedRow); }
+		   updateControlState();
+	   }
    }
 
    public void updateControlState() {

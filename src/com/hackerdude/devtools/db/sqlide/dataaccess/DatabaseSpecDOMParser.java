@@ -20,19 +20,21 @@ public class DatabaseSpecDOMParser {
 	protected static final String XSPEC_PROPERTY_NAME   = "name";
 	protected static final String XSPEC_PROPERTY_VALUE  = "value";
 	protected static final String XSPEC_SQLIDE          = "sqlidespecific";
+	protected static final String XSPEC_CLASSPATH       = "classpath";
+
+
 	/**
 	 * The number of connections to create.
 	 */
-	protected static final String specConnections = "numconnections";
-	protected static final String specBaseUrl     = "url";
-	protected static final String specDriver      = "driver"; // This is the actual Jdbc driver
-	protected static final String specDbIntfClass = "ideDriver";
-	protected static final String specPoliteName  = "specname";
-	protected static final String specUserName    = "username";
-	protected static final String specHostName    = "hostname";
-	protected static final String specDriverJar   = "jarfile"; // Where is the jar file that implements this driver?
-	protected static final String specGetAvaildbs = "getavailabledbs";
-	protected static final String specDefaultCatalog = "defaultcatalog";
+	protected static final String ATTRIBUTE_NUM_CONNECTIONS = "numconnections";
+	protected static final String ATTRIBUTE_IDE_DRIVER = "ideDriver";
+
+	protected static final String ELEMENT_BASE_URL     = "url";
+	protected static final String ELEMENT_DRIVER      = "driver"; // This is the actual Jdbc driver
+	protected static final String ELEMENT_USER_NAME    = "username";
+	protected static final String ELEMENT_HOST_NAME    = "hostname";
+	protected static final String ELEMENT_JAR_FILE   = "jarfile"; // Where is the jar file that implements this driver?
+	protected static final String ELEMENT_DEFAULT_CATALOG = "defaultcatalog";
 
 
 	public DatabaseSpecDOMParser() {
@@ -69,13 +71,14 @@ public class DatabaseSpecDOMParser {
 			if ( nodeName.equalsIgnoreCase(XSPEC_CONNECTION_NODE)   ) {  parseConnection(topic, destination); }
 			else if ( nodeName.equalsIgnoreCase(XSPEC_JDBC_NODE)    ) { parseJdbc(topic, destination); }
 			else if ( nodeName.equalsIgnoreCase(XSPEC_SQLIDE)  ) { parseSQLIDE(topic, destination); }
+			else if ( nodeName.equalsIgnoreCase(XSPEC_CLASSPATH) ) { parseClassPathNode(topic, destination); }
 		}
 	}
 
 
    private void parseConnection( Node connectionNode, DatabaseSpec destination ) {
 	  NamedNodeMap nm = connectionNode.getAttributes();
-	  String sConnections = nm.getNamedItem(specConnections).getNodeValue();
+	  String sConnections = nm.getNamedItem(ATTRIBUTE_NUM_CONNECTIONS).getNodeValue();
 	  NodeList nl = connectionNode.getChildNodes();
 	  destination.setConnections(Integer.parseInt(sConnections));
 	  Properties connectionProperties = new Properties();
@@ -106,7 +109,7 @@ public class DatabaseSpecDOMParser {
 		NodeList children = jdbcNode.getChildNodes();
 		String driver = null;
 		String url    = null;
-		Node jarFileNode = jdbcNode.getAttributes().getNamedItem("jarfile");
+		Node jarFileNode = jdbcNode.getAttributes().getNamedItem(ELEMENT_JAR_FILE);
 
 		String jarFile = jarFileNode!=null?jarFileNode.getNodeValue():null;
 		for ( int i=0; i<children.getLength(); i++ ) {
@@ -120,13 +123,30 @@ public class DatabaseSpecDOMParser {
 					if ( textNode != null && textNode.getNodeType() != Node.TEXT_NODE ) throw new SAXException("In element "+aNodeName+" - Elements in the JDBC node must be of the form <name>value</name>");
 					aNodeValue = textNode.getNodeValue();
 				}
-				if ( aNodeName.equals(specDriver) ) driver = aNodeValue;
-				if ( aNodeName.equals(specBaseUrl) ) url = aNodeValue;
+				if ( aNodeName.equals(ELEMENT_DRIVER) ) driver = aNodeValue;
+				if ( aNodeName.equals(ELEMENT_BASE_URL) ) url = aNodeValue;
 			}
 		}
-		spec.setDriverName(driver);
+		spec.setDriverClassName(driver);
 		spec.setURL(url);
-		spec.setJarFileName(jarFile);
+	}
+
+
+	private void parseClassPathNode(Node classpathNode, DatabaseSpec spec) throws SAXException {
+		NodeList children = classpathNode.getChildNodes();
+		int itemLength = children.getLength();
+		ArrayList arrayList = new ArrayList();
+		for ( int i=0; i<itemLength; i++ ) {
+			Node thisChild = children.item(i);
+			if ( thisChild.getNodeName().equals(ELEMENT_JAR_FILE) ) {
+				Node jarFileNode = thisChild.getFirstChild();
+				String jarFile = jarFileNode.getNodeValue();
+				arrayList.add(jarFile);
+			}
+		}
+		String[] files = new String[arrayList.size()];
+		files = (String[])arrayList.toArray(files);
+		spec.setJarFileName(files);
 	}
 
 	private void parseSQLIDE(Node ideNode, DatabaseSpec spec) throws SAXException {
@@ -145,9 +165,9 @@ public class DatabaseSpecDOMParser {
 					if ( textNode != null && textNode.getNodeType() != Node.TEXT_NODE ) throw new SAXException("In element "+aNodeName+" - Elements in the sqlidespecific node must be of the form <name>value</name>");
 					if ( textNode != null ) aNodeValue = textNode.getNodeValue();
 				}
-				if ( aNodeName.equals(specUserName) ) _userName = aNodeValue;
-				if ( aNodeName.equals(specHostName) ) _hostName = aNodeValue;
-				if ( aNodeName.equals(specDefaultCatalog) ) _defaultDb = aNodeValue;
+				if ( aNodeName.equals(ELEMENT_USER_NAME) ) _userName = aNodeValue;
+				if ( aNodeName.equals(ELEMENT_HOST_NAME) ) _hostName = aNodeValue;
+				if ( aNodeName.equals(ELEMENT_DEFAULT_CATALOG) ) _defaultDb = aNodeValue;
 
 
 			}
@@ -158,7 +178,7 @@ public class DatabaseSpecDOMParser {
 		spec.setUserName(_userName);
 		spec.setHostName(_hostName);
 		spec.setDefaultCatalog(_defaultDb);
-		String ideDriver = ideNode.getAttributes().getNamedItem(specDbIntfClass).getNodeValue();
+		String ideDriver = ideNode.getAttributes().getNamedItem(ATTRIBUTE_IDE_DRIVER).getNodeValue();
 		spec.setDbIntfClassName(ideDriver);
 	}
 
@@ -178,8 +198,10 @@ public class DatabaseSpecDOMParser {
 //		Element generalNode = xmlDatabaseSpec.createElement(XSPEC_GENERAL);
 		Element jdbcNode    = xmlDatabaseSpec.createElement(XSPEC_JDBC_NODE);
 		Element connectionNode = xmlDatabaseSpec.createElement(XSPEC_CONNECTION_NODE);
-		connectionNode.setAttribute(specConnections, Integer.toString(spec.getConnections()));
-		jdbcNode.setAttribute("jarfile", spec.getJarFileName());
+		Element classPathNode = xmlDatabaseSpec.createElement(XSPEC_CLASSPATH);
+		connectionNode.setAttribute(ATTRIBUTE_NUM_CONNECTIONS, Integer.toString(spec.getConnections()));
+
+//		jdbcNode.setAttribute(specDriverJar, spec.getJarFileName());
 		// Save the connection properties
 		Iterator propsIter = spec.getConnectionProperties().keySet().iterator();
 		while ( propsIter.hasNext() ) {
@@ -190,34 +212,44 @@ public class DatabaseSpecDOMParser {
 			connectionNode.appendChild(connPropNode);
 		}
 
-
+		String[] jarFiles = spec.getJarFileNames();
+		if ( jarFiles != null && jarFiles.length> 0 ) {
+			for ( int i=0; i<jarFiles.length; i++) {
+				Node pathElementNode = xmlDatabaseSpec.createElement(ELEMENT_JAR_FILE);
+				Node pathText = xmlDatabaseSpec.createTextNode(jarFiles[i]);
+				pathElementNode.appendChild(pathText);
+				classPathNode.appendChild(pathElementNode);
+			}
+			rootNode.appendChild(classPathNode);
+		}
 		Element urlNode     = xmlDatabaseSpec.createElement(XSPEC_URL_NODE);
 
 		// SQLIDE node, with User, hostname and default catalog.
 		Element sqlideNode = xmlDatabaseSpec.createElement(XSPEC_SQLIDE);
-		sqlideNode.setAttribute(specDbIntfClass, spec.getDbIntfClassName());
-		Element hostNameElement = xmlDatabaseSpec.createElement(specHostName);
+		sqlideNode.setAttribute(ATTRIBUTE_IDE_DRIVER, spec.getDbIntfClassName());
+		Element hostNameElement = xmlDatabaseSpec.createElement(ELEMENT_HOST_NAME);
 		hostNameElement.appendChild(xmlDatabaseSpec.createTextNode(spec.getHostName()));
 		sqlideNode.appendChild(hostNameElement);
-		Element userNameElement = xmlDatabaseSpec.createElement(specUserName);
+		Element userNameElement = xmlDatabaseSpec.createElement(ELEMENT_USER_NAME);
 		userNameElement.appendChild(xmlDatabaseSpec.createTextNode(spec.getUserName()));
 
 		sqlideNode.appendChild(userNameElement);
-		Element defaultCatalogElement = xmlDatabaseSpec.createElement(specDefaultCatalog);
+		Element defaultCatalogElement = xmlDatabaseSpec.createElement(ELEMENT_DEFAULT_CATALOG);
 		defaultCatalogElement.appendChild(xmlDatabaseSpec.createTextNode(spec.getDefaultCatalog()));
 		sqlideNode.appendChild(defaultCatalogElement);
 
-		Element driverElement = xmlDatabaseSpec.createElement(specDriver);
-		Text driverName    = xmlDatabaseSpec.createTextNode(spec.getDriverName());
+		Element driverElement = xmlDatabaseSpec.createElement(ELEMENT_DRIVER);
+		Text driverName    = xmlDatabaseSpec.createTextNode(spec.getDriverClassName());
 		driverElement.appendChild(driverName);
-		Element urlElement = xmlDatabaseSpec.createElement(specBaseUrl);
+		Element urlElement = xmlDatabaseSpec.createElement(ELEMENT_BASE_URL);
 		Text urlName       = xmlDatabaseSpec.createTextNode(spec.getURL());
 		urlElement.appendChild(urlName);
 
 		jdbcNode.appendChild(driverElement);
 		jdbcNode.appendChild(urlElement);
 
-		jdbcNode.setAttribute(specDriverJar, spec.getJarFileName());
+		/** @todo Save the file name */
+//		jdbcNode.setAttribute(specDriverJar, spec.getJarFileName());
 //		rootNode.appendChild(generalNode);
 		rootNode.appendChild(jdbcNode);
 		rootNode.appendChild(sqlideNode);

@@ -35,7 +35,7 @@ public class ItemServerNode extends NodeIDEBase {
 	public String getInfo() {
 		StringBuffer info = new StringBuffer();
 		info.append("<HTML><P><B>UserName:</B> "+spec.getUserName());
-		info.append("<P><B>Driver:</B> ").append(spec.getDriverName());
+		info.append("<P><B>Driver:</B> ").append(spec.getDriverClassName());
 		return info.toString();
 	}
 

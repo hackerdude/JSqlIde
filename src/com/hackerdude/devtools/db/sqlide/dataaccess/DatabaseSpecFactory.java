@@ -35,7 +35,7 @@ public class DatabaseSpecFactory {
 			FileInputStream is = new FileInputStream(fileName);
 			result = parser.parseDatabaseSpec(is);
 			result.setFileName(fileName);
-		} catch ( SAXException exc ) {
+		} catch ( Throwable exc ) {
 			exc.printStackTrace();
 			throw new IOException(exc.toString());
 		}
