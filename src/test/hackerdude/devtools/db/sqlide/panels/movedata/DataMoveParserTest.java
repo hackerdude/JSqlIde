@@ -1,7 +1,7 @@
 package test.hackerdude.devtools.db.sqlide.panels.movedata;
 
-import com.hackerdude.devtools.db.sqlide.panels.movedata.model.*;
-import com.hackerdude.devtools.db.sqlide.panels.movedata.DataMoveParser;
+import com.hackerdude.devtools.db.sqlide.plugins.movedata.model.*;
+import com.hackerdude.devtools.db.sqlide.plugins.movedata.DataMoveParser;
 import junit.framework.*;
 import java.io.*;
 import java.util.*;
@@ -15,11 +15,15 @@ import java.util.*;
  * @version 1.0
  */
 
-public class DataMoveParserTest extends TestCase{
+public class DataMoveParserTest extends TestCase {
 
     public DataMoveParserTest() {
 		super("testParser");
     }
+
+	public DataMoveParserTest(String name) {
+		super(name);
+	}
 
 	public void testParser() {
 

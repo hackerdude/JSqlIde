@@ -69,30 +69,30 @@ public class sqlide  {
 	JMenuBar  menubar;
 	private static sqlide instance;
 
-	private ImageIcon sqlideIcon;
+	private final ImageIcon sqlideIcon = ProgramIcons.getInstance().getAppIcon();
 	private ProgramConfig config;
 
 	private IDEVisualPluginIF rightIdePanel;
 
-	private Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
-	private Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
-	private Action FILE_EXIT = new ActionProgramExit();
-	private Action EDIT_CUT  = new ActionSQLIDE("Cut", ProgramIcons.getInstance().findIcon("images/Cut.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false), KeyEvent.VK_T);
-	private Action EDIT_COPY = new ActionSQLIDE("Copy", ProgramIcons.getInstance().findIcon("images/Copy.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false), KeyEvent.VK_C);
-	private Action EDIT_PASTE = new ActionSQLIDE("Paste", ProgramIcons.getInstance().findIcon("images/Paste.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false), KeyEvent.VK_P);
-	private Action TOOLS_CONFIGURE = new ActionToolsConfigure();
-	private Action VIEW_BROWSER = new ActionSQLIDE("Browser", ProgramIcons.getInstance().getServerIcon(), KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK, false), KeyEvent.VK_B);
-	private Action PLUGIN_CLOSE = new ActionPluginClose();
-	private Action SELECT_LEFT = new ActionSelectLeftPanel();
-	private Action SELECT_RIGHT = new ActionSelectRightPanel();
+	private final Action FILE_OPEN = new ActionSQLIDE("Open", ProgramIcons.getInstance().findIcon("images/Open.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK, false), KeyEvent.VK_O);
+	private final Action FILE_SAVE = new ActionSQLIDE("Save", ProgramIcons.getInstance().findIcon("images/Save.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, false), KeyEvent.VK_S);
+	private final Action FILE_EXIT = new ActionProgramExit();
+	private final Action EDIT_CUT  = new ActionSQLIDE("Cut", ProgramIcons.getInstance().findIcon("images/Cut.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false), KeyEvent.VK_T);
+	private final Action EDIT_COPY = new ActionSQLIDE("Copy", ProgramIcons.getInstance().findIcon("images/Copy.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false), KeyEvent.VK_C);
+	private final Action EDIT_PASTE = new ActionSQLIDE("Paste", ProgramIcons.getInstance().findIcon("images/Paste.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false), KeyEvent.VK_P);
+	private final Action TOOLS_CONFIGURE = new ActionToolsConfigure();
+	private final Action VIEW_BROWSER = new ActionSQLIDE("Browser", ProgramIcons.getInstance().getServerIcon(), KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK, false), KeyEvent.VK_B);
+	private final Action PLUGIN_CLOSE = new ActionPluginClose();
+	private final Action SELECT_LEFT = new ActionSelectLeftPanel();
+	private final Action SELECT_RIGHT = new ActionSelectRightPanel();
 
-	private Action HELP_CHANGES   = new ActionHelpChanges();
-	private Action HELP_ABOUT     = new ActionHelpAbout();
-	private Action HELP_README    = new ActionHelpReadme();
-	private Action HELP_PAYING    = new ActionHelpPaying();
-	private Action HELP_TO_DO     = new ActionHelpTodo();
-	private Action HELP_KNOWNBUGS = new ActionHelpBugs();
-	private Action PLUGIN_CONTROL = new ActionPluginControl();
+	private final Action HELP_CHANGES   = new ActionHelpChanges();
+	private final Action HELP_ABOUT     = new ActionHelpAbout();
+	private final Action HELP_README    = new ActionHelpReadme();
+	private final Action HELP_PAYING    = new ActionHelpPaying();
+	private final Action HELP_TO_DO     = new ActionHelpTodo();
+	private final Action HELP_KNOWNBUGS = new ActionHelpBugs();
+	private final Action PLUGIN_CONTROL = new ActionPluginControl();
 
 	public final Action HELP_LICENSE = new ActionHelpLicense();
 
@@ -139,7 +139,6 @@ public class sqlide  {
 		mainPanel.add(jSplitPane1, BorderLayout.CENTER);
 		jSplitPane1.add(jTabbedPane1, "right");
 		jSplitPane1.add(idebrowser, "left");
-		//_addMenu(jPopupMenu1,PLUGIN_CLOSE);
 		JMenuItem mnuClosePlugin = jPopupMenu1.add( PLUGIN_CLOSE );
 		KeyStroke theAccel = (KeyStroke)PLUGIN_CLOSE.getValue(Action.ACCELERATOR_KEY);
 		if ( theAccel != null ) mnuClosePlugin.setAccelerator(theAccel);
@@ -159,7 +158,7 @@ public class sqlide  {
 		// Read the configuration
 		mainProgress.changeMessage("Reading Configuration...");
 
-		sqlideIcon = ProgramIcons.getInstance().getAppIcon();
+//		sqlideIcon = ProgramIcons.getInstance().getAppIcon();
 		config = ProgramConfig.getInstance();
 		mainProgress.setIconImage(sqlideIcon.getImage());
 		mainProgress.setValue(++mainProgressValue);
@@ -190,13 +189,13 @@ public class sqlide  {
 		DatabaseProcess ideserver = new DatabaseProcess(config.getDefaultDatabaseSpec());
 		mainProgress.setValue(++mainProgressValue);
 
-
-		if ( idebrowser.getDatabaseProcess().doConnect() ) {
-			IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin("Interactive SQL");
-			runningPlugins.startPlugin(plugin);
-			plugin.setDatabaseProcess(idebrowser.getDatabaseProcess());
-			setRightPanel(plugin);
-		}
+//
+//		if ( idebrowser.getDatabaseProcess().doConnect() ) {
+//		IDEVisualPluginIF plugin = (IDEVisualPluginIF)PluginFactory.createPlugin("Interactive SQL");
+//		runningPlugins.startPlugin(plugin);
+//		plugin.setDatabaseProcess(idebrowser.getDatabaseProcess());
+//		setRightPanel(plugin);
+//		}
 
 		mainProgress.setCursor(Cursor.getDefaultCursor());
 
@@ -232,6 +231,7 @@ public class sqlide  {
 
 		_addMenu(fileMenu, FILE_OPEN );
 		_addMenu(fileMenu, FILE_SAVE );
+		fileMenu.addSeparator();
 		_addMenu(fileMenu, FILE_EXIT );
 //		_addMenu(fileMenu, FILE_OPEN );
 		_addMenu(editMenu, EDIT_CUT );
@@ -299,8 +299,8 @@ public class sqlide  {
 		});
 
 		instance = new sqlide();
-
 		frame.setIconImage(instance.sqlideIcon.getImage());
+
 		instance.mainProgress.setValue(++instance.mainProgressValue);
 
 		frame.pack();
@@ -730,6 +730,10 @@ public class sqlide  {
 			newPlugin = reader.readLine();
 		}
 
+	}
+
+	public static JFrame getFrame() {
+		return frame;
 	}
 
 

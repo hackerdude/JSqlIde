@@ -12,6 +12,6 @@ public class MSSQLServerType extends ServerType {
 	  public String getURL() { return "jdbc:microsoft:sqlserver://localhost:1433"; }
 	  public String getClassName() { return "com.microsoft.jdbc.sqlserver.SQLServerDriver"; }
 	  public String getServerTitle() { return "MS SQL Server on Localhost"; }
-	  public String getDefaultCatalog() { return "EmployeeDB"; }
+	  public String getDefaultCatalog() { return "master"; }
 
 }
