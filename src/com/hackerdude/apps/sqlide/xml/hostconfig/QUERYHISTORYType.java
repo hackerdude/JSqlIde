@@ -24,29 +24,28 @@ import org.xml.sax.ContentHandler;
 
 /**
  * 
- * A collaction of properties.
  * 	 
  * 
  * @version $Revision$ $Date$
 **/
-public abstract class GENERICPROPERTIESType implements java.io.Serializable {
+public abstract class QUERYHISTORYType implements java.io.Serializable {
 
 
       //--------------------------/
      //- Class/Member Variables -/
     //--------------------------/
 
-    private java.util.ArrayList _propertyList;
+    private java.util.ArrayList _historyItemList;
 
 
       //----------------/
      //- Constructors -/
     //----------------/
 
-    public GENERICPROPERTIESType() {
+    public QUERYHISTORYType() {
         super();
-        _propertyList = new ArrayList();
-    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.GENERICPROPERTIESType()
+        _historyItemList = new ArrayList();
+    } //-- com.hackerdude.apps.sqlide.xml.hostconfig.QUERYHISTORYType()
 
 
       //-----------/
@@ -56,74 +55,74 @@ public abstract class GENERICPROPERTIESType implements java.io.Serializable {
     /**
      * 
      * 
-     * @param vProperty
+     * @param vHistoryItem
     **/
-    public void addProperty(Property vProperty)
+    public void addHistoryItem(java.lang.String vHistoryItem)
         throws java.lang.IndexOutOfBoundsException
     {
-        _propertyList.add(vProperty);
-    } //-- void addProperty(Property) 
+        _historyItemList.add(vHistoryItem);
+    } //-- void addHistoryItem(java.lang.String) 
 
     /**
      * 
      * 
      * @param index
-     * @param vProperty
+     * @param vHistoryItem
     **/
-    public void addProperty(int index, Property vProperty)
+    public void addHistoryItem(int index, java.lang.String vHistoryItem)
         throws java.lang.IndexOutOfBoundsException
     {
-        _propertyList.add(index, vProperty);
-    } //-- void addProperty(int, Property) 
+        _historyItemList.add(index, vHistoryItem);
+    } //-- void addHistoryItem(int, java.lang.String) 
 
     /**
     **/
-    public void clearProperty()
+    public void clearHistoryItem()
     {
-        _propertyList.clear();
-    } //-- void clearProperty() 
+        _historyItemList.clear();
+    } //-- void clearHistoryItem() 
 
     /**
     **/
-    public java.util.Enumeration enumerateProperty()
+    public java.util.Enumeration enumerateHistoryItem()
     {
-        return new org.exolab.castor.util.IteratorEnumeration(_propertyList.iterator());
-    } //-- java.util.Enumeration enumerateProperty() 
+        return new org.exolab.castor.util.IteratorEnumeration(_historyItemList.iterator());
+    } //-- java.util.Enumeration enumerateHistoryItem() 
 
     /**
      * 
      * 
      * @param index
     **/
-    public Property getProperty(int index)
+    public java.lang.String getHistoryItem(int index)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
-        if ((index < 0) || (index > _propertyList.size())) {
+        if ((index < 0) || (index > _historyItemList.size())) {
             throw new IndexOutOfBoundsException();
         }
         
-        return (Property) _propertyList.get(index);
-    } //-- Property getProperty(int) 
+        return (String)_historyItemList.get(index);
+    } //-- java.lang.String getHistoryItem(int) 
 
     /**
     **/
-    public Property[] getProperty()
+    public java.lang.String[] getHistoryItem()
     {
-        int size = _propertyList.size();
-        Property[] mArray = new Property[size];
+        int size = _historyItemList.size();
+        java.lang.String[] mArray = new java.lang.String[size];
         for (int index = 0; index < size; index++) {
-            mArray[index] = (Property) _propertyList.get(index);
+            mArray[index] = (String)_historyItemList.get(index);
         }
         return mArray;
-    } //-- Property[] getProperty() 
+    } //-- java.lang.String[] getHistoryItem() 
 
     /**
     **/
-    public int getPropertyCount()
+    public int getHistoryItemCount()
     {
-        return _propertyList.size();
-    } //-- int getPropertyCount() 
+        return _historyItemList.size();
+    } //-- int getHistoryItemCount() 
 
     /**
     **/
@@ -157,43 +156,43 @@ public abstract class GENERICPROPERTIESType implements java.io.Serializable {
     /**
      * 
      * 
-     * @param vProperty
+     * @param vHistoryItem
     **/
-    public boolean removeProperty(Property vProperty)
+    public boolean removeHistoryItem(java.lang.String vHistoryItem)
     {
-        boolean removed = _propertyList.remove(vProperty);
+        boolean removed = _historyItemList.remove(vHistoryItem);
         return removed;
-    } //-- boolean removeProperty(Property) 
+    } //-- boolean removeHistoryItem(java.lang.String) 
 
     /**
      * 
      * 
      * @param index
-     * @param vProperty
+     * @param vHistoryItem
     **/
-    public void setProperty(int index, Property vProperty)
+    public void setHistoryItem(int index, java.lang.String vHistoryItem)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
-        if ((index < 0) || (index > _propertyList.size())) {
+        if ((index < 0) || (index > _historyItemList.size())) {
             throw new IndexOutOfBoundsException();
         }
-        _propertyList.set(index, vProperty);
-    } //-- void setProperty(int, Property) 
+        _historyItemList.set(index, vHistoryItem);
+    } //-- void setHistoryItem(int, java.lang.String) 
 
     /**
      * 
      * 
-     * @param propertyArray
+     * @param historyItemArray
     **/
-    public void setProperty(Property[] propertyArray)
+    public void setHistoryItem(java.lang.String[] historyItemArray)
     {
         //-- copy array
-        _propertyList.clear();
-        for (int i = 0; i < propertyArray.length; i++) {
-            _propertyList.add(propertyArray[i]);
+        _historyItemList.clear();
+        for (int i = 0; i < historyItemArray.length; i++) {
+            _historyItemList.add(historyItemArray[i]);
         }
-    } //-- void setProperty(Property) 
+    } //-- void setHistoryItem(java.lang.String) 
 
     /**
     **/

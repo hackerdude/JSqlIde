@@ -96,11 +96,12 @@ public class PROPERTYTypeDescriptor extends org.exolab.castor.xml.util.XMLClassD
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _value
         desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_value", "value", NodeType.Element);
         desc.setImmutable(true);
@@ -136,11 +137,12 @@ public class PROPERTYTypeDescriptor extends org.exolab.castor.xml.util.XMLClassD
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.PROPERTYTypeDescriptor()
 
 

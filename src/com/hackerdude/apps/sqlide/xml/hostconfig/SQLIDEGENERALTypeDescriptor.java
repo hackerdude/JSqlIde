@@ -100,10 +100,11 @@ public class SQLIDEGENERALTypeDescriptor extends org.exolab.castor.xml.util.XMLC
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            BooleanValidator typeValidator = new BooleanValidator();
-            fieldValidator.setValidator(typeValidator);
+            BooleanValidator bv = new BooleanValidator();
+            fieldValidator.setValidator(bv);
         }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.SQLIDEGENERALTypeDescriptor()
 
 

@@ -95,11 +95,12 @@ public class CLASSPATHTypeDescriptor extends org.exolab.castor.xml.util.XMLClass
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(0);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.CLASSPATHTypeDescriptor()
 
 

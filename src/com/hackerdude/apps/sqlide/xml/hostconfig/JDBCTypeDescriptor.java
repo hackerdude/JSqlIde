@@ -96,11 +96,12 @@ public class JDBCTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescr
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _url
         desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_url", "url", NodeType.Element);
         desc.setImmutable(true);
@@ -136,11 +137,12 @@ public class JDBCTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescr
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _userName
         desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_userName", "userName", NodeType.Element);
         desc.setImmutable(true);
@@ -176,11 +178,12 @@ public class JDBCTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescr
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
+            StringValidator sv = new StringValidator();
+            sv.setWhiteSpace("preserve");
+            fieldValidator.setValidator(sv);
         }
         desc.setValidator(fieldValidator);
+        
         //-- _connectionProperties
         desc = new XMLFieldDescriptorImpl(ConnectionProperties.class, "_connectionProperties", "connectionProperties", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -214,9 +217,8 @@ public class JDBCTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescr
         //-- validation code for: _connectionProperties
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
         //-- _classPath
         desc = new XMLFieldDescriptorImpl(ClassPath.class, "_classPath", "classPath", NodeType.Element);
         handler = (new XMLFieldHandler() {
@@ -250,9 +252,8 @@ public class JDBCTypeDescriptor extends org.exolab.castor.xml.util.XMLClassDescr
         //-- validation code for: _classPath
         fieldValidator = new FieldValidator();
         fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
         desc.setValidator(fieldValidator);
+        
     } //-- com.hackerdude.apps.sqlide.xml.hostconfig.JDBCTypeDescriptor()
 
 
