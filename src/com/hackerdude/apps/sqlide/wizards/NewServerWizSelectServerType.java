@@ -223,6 +223,7 @@ public class NewServerWizSelectServerType extends WizardPage {
 	}
 
 	public void updateDriverInfo() {
+		if ( databaseSpec == null ) return;
 		databaseSpec.setDriverClassName(fClassName.getText());
 		if ( fFileName.isEnabled() ) setFileNameDefault();
 		try {
