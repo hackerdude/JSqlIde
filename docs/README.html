@@ -1,0 +1,126 @@
+
+<H1>JSQLIDE - A SQL Development environment for Java VMs</H1>
+
+<P>JSQLIDE is an environment you can use to write SQL statements directed to any
+JDBC database. JSQLIDE is geared toward ease of use, taking the best from many
+commercial environments and putting them in an easy to use user interface.
+
+<P>JSQLIDE has been tested with Oracle, MS-SQL (through ODBC), MySQL and
+PostgreSQL.
+
+<H2>What you get</H2>
+<HR>
+
+<H4>If you're a user:</H4>
+
+<P>You get a SQL console with syntax-highlighting and history list, an environment
+browser, and a table generation tool.
+
+<H4>If you're a Java Developer</H4>
+
+<P>You also get a platform you can use to embed your own plug-ins in order to
+create new functionality for your specific server or vertical application.
+You are asked that by the
+terms of the license you submit the changes back into the project to improve
+everyone's SQL coding life.
+
+<P>The platform you can develop against includes a database Connection Pool,
+a wizard and a container.
+
+
+<H2>Installing SQLIDE</H2>
+
+<P>You can install SQLIDE from source or from the binaries.
+
+<H3>Installing from Source</H3>
+<UL>
+<LI>You will need a good, working copy of Ant, the build tool.
+</UL>
+
+<H3>Installing from Binaries</H3>
+
+<UL>
+	<LI>Put SQLIDE in a directory that you can remember.
+
+	<LI>Go to
+<FONT COLOR="000088"><B>jsqlide/bin</B></FONT>, which is where the startup scripts can be found.
+
+	<LI>Edit
+<FONT COLOR="000088"><B>jsqlide.sh</B></FONT>
+or
+<FONT COLOR="000088"><B>jsqlide.bat </B></FONT>
+
+to add your JDBC classes as necessary.  MySQL is already included with this
+distribution, and if you have a JDBC driver already in your
+
+<FONT COLOR="000088"><B>CLASSPATH</B></FONT>,
+
+it will be available automatically.
+
+	<LI>Run jsqlide.sh or jsqlide.bat
+
+</UL>
+
+<H2>Running sqlide</H2>
+
+<P>From the SQLIDE bin/ directory, simply type jsqlide, or ./jsqlide.sh if on Unix.
+
+<P>The first time you run SQLIDE you will be prompted to specify the default
+database connection. Select the database that resembles the most to your actual
+db server and edit the fields as you need them. You can change all the
+properties that get sent on the connection, so any JDBC standard connection
+should be available.
+
+<P>Afterwards, you will be able to connect to the database and start working.
+To create new connections or change any of the configuration options, use the
+Tools-Configure menu.</P>
+
+<P>
+
+<HR>
+
+<H3>Your SQLIDE Settings</H3>
+
+<P>You can find your SQLIDE settings in your <B>$HOME</B> (Unix) or
+<B>%USERPROFILE%</B> (Windows) directory, under a hidden directory called
+<B>".sqlide"</B> (notice the initial dot). This is multi-user friendly, so
+each user has their own settings. To make SQLIDE forget it's been installed
+(so it recreates your profile), you can simply remove this directory
+when SQLIDE is not running.
+Make sure you make a backup of your database definitions just in case.
+
+<P>The files inside this directory are listed along with their purpose as
+follows:
+
+<P>
+
+<TABLE BORDER=1>
+	<TH>File Name</TH>
+	<TH>Purpose</TH>
+	<TR>
+		<TD>sqlIDE.properties</TD>
+		<TD>Main properties file. UI stuff, default directories and such.</TD>
+	</TR>
+	<TR>
+		<TD>*.db.xml</TD>
+
+		<TD>A database definition file. These are XML files that describe how
+to connect to SQLIDE. The default.db.xml file is the db definition for the
+default database. All .db.xml files you put in this directory will appear as
+connections under "My Environment".  </TD>
+
+	</TR>
+	<TR>
+		<TD>servertypes.cache</TD>
+
+		<TD>Server type cache. Always safe to delete since it gets re-created.
+The first time you start SQLIDE it scans the classpath to find all the possible
+server types, and it never does it again since it can take a while. You can
+create your own server types. When creating new server types, you should delete
+this file to refresh the cache. Soon an option will be added to do this from
+the configuration dialog. See the ServerType.java file in
+com.hackerdude.devtools.db.sqlide for more information on server types.</TD>
+
+	</TR>
+</TABLE>
+
