@@ -53,8 +53,6 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 
 	MainISQLPanel mainSQLPanel = new MainISQLPanel();
 
-	NodeContextCompanion companion = new NodeContextCompanion();
-
 	JFileChooser loadFileChooser;
 	JFileChooser saveFileChooser;
 
@@ -302,14 +300,6 @@ public class PluginInteractiveSQL extends AbstractVisualPlugin {
 
 	public void receivePluginFocus() {
 		mainSQLPanel.requestFocus();
-	}
-
-	/**
-	 * This is a companion Inner class to help implement the node context
-	 * stuff.
-	 */
-	protected class NodeContextCompanion {
-
 	}
 
 
