@@ -65,6 +65,8 @@ public class PluginIDEBrowser extends JPanel
 
 	BorderLayout borderLayout3 = new BorderLayout();
 
+        public final Action ACTION_POPUP_MENU = new PopupMenuAction();
+
 	private final BrowserRenderer BROWSER_RENDERER = new BrowserRenderer();
 	private final TreeSelectionListener BROWSER_SELECTION_LISTENER = new IDEBrowserSelectionListener();
 	private final TreeWillExpandListener BROWSER_WILL_EXPAND_LISTENER = new BrowserWillExpandListener();
@@ -166,10 +168,10 @@ public class PluginIDEBrowser extends JPanel
 	public void initPlugin() {
 		jbInit();
 		serverBrowser = new BrowserModel(rootNode);
-		UIManager.put("Tree.expandedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
+		UIManager.put("Tree.exp andedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
 		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
 		if (currentProcess == null)
-			currentProcess = new DatabaseProcess(ProgramConfig.getInstance().getSqlideHostConfig(0));
+			currentProcess = new DatabaseProcess(HostConfigRegistry.getInstance().getSqlideHostConfig(0));
 	}
 
 	public void freePlugin() {
@@ -445,6 +447,7 @@ public class PluginIDEBrowser extends JPanel
 		browserTree.setFont(ProgramConfig.getInstance().getFont(ProgramConfig.PROP_FONT_FOR_BROWSER));
 	}
 
+
 	/**
 	 * This is a Popup Adapter for the browser tree. It actually checks for the
 	 * right-click because some JDKs don't have a registered gesture (at least
@@ -514,5 +517,26 @@ public class PluginIDEBrowser extends JPanel
 		/** @todo Implement. */
 		return false;
 	}
+
+
+        public class PopupMenuAction extends AbstractAction {
+          public PopupMenuAction() {
+                  super("Display Popup Menu");
+                  putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F12, Event.CTRL_MASK, false));
+//                  putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
+          }
+          public void actionPerformed(ActionEvent e) {
+//                  if ( about == null ) {
+//                          about = new AboutDialog(frame);
+//                          about.pack();
+//                          Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//                          double x = ( screenSize.getWidth() - about.getWidth() ) / 2;
+//                          double y = ( screenSize.getHeight() - about.getHeight() ) / 2;
+//                          about.setBounds(new Double(x).intValue(), new Double(y).intValue(), about.getWidth(), about.getHeight());
+//                  }
+//                  about.show();
+          }
+
+        }
 
 }

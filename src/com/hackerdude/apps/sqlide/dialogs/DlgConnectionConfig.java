@@ -123,7 +123,7 @@ public class DlgConnectionConfig extends JDialog {
 
 	// Test function
 	public static void main( String[] args ) {
-		SqlideHostConfig spec = ProgramConfig.getInstance().getDefaultDatabaseSpec();
+		SqlideHostConfig spec = HostConfigRegistry.getInstance().getDefaultHostConfig();
 		showConfigurationDialog( null, spec);
 	}
 
