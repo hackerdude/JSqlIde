@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.sql.*;
+import java.io.*;
 
 /**
  * The panel with query results.
@@ -19,7 +20,7 @@ public class ResultSetPanel extends JPanel {
 	private BorderLayout borderLayout4 = new BorderLayout();
 	public JTable tblResults = new JTable();
 	private JSplitPane splitTableAndLog = new JSplitPane();
-	private JEditorPane statusLog = new JEditorPane();
+	private JEditorPane statusLog = new JEditorPane("text/html", "");
 	private JScrollPane spStatus = new JScrollPane();
 
 	public final Action ACTION_COMMIT = new CommitAction();
@@ -62,7 +63,7 @@ public class ResultSetPanel extends JPanel {
 		lblStatement.setText("Statement");
 		pnlTitle.setLayout(borderLayout4);
 		statusLog.setToolTipText("");
-		statusLog.setText("Ready.");
+		statusLog.setText("<P>Ready.");
 		splitTableAndLog.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		pnlResultsPanel.setLayout(blBorderLayout);
 		btnCommit.setMnemonic('C');
@@ -73,7 +74,7 @@ public class ResultSetPanel extends JPanel {
 		btnDelete.setMnemonic('D');
 		btnDelete.setText("Delete");
 		btnRollback.setText("Rollback");
-    spStatus.getViewport().add(statusLog);
+		spStatus.getViewport().add(statusLog);
 		this.add(pnlTitle, BorderLayout.NORTH);
 		pnlTitle.add(lblStatement, BorderLayout.CENTER);
 		splitTableAndLog.add(spStatus, JSplitPane.BOTTOM);
@@ -83,18 +84,18 @@ public class ResultSetPanel extends JPanel {
 		pnlResultsPanel.add(pnlUpdateButtonBar, BorderLayout.EAST);
 		pnlUpdateButtonBar.add(btnDelete,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-		pnlUpdateButtonBar.add(btnInsert,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    pnlUpdateButtonBar.add(btnCommit,          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(20, 5, 0, 5), 0, 0));
-    pnlUpdateButtonBar.add(btnRollback, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		tblResults.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					viewClobAction.actionPerformed(null);
-				}
-			}
+	  pnlUpdateButtonBar.add(btnInsert,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+	  pnlUpdateButtonBar.add(btnCommit,          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+			,GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(20, 5, 0, 5), 0, 0));
+	  pnlUpdateButtonBar.add(btnRollback, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+			,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+	  tblResults.addMouseListener(new MouseAdapter() {
+		  public void mouseClicked(MouseEvent e) {
+			  if (e.getClickCount() == 2) {
+				  viewClobAction.actionPerformed(null);
+			  }
+		  }
 
 		});
 		resultScroll.getViewport().add(tblResults);
@@ -120,25 +121,33 @@ public class ResultSetPanel extends JPanel {
 
 	}
 
+	public void clearResultSetModel() {
+		setResultSetModel(new DefaultTableColumnModel(), new DefaultTableModel(0,0), null);
+	}
+
 	public void clearStatusText() {
 		statusLog.setText("");
 	}
 
 	public void addStatusText(String text) {
-		String newText = statusLog.getText() + "\n" + text;
-		statusLog.setText(newText);
+		String newText = "<P COLOR=\"BLACK\">"+statusLog.getText() + "\n" + text;
+		_addText(newText);
 	}
 
 	public void addWarningText(String text) {
-		StringBuffer warningText = new StringBuffer(statusLog.getText());
-		int firstSelIX = warningText.length();
-		int lastSelIX = firstSelIX + text.length() + 1;
-		warningText.append('\n').append(text);
-		statusLog.setText(warningText.toString());
-		statusLog.select(firstSelIX, lastSelIX);
-		statusLog.setSelectionColor(Color.red);
+
+		String newWarning = "\n<P COLOR=\"RED\">"+text+"</P>";
+		_addText(newWarning);
 	}
 
+	public void _addText(String newText) {
+		try {
+			statusLog.getEditorKit().read(new StringReader(newText), statusLog.getDocument(), statusLog.getDocument().getLength());
+		}
+		catch (Exception ex) {
+		}
+
+	}
 	class DeleteRowAction extends AbstractAction {
 		public void actionPerformed(ActionEvent evt) {
 			try {
