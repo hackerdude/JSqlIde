@@ -134,7 +134,6 @@ public class SqlIdeApplication  {
 
 	public final Action HELP_ABOUT     = new ActionHelpAbout();
 	public final Action HELP_README    = new ActionHelpShowDocument("Read Me First!", ActionHelpShowDocument.DOCUMENT_README, ProgramIcons.getInstance().findIcon("images/Document.gif") );
-	public final Action HELP_PAYING    = new ActionHelpShowDocument("Paying for SQLIDE", ActionHelpShowDocument.DOCUMENT_PAYING, ProgramIcons.getInstance().findIcon("images/Favorite.gif"));
 	public final Action HELP_TO_DO     = new ActionHelpShowDocument("To Do List", ActionHelpShowDocument.DOUCMENT_TODO, ProgramIcons.getInstance().findIcon("images/List.gif"));
 	public final Action HELP_KNOWNBUGS = new ActionHelpShowDocument("Known Bugs", ActionHelpShowDocument.DOCUMENT_BUGS, ProgramIcons.getInstance().findIcon("images/Error.gif"));
 
@@ -308,7 +307,6 @@ public class SqlIdeApplication  {
 
 		_addMenu(helpMenu,HELP_ABOUT);
 		_addMenu(helpMenu,HELP_KNOWNBUGS);
-		_addMenu(helpMenu,HELP_PAYING);
 		_addMenu(helpMenu,HELP_README);
 		_addMenu(helpMenu,HELP_TO_DO);
 //		_addMenu(helpMenu,HELP_CHANGES);
@@ -545,7 +543,6 @@ public class SqlIdeApplication  {
 
 		result.add(HELP_ABOUT);
 		result.add(HELP_KNOWNBUGS);
-		result.add(HELP_PAYING);
 		result.add(HELP_TO_DO);
 		result.add(HELP_README);
 
