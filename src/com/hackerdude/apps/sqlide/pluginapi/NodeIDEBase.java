@@ -15,6 +15,7 @@ import java.awt.dnd.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.*;
+import javax.swing.*;
 
 /**
  * SQLIDE Base Node. All Nodes inherit from this base node.
@@ -75,6 +76,10 @@ public abstract class NodeIDEBase extends DefaultMutableTreeNode implements Tran
 
 
 	public static DataFlavor localDataFlavor() { return localObjectFlavor; }
+
+	public ImageIcon getIcon() {
+		return null;
+	}
 
 
 }

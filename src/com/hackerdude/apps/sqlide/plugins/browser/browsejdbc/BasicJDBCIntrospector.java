@@ -4,7 +4,7 @@ import com.hackerdude.apps.sqlide.pluginapi.*;
 import com.hackerdude.apps.sqlide.ProgramIcons;
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 import javax.swing.Icon;
-import com.hackerdude.apps.sqlide.nodes.CategoryStoredProcedureNode;
+//import com.hackerdude.apps.sqlide.plugins.pgsql.storedproc.CategoryStoredProcedureNode;
 
 /**
  * The Basic JDBC Introspector implements the base browser functionality,
@@ -60,7 +60,7 @@ public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 			/** @todo We need to add the list of objects that are outside catalogs/schemas,
 			for the benefit of those who don't have such concepts. */
 			parentNode.add(new CategoryTableNode(null, null, db));
-			parentNode.add(new CategoryStoredProcedureNode(null, null, db));
+//			parentNode.add(new CategoryStoredProcedureNode(null, null, db));
 		}
 
 	}
