@@ -87,9 +87,9 @@ public class DataMoverPanel extends AbstractVisualPlugin implements IDENodeConte
 
 	public void refreshPanel() {
 		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
-		DataMoveParser parser = new DataMoveParser(visualInstructions.instructionModel);
-		System.out.println("[DataMoverPanel] TODO: Add toXML here");
-		instructionSourceEditor.editor.setText(parser.toXML());
+//		DataMoveParser parser = new DataMoveParser(visualInstructions.instructionModel);
+//		System.out.println("[DataMoverPanel] TODO: Add toXML here");
+//		instructionSourceEditor.editor.setText(parser.toXML());
 
 	}
 

@@ -40,6 +40,7 @@ public class PluginRegistry {
 
 
 	public void readRegistry() throws java.io.IOException {
+
 		InputStream registryIS = com.hackerdude.apps.sqlide.SqlIdeApplication.class.getResourceAsStream(REGISTRY_NAME);
 		if ( registryIS == null ) throw new IllegalStateException("SQL-IDE is not installed correctly. Plugin registry not found.");
 		ArrayList lines = new ArrayList();
@@ -65,11 +66,8 @@ public class PluginRegistry {
 				}
 				def.pluginInstance = plugin;
 				String politeName = plugin.getPluginName();
-				/** @todo Add support for this on the visual plugins. */
 				def.panelKey = plugin.getPluginName().charAt(0);
 				def.panelMnemonic = plugin.getPluginName().charAt(0);
-				//		def.panelKey   = recommendedKeys[i];
-				//		def.panelMnemonic   = recommendedShorts[i];
 				pluginsByName.put(politeName, def);
 				plugins.add(def);
 			} catch ( Exception exc ) {
@@ -77,8 +75,8 @@ public class PluginRegistry {
 				exc.printStackTrace();
 			}
 		}
+		Collections.sort(plugins);
 	}
-
 
 
 	/**
@@ -91,7 +89,6 @@ public class PluginRegistry {
 		thePlugins = (IDEVisualPluginIF[])visualPlugins.toArray(thePlugins);
 		return thePlugins;
 	}
-
 
 
 	/**
@@ -128,6 +125,71 @@ public class PluginRegistry {
 	  return(plugins.indexOf(def));
 	}
 
+
+	public PluginDefinition[] getAllPluginDefinitions() {
+		PluginDefinition[] definitions = new PluginDefinition[plugins.size()];
+		definitions = (PluginDefinition[])plugins.toArray(definitions);
+		return definitions;
+	}
+
+	public PluginDefinition[] getAllNodeContextPluginDefinitions() {
+		ArrayList result = new ArrayList();
+		Iterator iter = plugins.iterator();
+		while ( iter.hasNext() ) {
+			PluginDefinition def = (PluginDefinition)iter.next();
+			if ( def.pluginInstance instanceof IDENodeContextPluginIF ) {
+				result.add(def);
+			}
+		}
+		PluginDefinition[] definitions = new PluginDefinition[result.size()];
+		definitions = (PluginDefinition[])result.toArray(definitions);
+		return definitions;
+	}
+
+
+	public PluginDefinition[] getAllBrowserExtensionPluginDefinitions() {
+		ArrayList result = new ArrayList();
+		Iterator iter = plugins.iterator();
+		while ( iter.hasNext() ) {
+			PluginDefinition def = (PluginDefinition)iter.next();
+			if ( def.pluginInstance instanceof BrowserExtensionPluginIF ) {
+				result.add(def);
+			}
+		}
+		PluginDefinition[] definitions = new PluginDefinition[result.size()];
+		definitions = (PluginDefinition[])result.toArray(definitions);
+		return definitions;
+	}
+
+
+	public PluginDefinition[] getAllVisualPluginDefinitions() {
+		ArrayList result = new ArrayList();
+		Iterator iter = plugins.iterator();
+		while ( iter.hasNext() ) {
+			PluginDefinition def = (PluginDefinition)iter.next();
+			if ( def.pluginInstance instanceof IDEVisualPluginIF ) {
+				result.add(def);
+			}
+		}
+		PluginDefinition[] definitions = new PluginDefinition[result.size()];
+		definitions = (PluginDefinition[])result.toArray(definitions);
+		return definitions;
+	}
+
+
+	public PluginDefinition[] getAllNonVisualPluginDefinitions() {
+		ArrayList result = new ArrayList();
+		Iterator iter = plugins.iterator();
+		while ( iter.hasNext() ) {
+			PluginDefinition def = (PluginDefinition)iter.next();
+			if ( def.pluginInstance instanceof IDENonVisualPluginIF ) {
+				result.add(def);
+			}
+		}
+		PluginDefinition[] definitions = new PluginDefinition[result.size()];
+		definitions = (PluginDefinition[])result.toArray(definitions);
+		return definitions;
+	}
 
 	public PluginDefinition getPlugin(String name) {
 		return (PluginDefinition)pluginsByName.get(name);

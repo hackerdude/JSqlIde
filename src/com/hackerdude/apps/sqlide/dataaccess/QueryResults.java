@@ -29,13 +29,28 @@ public class QueryResults {
 		readColumnNames();
 	}
 
+	/**
+	 * Returns the underlying resultset for this object.
+	 * @return the underlying resultset for this object.
+	 */
 	public ResultSet getResultSet() { return results; }
 
+	/**
+	 * Returns the metadata
+	 * @return the query metadata.
+	 */
 	public ResultSetMetaData getMetaData() { return metaData; }
 
+	/**
+	 * Returns the number of rows affected.
+	 * @return The number of rows affected.
+	 */
 	public int getRowsAffected() { return rowsAffected; }
 
-
+	/**
+	 * Returns the sizes of the columns
+	 * @return an array with the column sizes.
+	 */
 	public int[] getColumnSizes() { return columnSizes; }
 
 	public String[] getColumnNames() {
@@ -45,8 +60,12 @@ public class QueryResults {
 	}
 
 
+	/**
+	 * Returns an array of java classes that contain the column types.
+	 * @return
+	 */
 	public Class[] getColumnClasses() {
-		Class[] result = new Class[columnNames.size()];
+		Class[] result = new Class[columnTypes.size()];
 		result = (Class[])columnTypes.toArray(result);
 		return result;
 	}
@@ -76,13 +95,26 @@ public class QueryResults {
 		}
 	}
 
-
+	/**
+	 * Returns the number of columns
+	 * @return The number of columns.
+	 */
 	public int getColumnCount() { return columnCount; }
 
+	/**
+	 * Returns the name of the columnn specified by its index
+	 * @param i The index of the column
+	 * @return The name of the column
+	 */
 	public String getColumnName(int i) {
 		return (String)columnNames.get(i);
 	}
 
+	/**
+	 * Returns the size of the column.
+	 * @param i The column index
+	 * @return The size of the column with index i
+	 */
 	public int getColumnSize(int i) {
 		return columnSizes[i];
 	}

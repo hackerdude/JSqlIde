@@ -37,6 +37,8 @@ public class PluginUserManager extends AbstractVisualPlugin {
 	 */
 	BorderLayout borderLayout2 = new BorderLayout();
 
+	DatabaseProcess proc;
+
 	/**
 	 * Creates a new user manager.
 	 *
@@ -55,8 +57,7 @@ public class PluginUserManager extends AbstractVisualPlugin {
 	 *
 	 */
 	public void setDatabaseProcess(DatabaseProcess proc) {
-		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
-		throw new java.lang.UnsupportedOperationException("Method setDatabaseProcess() not yet implemented.");
+		this.proc = proc;
 	}
 	/**
 	 * getDatabaseProcess
@@ -64,8 +65,7 @@ public class PluginUserManager extends AbstractVisualPlugin {
 	 * @return the returned DatabaseProcess
 	 */
 	public DatabaseProcess getDatabaseProcess() {
-		/**@todo: Implement this com.hackerdude.apps.sqlide.intf.IDEPanelInterface method*/
-		throw new java.lang.UnsupportedOperationException("Method getDatabaseProcess() not yet implemented.");
+		return proc;
 	}
 
 	public String getPluginName()  {

@@ -82,6 +82,7 @@ public class SqlIdeApplication  {
 	public final Action EDIT_COPY = new ActionSQLIDE("Copy", ProgramIcons.getInstance().findIcon("images/Copy.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false), KeyEvent.VK_C);
 	public final Action EDIT_PASTE = new ActionSQLIDE("Paste", ProgramIcons.getInstance().findIcon("images/Paste.gif"), KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false), KeyEvent.VK_P);
 	public final Action TOOLS_CONFIGURE = new ActionToolsConfigure();
+	public final Action TOOLS_PLUGINS   = new ActionToolsPlugins();
 	public final Action VIEW_BROWSER = new ActionSQLIDE("Browser", ProgramIcons.getInstance().getServerIcon(), KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK, false), KeyEvent.VK_B);
 	public final Action PLUGIN_CLOSE = new ActionPluginClose();
 	public final Action SELECT_LEFT = new ActionSelectLeftPanel();
@@ -234,6 +235,7 @@ public class SqlIdeApplication  {
 		_addMenu(editMenu, EDIT_COPY );
 		_addMenu(editMenu, EDIT_PASTE );
 		_addMenu(toolsMenu, TOOLS_CONFIGURE);
+		_addMenu(toolsMenu, TOOLS_PLUGINS);
 
 		_addMenu(pluginMenu, PLUGIN_CLOSE);
 		_addMenu(pluginMenu,SELECT_LEFT);
@@ -383,7 +385,9 @@ public class SqlIdeApplication  {
 	private void createPanelMenu(IDEVisualPluginIF plugin) {
 		mnuPluginControl.removeAll();
 		Action[] actions = plugin.getPossibleActions();
-		for ( int i=0; i<actions.length; i++) { _addMenu(mnuPluginControl,actions[i]); }
+		if ( (actions != null) && (actions.length > 0) ) {
+			for ( int i=0; i<actions.length; i++) { _addMenu(mnuPluginControl,actions[i]); }
+		}
 		// Now re-compose the popup menu with all the actions.
 		jPopupMenu1.removeAll();
 		JMenuItem mnuClosePlugin = jPopupMenu1.add( PLUGIN_CLOSE );
@@ -523,6 +527,7 @@ public class SqlIdeApplication  {
 		}
 
 	}
+
 	public class ActionToolsConfigure extends AbstractAction {
 		public ActionToolsConfigure() {
 			super("Configure...",ProgramIcons.getInstance().findIcon("images/List.gif") );
@@ -548,6 +553,16 @@ public class SqlIdeApplication  {
 			} finally {
 				frame.setCursor(Cursor.getDefaultCursor());
 			}
+		}
+
+	}
+
+	public class ActionToolsPlugins extends AbstractAction {
+		public ActionToolsPlugins() {
+			super("Plugins...",ProgramIcons.getInstance().getServerIcon());
+		}
+		public void actionPerformed(ActionEvent e) {
+			DlgPluginManager.showPluginManager(getInstance().getFrame(), "Plugin Manager");
 		}
 
 	}

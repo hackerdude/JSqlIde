@@ -14,10 +14,26 @@ import com.hackerdude.apps.sqlide.pluginapi.IDEPluginIF;
  * <P>In the near future, we will extend this definition to include non-visual
  * actions that can "become" available depending on the Browser's context.
  */
-public class PluginDefinition {
+public class PluginDefinition implements Comparable {
 
    public IDEPluginIF pluginInstance;
    public char panelMnemonic;
    public char panelKey;
+
+
+	public boolean equals(Object o) {
+		if ( o == null || (!(o instanceof PluginDefinition) ) ) return false;
+		PluginDefinition compareDef = (PluginDefinition)o;
+		return pluginInstance.getClass().equals(compareDef.pluginInstance.getClass());
+	}
+
+
+    public int compareTo(Object o) {
+		/** @todo Add error checking */
+		PluginDefinition compareDef = (PluginDefinition)o;
+        return pluginInstance.getPluginName().compareTo(compareDef.pluginInstance.getPluginName());
+    }
+
+
 
 }
