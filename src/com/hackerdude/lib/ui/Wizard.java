@@ -118,7 +118,7 @@ public class Wizard extends JDialog {
       taPageText.setLineWrap(true);
       taPageText.setWrapStyleWord(true);
       taPageText.setDisabledTextColor(SystemColor.controlText);
-      taPageText.setBackground(this.getBackground());
+      taPageText.setBackground(getRootPane().getBackground());
       taPageText.setSelectionColor(SystemColor.control);
       taPageText.setEnabled(false);
       taPageText.setText("Welcome to this wizard dude. This is just an example of the kind " +

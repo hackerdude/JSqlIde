@@ -88,7 +88,7 @@ public class DlgPanelServersPage extends JPanel {
 
 	}
 
-	public void updateFromConfig() {
+	public void readFromModel() {
 		model.fireTableDataChanged();
 	}
 
