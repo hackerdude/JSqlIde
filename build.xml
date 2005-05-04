@@ -29,8 +29,9 @@
 	<property name="temp.dir" value="tmp"/>
 	<property name="unjar.cache" value="${temp.dir}/unjar_cache"/>
 	<property name="jsqlide.dist.dir" value="dist/${name}-${version}"/>
-	<property name="jsqlide.signjar.alias" value="jarsignalias"/>
+	<property name="jsqlide.signjar.alias" value="myKey"/>
 	<property name="jsqlide.signjar.storepass" value="password"/>
+	<property name="jsqlide.signjar.keypass" value="${jsqlide.signjar.storepass}"/>
 	<property name="jsqlide.j2se.version" value="1.4.0+"/>
 	<property name="jsqlide.codebase.url" value="http://www.hackerdude.com/sqlide"/>
 	<property name="jsqlide.homepage.url" value="http://www.hackerdude.com/sqlide"/>
@@ -159,7 +160,7 @@ jsqlide.version=${version}
 	<!-- Creates the jar archive                                             -->
 	<!-- =================================================================== -->
 	<target name="jar" depends="compile,prepare_unjar_cache">
-		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**">
+		<jar jarfile="${build.dir}/${name}.jar" basedir="${build.classes}" includes="*/**" duplicate="preserve">
 			<fileset dir="${unjar.cache}"/>
 			<manifest>
 				<attribute name="Main-Class" value="com.hackerdude.apps.sqlide.SqlIdeApplication" />
@@ -370,8 +371,8 @@ jsqlide.version=${version}
 	</target>
 
 	<target name="signjar" depends="jar">
-	    <echo message="Signing Jar File... alias ${jsqlide.signjar.alias} passw ${jsqlide.signjar.storepass}"/>
-		<signjar jar="${build.dir}/${name}.jar" alias="${jsqlide.signjar.alias}" storepass="${jsqlide.signjar.storepass}"/>
+	    <echo message="Signing Jar File... alias ${jsqlide.signjar.alias} passw ${jsqlide.signjar.storepass} key pass ${jsqlide.signjar.keypass}"/>
+		<signjar jar="${build.dir}/${name}.jar" alias="${jsqlide.signjar.alias}" storepass="${jsqlide.signjar.storepass}" keypass="${jsqlide.signjar.keypass}"/>
 	</target>
 
 	<target name="jnlp" depends="jar">
