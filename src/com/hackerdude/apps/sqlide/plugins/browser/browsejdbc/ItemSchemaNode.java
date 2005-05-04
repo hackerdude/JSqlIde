@@ -19,8 +19,8 @@ public class ItemSchemaNode extends NodeIDEItem {
 	}
 
 	public void readChildren() {
-		add( new CategoryTableNode(contName, contName, db));
-//		add( new CategoryStoredProcedureNode(null, contName, db));
+		add( new CategoryTableNode(contName, contName, databaseProcess));
+//		add( new CategoryStoredProcedureNode(null, contName, databaseProcess));
 	}
 
 	public boolean canHaveChildren() { return true; }

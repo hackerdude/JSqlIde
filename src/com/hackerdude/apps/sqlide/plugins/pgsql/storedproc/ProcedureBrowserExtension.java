@@ -121,7 +121,7 @@ public class ProcedureBrowserExtension implements BrowserExtensionPluginIF, IDEN
 			String sqlStatement = sqlCalls.getProperty(SQL_RETRIEVE_PROCS_PROPERTY);
 			preparedStatement = conn.prepareStatement(sqlStatement);
 //			if ( preparedStatement.getParameterMetaData().getParameterCount() > 0 ) {
-//				preparedStatement.setString(1, db.getUserName());
+//				preparedStatement.setString(1, databaseProcess.getUserName());
 //			}
 			resultSet = preparedStatement.executeQuery();
 			while ( resultSet.next() ) {

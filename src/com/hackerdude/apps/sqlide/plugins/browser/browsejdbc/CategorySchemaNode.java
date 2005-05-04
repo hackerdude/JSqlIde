@@ -28,13 +28,13 @@ public class CategorySchemaNode extends NodeIDECategory {
    public void readChildren() {
 		DefaultMutableTreeNode dbItem = null;
 		try {
-			Vector vc = db.getSchemas();
+			Vector vc = databaseProcess.getSchemas();
 			for(int i=0;i<vc.size();i++) {
-				dbItem = new ItemSchemaNode(vc.elementAt(i).toString(), db);
+				dbItem = new ItemSchemaNode(vc.elementAt(i).toString(), databaseProcess);
 				add(dbItem);
 			}
 		} catch ( Throwable exc ) {
-			add(new ItemSchemaNode(null, db));
+			add(new ItemSchemaNode(null, databaseProcess));
 		}
 
 
