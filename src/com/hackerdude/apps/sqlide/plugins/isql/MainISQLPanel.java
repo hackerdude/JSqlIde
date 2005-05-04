@@ -312,6 +312,8 @@ public class MainISQLPanel extends JPanel {
 			for (int i = 0; i < dbs.size(); i++) {
 				cbCatalogs.addItem(dbs.get(i));
 			}
+			lblCatalog.setVisible(cbCatalogs.getItemCount()>0);
+			cbCatalogs.setVisible(cbCatalogs.getItemCount()>0);
 		} catch (SQLException exc) {
 		}
 
