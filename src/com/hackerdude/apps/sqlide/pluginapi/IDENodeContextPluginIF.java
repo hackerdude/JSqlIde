@@ -15,7 +15,13 @@ import javax.swing.Action;
  */
 public interface IDENodeContextPluginIF extends IDEPluginIF {
 
-
+	/**
+	 * Implement this method to return a series of actions that 
+	 * should apply to this selection of nodes.
+	 *  
+	 * @param selectedNodes The nodes that are selected.
+	 * @return The actions that should show up on a context menu.
+	 */
 	public Action[] getActionsFor(NodeIDEBase[] selectedNodes);
 
 
