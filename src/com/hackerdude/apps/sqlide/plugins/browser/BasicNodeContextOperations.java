@@ -56,6 +56,10 @@ public class BasicNodeContextOperations implements IDENodeContextPluginIF {
 				addNamedQueries(node.getDatabaseProcess().getHostConfiguration(), actionsList, iSQL);
 
 			}
+//			if ( rightComponent == null ) {
+//				Action editServerAction = new ActionEditServer( (ItemServerNode)selectedNodes[0] );
+//				actionsList.add(editServerAction);
+//			}
 		}
 		Action[] result = new Action[actionsList.size()];
 		result = (Action[])actionsList.toArray(result);

@@ -153,8 +153,8 @@ public class PluginIDEBrowser extends JPanel
 		browserPanel.add(scroll, BorderLayout.CENTER);
 		scroll.getViewport().add(browserTree, null);
 		bottomPanel.add(lblInfo, BorderLayout.CENTER);
-		BROWSER_RENDERER.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
-		BROWSER_RENDERER.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
+//		BROWSER_RENDERER.setOpenIcon(ProgramIcons.getInstance().getExpandIcon());
+//		BROWSER_RENDERER.setClosedIcon(ProgramIcons.getInstance().getCollapseIcon());
 		browserTree.setCellRenderer(BROWSER_RENDERER);
 		browserTree.setVisible(true);
 		browserTree.setFont(ProgramConfig.getInstance().getFont(ProgramConfig.PROP_FONT_FOR_BROWSER));
@@ -215,8 +215,8 @@ public class PluginIDEBrowser extends JPanel
 	public void initPlugin() {
 		jbInit();
 		serverBrowser = new BrowserModel(rootNode);
-		UIManager.put("Tree.exp andedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
-		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
+//		UIManager.put("Tree.exp andedIcon", new IconUIResource(ProgramIcons.getInstance().getExpandIcon()));
+//		UIManager.put("Tree.collapsedIcon", new IconUIResource(ProgramIcons.getInstance().getCollapseIcon()));
 		if (currentProcess == null)
 			currentProcess = DatabaseService.getInstance().getDatabaseProcess(
 						   HostConfigRegistry.getInstance().getSqlideHostConfig(0)
@@ -359,8 +359,8 @@ public class PluginIDEBrowser extends JPanel
 		final ImageIcon loginsIcon = ProgramIcons.getInstance().getLoginsIcon();
 		final ImageIcon storedProcIcon = ProgramIcons.getInstance().getStoredProcIcon();
 		final ImageIcon triggerIcon = ProgramIcons.getInstance().getTriggerIcon();
-		final ImageIcon expandIcon = ProgramIcons.getInstance().getExpandIcon();
-		final ImageIcon collapseIcon = ProgramIcons.getInstance().getCollapseIcon();
+//		final ImageIcon expandIcon = ProgramIcons.getInstance().getExpandIcon();
+//		final ImageIcon collapseIcon = ProgramIcons.getInstance().getCollapseIcon();
 		final ImageIcon columnIcon = ProgramIcons.getInstance().findIcon("images/Column.gif");
 		final ImageIcon tableIcon = ProgramIcons.getInstance().findIcon("images/Sheet.gif");
 		final ImageIcon indexIcon = ProgramIcons.getInstance().findIcon("images/BCard.gif");
@@ -369,8 +369,8 @@ public class PluginIDEBrowser extends JPanel
 
 		public BrowserRenderer() {
 
-			setOpenIcon(expandIcon);
-			setClosedIcon(collapseIcon);
+/*			setOpenIcon(expandIcon);
+			setClosedIcon(collapseIcon);*/
 
 		}
 

@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 
 /**
  * The Icon collection for the sqlDE program.
+ * 
  * @version $Id$
  */
 public class ProgramIcons {
@@ -79,8 +80,8 @@ public class ProgramIcons {
 	  propsDefaults.setProperty( prop_Icon_Go          , "images/go.gif" );
 	  propsDefaults.setProperty( prop_Icon_Stop        , "images/stop.gif" );
 	  propsDefaults.setProperty( prop_Icon_Application , "images/database.gif" );
-	  propsDefaults.setProperty( prop_Icon_Collapse    , "images/minus.gif" );
-	  propsDefaults.setProperty( prop_Icon_Expand      , "images/plus.gif" );
+//	  propsDefaults.setProperty( prop_Icon_Collapse    , "images/minus.gif" );
+//	  propsDefaults.setProperty( prop_Icon_Expand      , "images/plus.gif" );
 
 	}
 
@@ -222,63 +223,4 @@ public class ProgramIcons {
 	public ImageIcon getTriggerIcon() { return(getIconByName(prop_treetriggers)); }
 
 
-	/**&
-	 * Icon for tree expansion
-	 */
-	 public ImageIcon getExpandIcon() { return(getIconByName(prop_Icon_Collapse)); }
-
-	 /**
-	  * Icon for tree collapse
-	  */
-	 public ImageIcon getCollapseIcon() { return(getIconByName(prop_Icon_Expand)); }
-
 }
-
-/*
-
-  $Log$
-  Revision 1.3  2005/03/17 21:51:12  davidmartinez
-  Turning into an eclipse project, global import optimize and warning-busting
-
-  Revision 1.2  2003/01/27 19:44:45  davidmartinez
-  New tasks menu. Miscellaneous fixes.
-
-  Revision 1.1  2002/08/21 21:24:12  davidmartinez
-  Refactoring - moved application from devtools.... to apps
-
-  Revision 1.1.1.1  2001/09/07 02:50:59  davidmartinez
-  Initial Checkin of the Alpha tree
-
-  Revision 1.2  2000/05/08 22:24:15  david
-  Tweaks so that Jar Packaging will work. Also new-user settings bug fixes.
-
-  Revision 1.1.1.1  2000/04/27 22:20:49  david
-  Initial Import
-
-  Revision 1.8  1999/12/15 09:10:18  david
-  Lots of fixes, now Database specs can be added and deleted; changed
-  expand/collapse icons switched.
-
-  Revision 1.7  1999/12/09 11:33:32  david
-  Fixed problems with images, optimized makefile.
-
-  Revision 1.6  1999/11/20 01:09:10  david
-  Added changes so it will work correctly with JBuilder. It will also load
-  the images correctly when part of a JAR file.
-
-  Revision 1.5  1999/10/31 20:22:55  david
-  Modified some parts of the program so they work inside a package.
-  About box now shows GPL in JAR
-
-  Revision 1.4  1999/10/25 15:20:38  david
-  Moved files to a flat JSqlIde package, in preparation for the
-  makefile and package organization.
-
-  Revision 1.3  1999/10/19 00:56:43  david
-  .
-
-  Revision 1.2  1999/10/19 00:53:44  david
-  Added Log
-
-
- */
