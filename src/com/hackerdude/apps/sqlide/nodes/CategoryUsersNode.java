@@ -13,8 +13,8 @@ public class CategoryUsersNode extends NodeIDECategory {
 
 	public void readChildren() {
 
-		CategoryGeneralUsersNode generalNode = new CategoryGeneralUsersNode(db);
-		CategoryDbUsersNode dbUsersNode = new CategoryDbUsersNode(db);
+		CategoryGeneralUsersNode generalNode = new CategoryGeneralUsersNode(databaseProcess);
+		CategoryDbUsersNode dbUsersNode = new CategoryDbUsersNode(databaseProcess);
 		add(generalNode);
 		add(dbUsersNode);
 

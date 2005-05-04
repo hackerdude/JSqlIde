@@ -22,21 +22,21 @@ public class CategoryDbUsersNode extends NodeIDECategory
 		Connection conn = null;
 		try {
 			try {
-				conn = db.getConnection();
-				ResultSet result = db.getDBInterface().getCatalogPrivs(conn);
+				conn = databaseProcess.getConnection();
+				ResultSet result = databaseProcess.getDBInterface().getCatalogPrivs(conn);
 				while ( result.next() ) {
 					String catalogName = result.getString("Catalog");
 					String hostName    = result.getString("HostName");
 					String userName    = result.getString("UserName");
 					if ( hostName == null || hostName.equals("") ) hostName = ItemUserNode.ALL_HOST;
 					if ( userName == null || userName.equals("") ) userName = ItemUserNode.ALL_USER;
-					ItemCatalogUserNode userNode = new ItemCatalogUserNode(catalogName, userName, hostName,db);
+					ItemCatalogUserNode userNode = new ItemCatalogUserNode(catalogName, userName, hostName,databaseProcess);
 					add(userNode);
 				}
 
 
 			} finally {
-				db.returnConnection(conn);
+				databaseProcess.returnConnection(conn);
 			}
 		} catch ( SQLException exc ) {  }
 

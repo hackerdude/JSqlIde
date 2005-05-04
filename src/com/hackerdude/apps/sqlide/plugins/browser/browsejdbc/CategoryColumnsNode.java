@@ -29,7 +29,7 @@ public class CategoryColumnsNode extends NodeIDECategory {
 	public void readChildren() {
 		Connection conn = null;
 		try {
-			conn = db.getConnection();
+			conn = databaseProcess.getConnection();
 			ResultSet rs = conn.getMetaData().getColumns(catalogName, null, tableName, null);
 			iColumnCount = 0;
 			while ( rs.next() ) {
@@ -45,13 +45,13 @@ public class CategoryColumnsNode extends NodeIDECategory {
 					iNullable = rs.getInt("NULLABLE");
 				} catch ( Exception exc ) { }
 				boolean nullable  = ( iNullable == DatabaseMetaData.columnNullable );
-				add(new ItemTableColumnNode(catalogName, tableName, fieldName, typeName, columnSize, nullable, db ));
+				add(new ItemTableColumnNode(catalogName, tableName, fieldName, typeName, columnSize, nullable, databaseProcess ));
 			}
 			rs.close();
-			db.returnConnection(conn);
+			databaseProcess.returnConnection(conn);
 		} catch ( SQLException exc ) {
 			exc.printStackTrace();
-			db.returnConnection(conn);
+			databaseProcess.returnConnection(conn);
 		}
 	}
 	public String getInfo() {

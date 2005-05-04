@@ -13,11 +13,11 @@ public class ItemCatalogNode extends NodeIDEItem {
 	public ItemCatalogNode(String containerName, DatabaseProcess proc) throws SQLException {
 		super(containerName, proc);
 		catalogName = containerName;
-		catalogInfo = "<HTML><P><B>"+CategoryCatalogsNode.determineCatalogTerm(db)+" name</B>: "+catalogName;
+		catalogInfo = "<HTML><P><B>"+CategoryCatalogsNode.determineCatalogTerm(databaseProcess)+" name</B>: "+catalogName;
 	};
 
 	public void readChildren() {
-		add( new CategoryTableNode(null, catalogName, db));
+		add( new CategoryTableNode(null, catalogName, databaseProcess));
 	}
 
 	public boolean canHaveChildren() { return true; }

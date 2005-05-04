@@ -27,17 +27,17 @@ public class CategoryCatalogsNode extends NodeIDECategory {
 	public void readChildren() {
 
 		try {
-			ArrayList al = db.getCatalogs();
+			ArrayList al = databaseProcess.getCatalogs();
 			DefaultMutableTreeNode dbItem = null;
 
 			for(int i=0;i<al.size();i++) {
-				dbItem = new ItemCatalogNode(al.get(i).toString(), db);
+				dbItem = new ItemCatalogNode(al.get(i).toString(), databaseProcess);
 				add(dbItem);
 			}
 
 		} catch ( SQLException exc ) {
 			try {
-				add(new ItemCatalogNode(null, db));
+				add(new ItemCatalogNode(null, databaseProcess));
 			}
 			catch (Exception ex) {
 			}
@@ -63,7 +63,7 @@ public class CategoryCatalogsNode extends NodeIDECategory {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append("<HTML><P><B>");
 		try {
-			stringBuffer.append(determineCatalogTerm(db));
+			stringBuffer.append(determineCatalogTerm(databaseProcess));
 		}
 		catch (Exception ex) {
 		}

@@ -27,9 +27,9 @@ public class CategoryTableNode extends NodeIDECategory {
 
 	public void readChildren() {
 		DefaultMutableTreeNode dbItem = null;
-		Vector vc = db.getTablesIn(schemaName, catalogName);
+		Vector vc = databaseProcess.getTablesIn(schemaName, catalogName);
 		for(int i=0;i<vc.size();i++) {
-			dbItem = new ItemTableNode(catalogName, schemaName, vc.elementAt(i).toString(), db);
+			dbItem = new ItemTableNode(catalogName, schemaName, vc.elementAt(i).toString(), databaseProcess);
 			add(dbItem);
 		}
 	}

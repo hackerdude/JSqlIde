@@ -28,8 +28,8 @@ public class ItemTableNode extends NodeIDEItem {
 	}
 
 	public void readChildren() {
-		add(new CategoryColumnsNode(itemName, db, catalogName));
-		add(new CategoryIndexesNode(itemName, db, catalogName, schemaName));
+		add(new CategoryColumnsNode(itemName, databaseProcess, catalogName));
+		add(new CategoryIndexesNode(itemName, databaseProcess, catalogName, schemaName));
 	}
 
 	public boolean canHaveChildren() {

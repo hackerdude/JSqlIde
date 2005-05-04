@@ -27,7 +27,7 @@ public class CategoryIndexesNode extends NodeIDECategory {
 	public void readChildren() {
 		Connection conn = null;
 		try {
-			conn = db.getConnection();
+			conn = databaseProcess.getConnection();
 			ResultSet rs = conn.getMetaData().getIndexInfo(catalogName, schemaName, tableName, false, true);
 			iIndices = 0;
 			while ( rs.next() ) {
@@ -40,13 +40,13 @@ public class CategoryIndexesNode extends NodeIDECategory {
 				try {
 					unique = ! rs.getBoolean("NON_UNIQUE");
 				} catch (Exception exc ) {}
-				add(new ItemIndexNode(indexName, catalogName, schemaName, tableName, columnName, unique,  db ));
+				add(new ItemIndexNode(indexName, catalogName, schemaName, tableName, columnName, unique,  databaseProcess ));
 			}
 			rs.close();
-			db.returnConnection(conn);
+			databaseProcess.returnConnection(conn);
 		} catch ( SQLException exc ) {
 		exc.printStackTrace();
-		db.returnConnection(conn);
+		databaseProcess.returnConnection(conn);
 		}
 
 	}

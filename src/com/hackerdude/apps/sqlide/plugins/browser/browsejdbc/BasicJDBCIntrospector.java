@@ -62,7 +62,7 @@ public class BasicJDBCIntrospector implements BrowserExtensionPluginIF {
 
 		if ( parentNode.getChildCount() == 0 ) {
 			parentNode.add(new CategoryTableNode(null, null, db));
-			//			parentNode.add(new CategoryStoredProcedureNode(null, null, db));
+			//			parentNode.add(new CategoryStoredProcedureNode(null, null, databaseProcess));
 		}
 
 	}

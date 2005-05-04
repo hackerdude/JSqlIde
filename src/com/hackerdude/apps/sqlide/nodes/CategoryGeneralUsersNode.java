@@ -18,10 +18,10 @@ public class CategoryGeneralUsersNode extends NodeIDECategory {
 	}
 	public void readChildren() {
 		try {
-			SQLIDEDBInterface intf = db.getDBInterface();
+			SQLIDEDBInterface intf = databaseProcess.getDBInterface();
 			Connection conn = null;
 			try {
-				conn = db.getConnection();
+				conn = databaseProcess.getConnection();
 				ResultSet rs = intf.getUserList(conn);
 				while ( rs.next() ) {
 					String userName = rs.getString("UserName");
@@ -29,11 +29,11 @@ public class CategoryGeneralUsersNode extends NodeIDECategory {
 					if ( hostName == null || hostName.equals("") ) hostName= ItemUserNode.ALL_HOST;
 					if ( userName == null || userName.equals("") ) userName= ItemUserNode.ALL_USER;
 
-					ItemUserNode userNode = new ItemUserNode(userName, hostName, db);
+					ItemUserNode userNode = new ItemUserNode(userName, hostName, databaseProcess);
 					add(userNode);
 				}
 			} finally {
-				db.returnConnection(conn);
+				databaseProcess.returnConnection(conn);
 			}
 
 		} catch ( SQLException exc ) {
