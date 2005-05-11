@@ -156,5 +156,13 @@ public class SyntaxTextArea extends JPanel implements DropTargetListener {
 		event.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
 	}
 
+	
+	/**
+	 * @return Returns the textArea.
+	 */
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
 
 }
