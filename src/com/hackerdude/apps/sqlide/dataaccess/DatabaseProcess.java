@@ -177,7 +177,8 @@ public class DatabaseProcess implements CredentialsProvider.CredentialsVerifier,
 				String tableSchema = rs.getString(2);
 				String tableType = rs.getString(4);
 				if ( (tableType !=null ) && ( ! tableType.equals("INDEX") ) ) {
-					 tbls.add(rs.getString(3));
+					String tableName = rs.getString(3);
+					if ( ! tbls.contains(tableName) ) tbls.add(tableName);
 				}
 			}
 		} catch( SQLException sqle ) {
