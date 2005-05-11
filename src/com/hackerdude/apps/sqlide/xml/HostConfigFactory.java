@@ -91,6 +91,7 @@ public class HostConfigFactory {
 		of.setIndenting( true );
 		of.setIndent( 2 );  // 2-space indention
 		of.setLineWidth( 16384 );
+		of.setCDataElements(new String[] {"historyItem", "value"});
 		XMLSerializer serializer = new XMLSerializer(writer, of);
 		try {
                   config.marshal(serializer.asContentHandler());
