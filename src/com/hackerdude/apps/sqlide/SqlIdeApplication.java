@@ -134,7 +134,7 @@ public class SqlIdeApplication  {
 
 	public final Action HELP_ABOUT     = new ActionHelpAbout();
 	public final Action HELP_README    = new ActionHelpShowDocument("Read Me First!", ActionHelpShowDocument.DOCUMENT_README, ProgramIcons.getInstance().findIcon("images/Document.gif") );
-	public final Action HELP_TO_DO     = new ActionHelpShowDocument("To Do List", ActionHelpShowDocument.DOUCMENT_TODO, ProgramIcons.getInstance().findIcon("images/List.gif"));
+//	public final Action HELP_TO_DO     = new ActionHelpShowDocument("To Do List", ActionHelpShowDocument.DOUCMENT_TODO, ProgramIcons.getInstance().findIcon("images/List.gif"));
 	public final Action HELP_KNOWNBUGS = new ActionHelpShowDocument("Known Bugs", ActionHelpShowDocument.DOCUMENT_BUGS, ProgramIcons.getInstance().findIcon("images/Error.gif"));
 
 	public final Action HELP_LICENSE = new ActionHelpShowDocument("License Agreement", ActionHelpShowDocument.DOCUMENT_LICENSE, ProgramIcons.getInstance().findIcon("images/List.gif"));
@@ -171,7 +171,7 @@ public class SqlIdeApplication  {
 		idebrowser.setSQLIDE(this);
 
 		mainPanel.setLayout(mainBorderLayout);
-		pluginsTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
+		pluginsTabbedPane.setTabPlacement(JTabbedPane.TOP);
 		pluginsTabbedPane.setToolTipText("");
 		pluginsTabbedPane.addChangeListener(new TabChangeListener());
 		pluginsTabbedPane.addMouseListener(new PluginPagesPopupAdapter());
@@ -308,7 +308,7 @@ public class SqlIdeApplication  {
 		_addMenu(helpMenu,HELP_ABOUT);
 		_addMenu(helpMenu,HELP_KNOWNBUGS);
 		_addMenu(helpMenu,HELP_README);
-		_addMenu(helpMenu,HELP_TO_DO);
+//		_addMenu(helpMenu,HELP_TO_DO);
 //		_addMenu(helpMenu,HELP_CHANGES);
 
 		menuBar.add( fileMenu   );
@@ -543,7 +543,7 @@ public class SqlIdeApplication  {
 
 		result.add(HELP_ABOUT);
 		result.add(HELP_KNOWNBUGS);
-		result.add(HELP_TO_DO);
+//		result.add(HELP_TO_DO);
 		result.add(HELP_README);
 
 		return result;
