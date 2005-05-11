@@ -105,8 +105,8 @@ public class MainISQLPanel extends JPanel {
 			jbInit();
 			cbCatalogs.addActionListener(cbListener);
 			resultSetPanel.setViewClobAction(ACTION_VIEW_CLOB);
-			InputMap inputMap = sqlTextArea.getInputMap();
-			ActionMap actionMap = sqlTextArea.getActionMap();
+			InputMap inputMap = sqlTextArea.getTextArea().getInputMap();
+			ActionMap actionMap = sqlTextArea.getTextArea().getActionMap();
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.CTRL_MASK), "historyPrev");
 			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK), "historyNext");
 			actionMap.put("historyPrev", ACTION_HISTORY_PREV);
