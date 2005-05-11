@@ -40,7 +40,7 @@ public class CategoryIndexesNode extends NodeIDECategory {
 				try {
 					unique = ! rs.getBoolean("NON_UNIQUE");
 				} catch (Exception exc ) {}
-				add(new ItemIndexNode(indexName, catalogName, schemaName, tableName, columnName, unique,  databaseProcess ));
+				if ( indexName != null ) add(new ItemIndexNode(indexName, catalogName, schemaName, tableName, columnName, unique,  databaseProcess ));
 			}
 			rs.close();
 			databaseProcess.returnConnection(conn);
