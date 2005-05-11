@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.hackerdude.apps.sqlide.dataaccess.DatabaseProcess;
 import com.hackerdude.apps.sqlide.pluginapi.NodeIDECategory;
@@ -29,12 +30,13 @@ public class CategoryColumnsNode extends NodeIDECategory {
 	public void readChildren() {
 		Connection conn = null;
 		try {
+			ArrayList columnNames = new ArrayList();
 			conn = databaseProcess.getConnection();
 			ResultSet rs = conn.getMetaData().getColumns(catalogName, null, tableName, null);
 			iColumnCount = 0;
 			while ( rs.next() ) {
 				iColumnCount++;
-				String fieldName  = rs.getString("COLUMN_NAME");
+				String columnName  = rs.getString("COLUMN_NAME");
 				String typeName = rs.getString("TYPE_NAME");
 				int columnSize   = -999;
 				try {
@@ -45,7 +47,11 @@ public class CategoryColumnsNode extends NodeIDECategory {
 					iNullable = rs.getInt("NULLABLE");
 				} catch ( Exception exc ) { }
 				boolean nullable  = ( iNullable == DatabaseMetaData.columnNullable );
-				add(new ItemTableColumnNode(catalogName, tableName, fieldName, typeName, columnSize, nullable, databaseProcess ));
+				if ( ! columnNames.contains(columnName) ) {
+					ItemTableColumnNode columnNode = new ItemTableColumnNode(catalogName, tableName, columnName, typeName, columnSize, nullable, databaseProcess );
+					add(columnNode);
+					columnNames.add(columnName);
+				}
 			}
 			rs.close();
 			databaseProcess.returnConnection(conn);
