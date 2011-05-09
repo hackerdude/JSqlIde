@@ -13,11 +13,9 @@ like it that could span multiple dbs and was open source.
 Building and Running
 --------------------
 
-There's not much to it. To run, simply do
-
-[source]
-$ ant
-$ java -jar build/jsqlide.jar
+There's not much to it. To run, simply run ant, which will result
+in a build/jsqlide.jar file. Then run that with java -jar of by 
+double-clicking on the file.
 
 a first-run dialog will help you tie in the JDBC jars to 
 the configuration.
