@@ -16,10 +16,8 @@ Building and Running
 There's not much to it. To run, simply do
 
 [source]
---------------------------------------------------------
 $ ant
 $ java -jar build/jsqlide.jar
---------------------------------------------------------
 
 a first-run dialog will help you tie in the JDBC jars to 
 the configuration.
