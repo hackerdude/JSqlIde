@@ -15,7 +15,7 @@ Building and Running
 
 There's not much to it. To run, simply do
 
-[source,bash]
+[source,shell]
 --------------------------------------------------------
 $ ant
 $ java -jar build/jsqlide.jar
