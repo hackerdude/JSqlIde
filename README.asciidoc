@@ -1,0 +1,32 @@
+JSQLIDE
+=======
+
+JSQLIDE is a very old piece of code. It is a query runner 
+and SQL environment written in Java Swing.
+It can run simple queries, request updatable resultsets for
+you to edit values inline, can do some basic table editing,
+and can keep remember queries you mark as useful.
+
+I wrote it because at the time (1998?) there was really nothing
+like it that could span multiple dbs and was open source.
+
+Building and Running
+--------------------
+
+There's not much to it. To run, simply do
+
+[source,bash]
+--------------------------------------------------------
+$ ant
+$ java -jar build/jsqlide.jar
+--------------------------------------------------------
+
+a first-run dialog will help you tie in the JDBC jars to 
+the configuration.
+
+License
+-------
+
+GPL v2. Use it in good health. Please submit patches back - would
+love to hear back from you.
+
